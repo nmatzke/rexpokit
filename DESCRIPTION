@@ -5,7 +5,8 @@ Version: 0.24.1
 Date: 2013-07-08
 Authors@R: c(person("Nicholas J.", "Matzke", email = "matzke@berkeley.edu", role =
         c("aut", "cre", "cph")), person("Roger B.", "Sidje", email =
-        "roger.b.sidje@ua.edu", role = c("aut", "cph")))
+        "roger.b.sidje@ua.edu", role = c("aut", "cph")),
+        c(person("Drew", "Schmidt", email="schmidt@math.utk.edu", "aut")))
 Maintainer: Nicholas J. Matzke <matzke@berkeley.edu>
 Depends: methods, SparseM, Rcpp (>= 0.9.10)
 LinkingTo: Rcpp
@@ -16,7 +17,8 @@ LazyLoad: yes
 ByteCompile: true
 Packaged: 2013-09-18 21:58:06 UTC; iao
 Author: Nicholas J. Matzke [aut, cre, cph],
-  Roger B. Sidje [aut, cph]
+  Roger B. Sidje [aut, cph],
+  Drew Schmidt [aut]
 NeedsCompilation: yes
 Repository: CRAN
 Date/Publication: 2013-07-15 07:25:20
