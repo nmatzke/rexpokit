@@ -1,0 +1,25 @@
+bibentry("Manual",
+         title = "rexpokit: R wrappers for EXPOKIT; other matrix functions",
+         author = c(person("Nicholas J.", "Matzke", email = "matzke@berkeley.edu", role =
+        c("aut", "cre", "cph")), person("Roger B.", "Sidje", email =
+        "roger.b.sidje@ua.edu", role = c("aut", "cph"))),
+         organization = "University of California, Berkeley",
+         address      = "Berkeley, CA",
+         year         = 2013,
+         note         = "NOTE: The EXPOKIT FORTRAN library was published in: Sidje, R.B. (1998). A Software Package for Computing Matrix Exponentials. ACM-Transactions on Mathematical Software, 24(1):130-156. http://tinyurl.com/bwa87rq ; Also, the rexpokit package was first published in: Matzke, Nicholas J. (2012). Founder-event speciation in BioGeoBEARS package dramatically improves
+likelihoods and alters parameter inference in Dispersal-Extinction-Cladogenesis (DEC) analyses. Frontiers of Biogeography, 4(suppl. 1): 210.  Link to abstract and PDF of poster: 
+http://phylo.wikidot.com/matzke-2013-international-biogeography-society-poster . (Poster abstract 
+published in the Conference Program and Abstracts of the International Biogeography Society 6th Biannual 
+Meeting, Miami, Florida. Poster Session P10: Historical and Paleo-Biogeography. Poster 129B. January 11, 
+2013.)",
+         url          = "http://phylo.wikidot.com/rexpokit",
+                
+         mheader = "To cite R in publications use:",
+	 
+	 mfooter = 
+         paste("A lot of time and effort in creating EXPOKIT and rexpokit,",
+          "please cite it, Sidje (1998), and Matzke (2012) when using it for publication.",
+	  "See also", sQuote("citation(\"pkgname\")"),
+	  "for citing R packages.", sep = " ")
+	)
+

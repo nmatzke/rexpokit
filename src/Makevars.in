@@ -1,0 +1,16 @@
+PKG_CXXFLAGS=$(SAFE_CXXLAGS) -w
+PKG_FFLAGS=$(SAFE_FFLAGS) -w
+PKG_LIBS = `$(R_HOME)/bin/Rscript -e "Rcpp:::LdFlags()"` $(LAPACK_LIBS) $(BLAS_LIBS) $(FLIBS)
+
+EXPOKIT_OBJS=blas_mod.o \
+  clock.o \
+  mataid.o \
+  my_expokit.o
+
+R_OBJS=wrappers.o expokit_wrappers.o 
+
+OBJECTS=$(R_OBJS) $(EXPOKIT_OBJS)
+
+all: $(SHLIB)
+
+$(SHLIB): $(OBJECTS)
