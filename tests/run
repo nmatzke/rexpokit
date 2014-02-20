@@ -1,0 +1,5 @@
+#!/bin/sh
+
+Rscript -e "source('tester.r');test(x, 'expokit_dgpadm_Qmat')"
+Rscript -e "source('tester.r');test(x, 'expokit_dmexpv_Qmat')"
+

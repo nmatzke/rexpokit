@@ -58,7 +58,7 @@ SEXP R_dmexpv(SEXP n_, SEXP m, SEXP t, SEXP v, SEXP tol,
   ret["w"] = w;
   
   
-  UNPROTECT(8);
+  UNPROTECT(7);
   
   return ret;
 }
