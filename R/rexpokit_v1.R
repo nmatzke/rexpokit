@@ -89,7 +89,7 @@ expokit_dgpadm_Qmat <- function(Qmat=NULL, t=2.1, transpose_needed=TRUE)
 	if (is.null(Qmat))
 	{
 		# Default Qmat
-		cat("\nWARNING: expokit_dgpadm_Qmat() was provided a Qmat with value NULL.  Example Qmat provided instead\n")
+		warning("expokit_dgpadm_Qmat() was provided a Qmat with value NULL.  Example Qmat provided instead")
 		Qmat = matrix(c(-1.218, 0.504, 0.336, 0.378, 0.126, -0.882, 0.252, 0.504, 0.168, 0.504, -1.05, 0.378, 0.126, 0.672, 0.252, -1.05), nrow=4, byrow=TRUE)
 	}
 	# Check if t is blank
@@ -246,7 +246,7 @@ expokit_dmexpv_Qmat <- function(Qmat=NULL, t=2.1, inputprobs_for_fast=NULL, tran
 	if (is.null(matvec))
 	{
 		# Default Qmat
-		cat("\nWARNING: expokit_dmexpv_Qmat() was provided a Qmat with value NULL.  Example Qmat provided instead\n")
+		warning("expokit_dmexpv_Qmat() was provided a Qmat with value NULL.  Example Qmat provided instead")
 		matvec = matrix(c(-1.218, 0.504, 0.336, 0.378, 0.126, -0.882, 0.252, 0.504, 0.168, 0.504, -1.05, 0.378, 0.126, 0.672, 0.252, -1.05), nrow=4, byrow=TRUE)
 	}
 	# Check if t is blank
@@ -297,7 +297,7 @@ expokit_dmexpv_Qmat <- function(Qmat=NULL, t=2.1, inputprobs_for_fast=NULL, tran
 				diagonal_val = -1 * sum(newrowvals[-1])
 				matvec[rows_allzero_indices, rows_allzero_indices] = diagonal_val
 				
-				cat("\nWARNING: ", sum(rows_w_all_zeros_TF), " rows of the Q matrix Qmat had all zeros. This will crash .Call('wrapalldmexpv_', ...)\nand therefore expokit_wrapalldmexpv_tvals() run with the inputprobs_for_fast=NULL option (producing a full Pmat),\nand therefore R.  Replacement value for 0:  check_for_0_rows=", check_for_0_rows, ".\n", sep="")
+				warning(paste(sum(rows_w_all_zeros_TF), " rows of the Q matrix Qmat had all zeros. This will crash .Call('wrapalldmexpv_', ...)\nand therefore expokit_wrapalldmexpv_tvals() run with the inputprobs_for_fast=NULL option (producing a full Pmat),\nand therefore R.  Replacement value for 0:  check_for_0_rows=", check_for_0_rows, ".\n", sep=""))
 			}
 		}
 	}
@@ -915,7 +915,7 @@ expokit_wrapalldmexpv_tvals <- function(Qmat=NULL, tvals=c(2.1), inputprobs_for_
 				diagonal_val = -1 * sum(newrowvals[-1])
 				matvec[rows_allzero_indices, rows_allzero_indices] = diagonal_val
 				
-				cat("\nWARNING: ", sum(rows_w_all_zeros_TF), " rows of the Q matrix Qmat had all zeros. This will crash .Call('wrapalldmexpv_', ...)\nand therefore expokit_wrapalldmexpv_tvals() run with the inputprobs_for_fast=NULL option (producing a full Pmat),\nand therefore R.  Replacement value for 0:  check_for_0_rows=", check_for_0_rows, ".\n", sep="")
+				warning(paste(sum(rows_w_all_zeros_TF), " rows of the Q matrix Qmat had all zeros. This will crash .Call('wrapalldmexpv_', ...)\nand therefore expokit_wrapalldmexpv_tvals() run with the inputprobs_for_fast=NULL option (producing a full Pmat),\nand therefore R.  Replacement value for 0:  check_for_0_rows=", check_for_0_rows, ".\n", sep=""))
 			}
 		}
 	}	
@@ -1524,7 +1524,7 @@ expokit_dgexpv_Qmat <- function(Qmat=NULL, t=2.1, inputprobs_for_fast=NULL, tran
 	if (is.null(matvec))
 	{
 		# Default Qmat
-		cat("\nWARNING: expokit_dgexpv_Qmat() was provided a Qmat with value NULL.  Example Qmat provided instead\n")
+		warning("expokit_dgexpv_Qmat() was provided a Qmat with value NULL.  Example Qmat provided instead")
 		matvec = matrix(c(-1.218, 0.504, 0.336, 0.378, 0.126, -0.882, 0.252, 0.504, 0.168,  0.504, -1.05, 0.378, 0.126, 0.672, 0.252, -1.05), nrow=4, byrow=TRUE)
 	}
 	# Check if t is blank
@@ -1575,7 +1575,7 @@ expokit_dgexpv_Qmat <- function(Qmat=NULL, t=2.1, inputprobs_for_fast=NULL, tran
 				diagonal_val = -1 * sum(newrowvals[-1])
 				matvec[rows_allzero_indices, rows_allzero_indices] = diagonal_val
 				
-				cat("\nWARNING: ", sum(rows_w_all_zeros_TF), " rows of the Q matrix Qmat had all zeros. This will crash .Call('wrapalldgexpv_', ...)\nand therefore expokit_wrapalldgexpv_tvals() run with the inputprobs_for_fast=NULL option (producing a full Pmat),\nand therefore R.  Replacement value for 0:  check_for_0_rows=", check_for_0_rows, ".\n", sep="")
+				warning(paste(sum(rows_w_all_zeros_TF), " rows of the Q matrix Qmat had all zeros. This will crash .Call('wrapalldgexpv_', ...)\nand therefore expokit_wrapalldgexpv_tvals() run with the inputprobs_for_fast=NULL option (producing a full Pmat),\nand therefore R.  Replacement value for 0:  check_for_0_rows=", check_for_0_rows, ".\n", sep=""))
 			}
 		}
 	}
@@ -2009,7 +2009,7 @@ expokit_wrapalldgexpv_tvals <- function(Qmat=NULL, tvals=c(2.1), inputprobs_for_
 				diagonal_val = -1 * sum(newrowvals[-1])
 				matvec[rows_allzero_indices, rows_allzero_indices] = diagonal_val
 				
-				cat("\nWARNING: ", sum(rows_w_all_zeros_TF), " rows of the Q matrix Qmat had all zeros. This will crash .Call('wrapalldgexpv_', ...)\nand therefore expokit_wrapalldgexpv_tvals() run with the inputprobs_for_fast=NULL option (producing a full Pmat),\nand therefore R.  Replacement value for 0:  check_for_0_rows=", check_for_0_rows, ".\n", sep="")
+				warning(paste(sum(rows_w_all_zeros_TF), " rows of the Q matrix Qmat had all zeros. This will crash .Call('wrapalldgexpv_', ...)\nand therefore expokit_wrapalldgexpv_tvals() run with the inputprobs_for_fast=NULL option (producing a full Pmat),\nand therefore R.  Replacement value for 0:  check_for_0_rows=", check_for_0_rows, ".\n", sep=""))
 			}
 		} 
 	}	
