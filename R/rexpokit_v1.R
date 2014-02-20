@@ -78,7 +78,7 @@
 #' 	}
 #' 
 expokit_dgpadm_Qmat <- function(Qmat=NULL, t=2.1, transpose_needed=TRUE)
-	{
+{
 	defaults = '
 	Qmat=NULL
 	t = 2.1
@@ -87,19 +87,17 @@ expokit_dgpadm_Qmat <- function(Qmat=NULL, t=2.1, transpose_needed=TRUE)
 	
 	# Check if Qmat is blank
 	if (is.null(Qmat))
-		{
+	{
 		# Default Qmat
 		cat("\nWARNING: expokit_dgpadm_Qmat() was provided a Qmat with value NULL.  Example Qmat provided instead\n")
 		Qmat = matrix(c(-1.218, 0.504, 0.336, 0.378, 0.126, -0.882, 0.252, 0.504, 0.168, 0.504, -1.05, 0.378, 0.126, 0.672, 0.252, -1.05), nrow=4, byrow=TRUE)
-		}
+	}
 	# Check if t is blank
 	if (is.null(t))
-		{
+	{
 		# Default Qmat
 		stop("\nSTOP ERROR: expokit_dgpadm_Qmat() was provided a t (time or times list) with value NULL.  \n")
-		}
-	
-
+	}
 	
 	# FOR DGPADM
 	# ideg = 
@@ -117,43 +115,17 @@ expokit_dgpadm_Qmat <- function(Qmat=NULL, t=2.1, transpose_needed=TRUE)
 	# Prepare input matrix
 	matvec = Qmat
 	if (transpose_needed == TRUE)
-		{
+	{
 		tmatvec = t(matvec)
 		H = as.numeric(tmatvec)
-		} else {
+	} else {
 		H = as.numeric(matvec)
-		}
+	}
 	
 	# "H(ldh,m)  : (input) argument matrix."
 	# (ldh = numrows and m is numcols, or something)
 	ldh = m
 	
-	# No tolin PADM
-	# tol or t?  should be t
-	# tol = as.double(1)
-	
-#	# lwsp = length of wsp, the workspace
-#	# "wsp(lwsp) : (workspace/output) lwsp .ge. 4*m*m+ideg+1."
-#	lwsp = as.integer(4*m*m+ideg+1)
-#	wsp = double(length=lwsp)
-#	
-#	# "ipiv(m)   : (workspace)"
-#	ipiv = integer(length=m)
-#	
-#	#  "iexph     : (output) number such that wsp(iexph) points to exp(tH)"
-#	#  "            i.e., exp(tH) is located at wsp(iexph ... iexph+m*m-1)"
-#	iexph = as.integer(0)
-#	
-#	# "ns        : (output) number of scaling-squaring used."
-#	ns = as.integer(0)
-#	
-#	# "iflag     : (output) exit flag."
-#	# "	*                      0 - no problem"
-#	# "	*                     <0 - problem"
-#	iflag = as.integer(0)
-	
-	# Run the function:
-#	res <- .C("wrapdgpadm_", as.integer(ideg), as.integer(m), as.double(t), as.double(H), as.integer(ldh), as.double(wsp), as.integer(lwsp), as.integer(ipiv), as.integer(iexph), as.integer(ns), as.integer(iflag))
 	if (!is.double(H))
 	  storage.mode(H) <- "double"
 	
@@ -167,13 +139,8 @@ expokit_dgpadm_Qmat <- function(Qmat=NULL, t=2.1, transpose_needed=TRUE)
 	output_Pmat = output[output_Pmat_is]
 	output_Pmat = matrix(output_Pmat, nrow=m, byrow=TRUE)
 	
-#	output = res[[6]]
-#	output_Pmat_is = seq(res[[9]], res[[9]]+m*m-1, by=1)
-#	output_Pmat = output[output_Pmat_is]
-#	output_Pmat = matrix(output_Pmat, nrow=m, byrow=TRUE)
-	
 	return(output_Pmat)
-	}
+}
 
 
 
@@ -260,7 +227,7 @@ expokit_dgpadm_Qmat <- function(Qmat=NULL, t=2.1, transpose_needed=TRUE)
 #' 	}
 #' 
 expokit_dmexpv_Qmat <- function(Qmat=NULL, t=2.1, inputprobs_for_fast=NULL, transpose_needed=TRUE, transform_to_coo_TF=TRUE, coo_n=NULL, anorm=NULL, check_for_0_rows=TRUE)
-	{
+{
 	defaults = '
 	Qmat=NULL
 	t = 2.1
@@ -277,23 +244,23 @@ expokit_dmexpv_Qmat <- function(Qmat=NULL, t=2.1, inputprobs_for_fast=NULL, tran
 	
 	# Check if Qmat is blank
 	if (is.null(matvec))
-		{
+	{
 		# Default Qmat
 		cat("\nWARNING: expokit_dmexpv_Qmat() was provided a Qmat with value NULL.  Example Qmat provided instead\n")
 		matvec = matrix(c(-1.218, 0.504, 0.336, 0.378, 0.126, -0.882, 0.252, 0.504, 0.168, 0.504, -1.05, 0.378, 0.126, 0.672, 0.252, -1.05), nrow=4, byrow=TRUE)
-		}
+	}
 	# Check if t is blank
 	if (is.null(t))
-		{
+	{
 		# Default Qmat
 		stop("\nSTOP ERROR: expokit_dmexpv_Qmat() was provided a t (time or times list) with value NULL.  \n")
-		}
+	}
 
 
 	# Zero rows will crash the FORTRAN wrapalldmexpv function, and
 	# therefore crash R.  This is annoying.
 	if (is.null(inputprobs_for_fast))
-		{ # Return the full Pmat (slow)
+	{ # Return the full Pmat (slow)
 		#######################################################
 		# Return the Pmat
 		#######################################################
@@ -301,7 +268,7 @@ expokit_dmexpv_Qmat <- function(Qmat=NULL, t=2.1, inputprobs_for_fast=NULL, tran
 		# Zero rows will crash the FORTRAN wrapalldmexpv function, and
 		# therefore crash R.  This is annoying.
 		if (check_for_0_rows != FALSE)
-			{
+		{
 			# If not false, check_for_0_rows is either TRUE or numeric
 
 			# Get T/F for rows with all zeros
@@ -309,21 +276,21 @@ expokit_dmexpv_Qmat <- function(Qmat=NULL, t=2.1, inputprobs_for_fast=NULL, tran
 			
 			# If all FALSE, do nothing
 			if (all(rows_w_all_zeros_TF == FALSE))
-				{
+			{
 				# Do nothing
 				pass = 1
-				} else {
+			} else {
 				# indices of TRUE
 				rows_allzero_indices = seq(1, length(rows_w_all_zeros_TF), 1)[rows_w_all_zeros_TF]
 
 				# Here, you have to input a small value for each zero
 				if (is.numeric(check_for_0_rows))
-					{
+				{
 					check_for_0_rows = check_for_0_rows
-					} else {
+				} else {
 					# 1e-15 appears to be the precision limit of the FORTRAN code
 					check_for_0_rows = 1e-15
-					}
+				}
 				# Input the given value into all zeros
 				newrowvals = rep(check_for_0_rows, ncol(matvec))
 				matvec[rows_allzero_indices, ] = newrowvals
@@ -331,15 +298,15 @@ expokit_dmexpv_Qmat <- function(Qmat=NULL, t=2.1, inputprobs_for_fast=NULL, tran
 				matvec[rows_allzero_indices, rows_allzero_indices] = diagonal_val
 				
 				cat("\nWARNING: ", sum(rows_w_all_zeros_TF), " rows of the Q matrix Qmat had all zeros. This will crash .Call('wrapalldmexpv_', ...)\nand therefore expokit_wrapalldmexpv_tvals() run with the inputprobs_for_fast=NULL option (producing a full Pmat),\nand therefore R.  Replacement value for 0:  check_for_0_rows=", check_for_0_rows, ".\n", sep="")
-				}
 			}
 		}
+	}
 		
 	
 	# Count the number of NON-zeros (nz)
 	# and input the matrix size
 	if (transform_to_coo_TF == TRUE)
-		{
+	{
 		# COO format
 		# http://en.wikipedia.org/wiki/Sparse_matrix#Coordinate_list_.28COO.29
 
@@ -352,7 +319,7 @@ expokit_dmexpv_Qmat <- function(Qmat=NULL, t=2.1, inputprobs_for_fast=NULL, tran
 		a   = double(length=nz)	
 		n=nrow(matvec)
 		
-		} else {
+	} else {
 		n = coo_n
 		# (And make a regular matrix from COO)
 
@@ -360,7 +327,7 @@ expokit_dmexpv_Qmat <- function(Qmat=NULL, t=2.1, inputprobs_for_fast=NULL, tran
 		# Assumes that coo-formatted matrix columns are
 		# ia, ja, a
 		nz  = sum(matvec[,"a"] != 0)
-		}
+	}
 
 	# ideg = degree of polynomial, 6 is usually considered sufficient
 	ideg = as.integer(6)
@@ -370,15 +337,15 @@ expokit_dmexpv_Qmat <- function(Qmat=NULL, t=2.1, inputprobs_for_fast=NULL, tran
 	
 	# v should have as many elements as n; first element = 1 (?)
 	if (is.null(inputprobs_for_fast))
-		{
+	{
 		# Input space-fillers, these get written over by wrapall
 		v=double(n)
 		v[1] = 1
 		# Input the input probabilities, these get used directly by myDMEXPV/myDGEXPV
-		} else {
+	} else {
 		v = double(n)
 		v = inputprobs_for_fast
-		}
+	}
 	
 	# w is the same length
 	w = double(length=n)
@@ -402,27 +369,27 @@ expokit_dmexpv_Qmat <- function(Qmat=NULL, t=2.1, inputprobs_for_fast=NULL, tran
 	
 	# Don't transform if already coo
 	if ((transform_to_coo_TF == TRUE) && (transpose_needed == TRUE))
-		{
+	{
 		tmatvec = t(matvec)
-		} else {
+	} else {
 		tmatvec = matvec
-		}
+	}
 	#rowSums(tmatvec)
 	#colSums(tmatvec)
 	
 	# This might (?) get slow with large matrices -- doesn't seem to
 	if ((exists("anorm") == FALSE) || is.null(anorm))
-		{
+	{
 		# Use the 1-norm or one-norm
 		if (transform_to_coo_TF==FALSE && transpose_needed==FALSE)
-			{
+		{
 			tmpQmat1 = coo2mat(matvec, n=coo_n)
 			tmpQmat2 = t(tmpQmat1)
 			anorm = as.numeric(norm(tmpQmat2, type="O"))
-			} else {
+		} else {
 			anorm = as.numeric(norm(matvec, type="O"))
-			}
 		}
+	}
 	
 	# The itrace flag, if set to 1, results in dmexpv printing some details of
 	# the function's run to screen.
@@ -437,11 +404,11 @@ expokit_dmexpv_Qmat <- function(Qmat=NULL, t=2.1, inputprobs_for_fast=NULL, tran
 	# a  = value of that cell
 	
 	if (transform_to_coo_TF == TRUE)
-		{		
+	{		
 		tmpmat_in_REXPOKIT_coo_fmt = mat2coo(tmatvec)
-		} else {
+	} else {
 		tmpmat_in_REXPOKIT_coo_fmt = matvec
-		}
+	}
 	# Either way, store the rows/columns in the input variables for FORTRAN
 	ia = tmpmat_in_REXPOKIT_coo_fmt[,"ia"]
 	ja = tmpmat_in_REXPOKIT_coo_fmt[,"ja"]
@@ -449,7 +416,7 @@ expokit_dmexpv_Qmat <- function(Qmat=NULL, t=2.1, inputprobs_for_fast=NULL, tran
 
 	# Run the wrapper function	
 	if (is.null(inputprobs_for_fast))
-		{
+	{
 		######################################
 		# Return the full Pmat (slow)
 		######################################
@@ -479,8 +446,8 @@ expokit_dmexpv_Qmat <- function(Qmat=NULL, t=2.1, inputprobs_for_fast=NULL, tran
 		w_output_probs = res2[[5]]
 		
 		return(w_output_probs)
-		}
 	}
+}
 
 
 
@@ -567,7 +534,7 @@ expokit_dmexpv_Qmat <- function(Qmat=NULL, t=2.1, inputprobs_for_fast=NULL, tran
 #' list_of_P_matrices_dmexpv
 #' 
 expokit_dmexpv_wrapper <- function(n, m, t, v, w, tol, anorm, wsp, lwsp, iwsp, liwsp, itrace, iflag, ia, ja, a, nz, res)
-	{
+{
 	res2 = NULL
 	
 	res2 <- .C("wrapalldmexpv_", as.integer(n), as.integer(m), as.double(t), as.double(v), as.double(w), as.double(tol), as.double(anorm), as.double(wsp), as.integer(lwsp), as.integer(iwsp), as.integer(liwsp), as.integer(itrace), as.integer(iflag), as.integer(ia), as.integer(ja), as.double(a), as.integer(nz), as.double(res))
@@ -575,7 +542,7 @@ expokit_dmexpv_wrapper <- function(n, m, t, v, w, tol, anorm, wsp, lwsp, iwsp, l
 	output_Pmat = matrix(res2[[18]], nrow=n, byrow=TRUE)
 	
 	return(output_Pmat)
-	}
+}
 
 
 
@@ -642,7 +609,7 @@ expokit_dmexpv_wrapper <- function(n, m, t, v, w, tol, anorm, wsp, lwsp, iwsp, l
 #' list_of_P_matrices_dmexpv
 #' 
 expokit_mydmexpv_wrapper <- function(n, m, t, v, w, tol, anorm, wsp, lwsp, iwsp, liwsp, itrace, iflag, ia, ja, a, nz)
-	{
+{
 	res2 = NULL
 	
 	# This must be mydmexpv_, not myDMEXPV_ !!!!
@@ -652,8 +619,8 @@ expokit_mydmexpv_wrapper <- function(n, m, t, v, w, tol, anorm, wsp, lwsp, iwsp,
 	w_output_probs = matrix(res2[[5]], ncol=n, byrow=TRUE)
 	
 	return(w_output_probs)
-	}
-	
+}
+
 
 
 #' EXPOKIT dgexpv wrapper function, return just output probs
@@ -718,7 +685,7 @@ expokit_mydmexpv_wrapper <- function(n, m, t, v, w, tol, anorm, wsp, lwsp, iwsp,
 #' list_of_P_matrices_dgexpv
 #' 
 expokit_mydgexpv_wrapper <- function(n, m, t, v, w, tol, anorm, wsp, lwsp, iwsp, liwsp, itrace, iflag, ia, ja, a, nz)
-	{
+{
 	res2 = NULL
 	
 	# This must be mydgexpv_, not mydgexpv_ !!!!
@@ -728,8 +695,8 @@ expokit_mydgexpv_wrapper <- function(n, m, t, v, w, tol, anorm, wsp, lwsp, iwsp,
 	w_output_probs = matrix(res2[[5]], ncol=n, byrow=TRUE)
 	
 	return(w_output_probs)
-	}
-	
+}
+
 
 
 #' Check if a row is all zeros
@@ -776,9 +743,9 @@ expokit_mydgexpv_wrapper <- function(n, m, t, v, w, tol, anorm, wsp, lwsp, iwsp,
 #' tvals=tvals, transpose_needed=TRUE)
 #' list_of_P_matrices_dgexpv
 row_allzero_TF <- function(tmprow)
-	{
+{
 	return(all(tmprow == 0))
-	}
+}
 
 #' Check if a Q matrix has rows with all zeros
 #'
@@ -824,9 +791,9 @@ row_allzero_TF <- function(tmprow)
 #' tvals=tvals, transpose_needed=TRUE)
 #' list_of_P_matrices_dgexpv
 findrows_w_all_zeros <- function(matvec)
-	{
+{
 	return(apply(X=matvec, MARGIN=1, FUN=row_allzero_TF))
-	}
+}
 
 
 
@@ -887,7 +854,7 @@ findrows_w_all_zeros <- function(matvec)
 #' list_of_P_matrices_dgexpv
 #' 
 expokit_wrapalldmexpv_tvals <- function(Qmat=NULL, tvals=c(2.1), inputprobs_for_fast=NULL, transpose_needed=TRUE, transform_to_coo_TF=TRUE, coo_n=NULL, force_list_if_1_tval=FALSE, check_for_0_rows=TRUE)
-	{
+{
 	defaults = '
 	Qmat=NULL
 	t = 2.1
@@ -903,25 +870,25 @@ expokit_wrapalldmexpv_tvals <- function(Qmat=NULL, tvals=c(2.1), inputprobs_for_
 	
 	# Check if Qmat is blank
 	if (is.null(Qmat))
-		{
+	{
 		# Default Qmat
 		warning("You supplied no matrix, so a default matrix is being used. Obviously you can't use this for anything real. YOU HAVE BEEN WARNED!!")
 		
 		Qmat = matrix(c(-1.218, 0.504, 0.336, 0.378, 0.126, -0.882, 0.252, 0.504, 0.168, 0.504, -1.05, 0.378, 0.126, 0.672, 0.252, -1.05), nrow=4, byrow=TRUE)
-		}
+	}
 	
 	if (is.null(tvals))
-		{
+	{
 		warning("You supplied no time values, so default time values are being used. Obviously you can't use this for anything real. YOU HAVE BEEN WARNED!!")
 		tvals = c(0.001, 0.005, 0.01, 0.05, 0.1, 0.5, 1, 2, 5, 14)
-		}
+	}
 
 	matvec = Qmat
 	
 	# Zero rows will crash the FORTRAN wrapalldmexpv function, and
 	# therefore crash R.  This is annoying.
 	if (is.null(inputprobs_for_fast))
-		{ # Return the full Pmat (slow)
+	{ # Return the full Pmat (slow)
 		#######################################################
 		# Return the Pmat
 		#######################################################
@@ -929,7 +896,7 @@ expokit_wrapalldmexpv_tvals <- function(Qmat=NULL, tvals=c(2.1), inputprobs_for_
 		# Zero rows will crash the FORTRAN wrapalldmexpv function, and
 		# therefore crash R.  This is annoying.
 		if (check_for_0_rows != FALSE)
-			{
+		{
 			# If not false, check_for_0_rows is either TRUE or numeric
 
 			# Get T/F for rows with all zeros
@@ -937,21 +904,21 @@ expokit_wrapalldmexpv_tvals <- function(Qmat=NULL, tvals=c(2.1), inputprobs_for_
 			
 			# If all FALSE, do nothing
 			if (all(rows_w_all_zeros_TF == FALSE))
-				{
+			{
 				# Do nothing
 				pass = 1
-				} else {
+			} else {
 				# indices of TRUE
 				rows_allzero_indices = seq(1, length(rows_w_all_zeros_TF), 1)[rows_w_all_zeros_TF]
 
 				# Here, you have to input a small value for each zero
 				if (is.numeric(check_for_0_rows))
-					{
+				{
 					check_for_0_rows = check_for_0_rows
-					} else {
+				} else {
 					# 1e-15 appears to be the precision limit of the FORTRAN code
 					check_for_0_rows = 1e-15
-					}
+				}
 				# Input the given value into all zeros
 				newrowvals = rep(check_for_0_rows, ncol(matvec))
 				matvec[rows_allzero_indices, ] = newrowvals
@@ -959,15 +926,15 @@ expokit_wrapalldmexpv_tvals <- function(Qmat=NULL, tvals=c(2.1), inputprobs_for_
 				matvec[rows_allzero_indices, rows_allzero_indices] = diagonal_val
 				
 				cat("\nWARNING: ", sum(rows_w_all_zeros_TF), " rows of the Q matrix Qmat had all zeros. This will crash .Call('wrapalldmexpv_', ...)\nand therefore expokit_wrapalldmexpv_tvals() run with the inputprobs_for_fast=NULL option (producing a full Pmat),\nand therefore R.  Replacement value for 0:  check_for_0_rows=", check_for_0_rows, ".\n", sep="")
-				}
 			}
-		}	
+		}
+	}	
 
 		
 	# Count the number of NON-zeros (nz)
 	# and input the matrix size
 	if (transform_to_coo_TF == TRUE)
-		{
+	{
 		# COO format
 		# http://en.wikipedia.org/wiki/Sparse_matrix#Coordinate_list_.28COO.29
 
@@ -979,7 +946,7 @@ expokit_wrapalldmexpv_tvals <- function(Qmat=NULL, tvals=c(2.1), inputprobs_for_
 		ja  = integer(length=nz)
 		a   = double(length=nz)	
 		n=nrow(matvec)
-		} else {
+	} else {
 		n = coo_n
 		# (And make a regular matrix from COO)
 
@@ -987,7 +954,7 @@ expokit_wrapalldmexpv_tvals <- function(Qmat=NULL, tvals=c(2.1), inputprobs_for_
 		# Assumes that coo-formatted matrix columns are
 		# ia, ja, a
 		nz  = sum(matvec[,"a"] != 0)
-		}
+	}
 	
 	
 
@@ -1000,15 +967,15 @@ expokit_wrapalldmexpv_tvals <- function(Qmat=NULL, tvals=c(2.1), inputprobs_for_
 	
 	# v should have as many elements as n; first element = 1 (?)
 	if (is.null(inputprobs_for_fast))
-		{
+	{
 		# Input space-fillers, these get written over by wrapall
 		v=double(n)
 		v[1] = 1
 		# Input the input probabilities, these get used directly by myDMEXPV/myDGEXPV
-		} else {
+	} else {
 		v = double(n)
 		v = inputprobs_for_fast
-		}
+	}
 	
 	# w is the same length
 	w = double(length=n)
@@ -1028,11 +995,11 @@ expokit_wrapalldmexpv_tvals <- function(Qmat=NULL, tvals=c(2.1), inputprobs_for_
 	
 
 	if ((transform_to_coo_TF == TRUE) && (transpose_needed == TRUE))
-		{
+	{
 		tmatvec = t(matvec)
 		#rowSums(tmatvec)
 		#colSums(tmatvec)
-		}
+	}
 
 
 	
@@ -1046,17 +1013,17 @@ expokit_wrapalldmexpv_tvals <- function(Qmat=NULL, tvals=c(2.1), inputprobs_for_
 	# 	"O", "o" or "1"
 	# 		specifies the one norm, (maximum absolute column sum);
 	if ((exists("anorm") == FALSE) || is.null(anorm))
-		{
+	{
 		# Use the 1-norm or one-norm
 		if (transform_to_coo_TF==FALSE && transpose_needed==FALSE)
-			{
+		{
 			tmpQmat1 = coo2mat(matvec, n=coo_n)
 			tmpQmat2 = t(tmpQmat1)
 			anorm = as.numeric(norm(tmpQmat2, type="O"))
-			} else {
+		} else {
 			anorm = as.numeric(norm(matvec, type="O"))
-			}
-		}	
+		}
+	}	
 	
 	itrace = 0
 	iflag = 0	
@@ -1065,11 +1032,11 @@ expokit_wrapalldmexpv_tvals <- function(Qmat=NULL, tvals=c(2.1), inputprobs_for_
 	#a = as.numeric(tmatvec)
 	#a = as.numeric(matvec)
 	if (transform_to_coo_TF == TRUE)
-		{		
+	{		
 		tmpmat_in_REXPOKIT_coo_fmt = mat2coo(tmatvec)
-		} else {
+	} else {
 		tmpmat_in_REXPOKIT_coo_fmt = matvec
-		}
+	}
 	# Either way, store the rows/columns in the input variables for FORTRAN
 	ia = tmpmat_in_REXPOKIT_coo_fmt[,"ia"]
 	ja = tmpmat_in_REXPOKIT_coo_fmt[,"ja"]
@@ -1080,7 +1047,7 @@ expokit_wrapalldmexpv_tvals <- function(Qmat=NULL, tvals=c(2.1), inputprobs_for_
 
 	# Run the wrapper function	
 	if (is.null(inputprobs_for_fast))
-		{ # Return the full Pmat (slow)
+	{ # Return the full Pmat (slow)
 		#######################################################
 		# Return the Pmat
 		#######################################################
@@ -1092,7 +1059,7 @@ expokit_wrapalldmexpv_tvals <- function(Qmat=NULL, tvals=c(2.1), inputprobs_for_
 		# If there is more than 1 t-value, or if the user desires a list even for a single
 		# t-value, return a list
 		if ((num_tvals > 1) || (force_list_if_1_tval==TRUE))
-			{
+		{
 
 			# Loop through the list of tvals, get the prob. matrix for each
 			# sadly, mapply() etc. crash when tried on expokit_dmexpv_wrapper
@@ -1112,7 +1079,7 @@ expokit_wrapalldmexpv_tvals <- function(Qmat=NULL, tvals=c(2.1), inputprobs_for_
 			
 			return(list_of_matrices_output)
 			
-			} else {
+		} else {
 			# If there is only 1 t value, just return 1 matrix
 			#res2 <- .C("wrapalldmexpv_", as.integer(n), as.integer(m), as.double(t), as.double(v), as.double(w), as.double(tol), as.double(anorm), as.double(wsp), as.integer(lwsp), as.integer(iwsp), as.integer(liwsp), as.integer(itrace), as.integer(iflag), as.integer(ia), as.integer(ja), as.double(a), as.integer(nz), as.double(res))
 			
@@ -1123,8 +1090,8 @@ expokit_wrapalldmexpv_tvals <- function(Qmat=NULL, tvals=c(2.1), inputprobs_for_
 			
 			#print(tmpoutmat)
 			return(output_Pmat)
-			}
-		} else {
+		}
+	} else {
 		#######################################################
 		# Return the output probabilities
 		#######################################################
@@ -1135,7 +1102,7 @@ expokit_wrapalldmexpv_tvals <- function(Qmat=NULL, tvals=c(2.1), inputprobs_for_
 		# If there is more than 1 t-value, or if the user desires a list even for a single
 		# t-value, return a list
 		if ((num_tvals > 1) || (force_list_if_1_tval==TRUE))
-			{
+		{
 			# Loop through the list of tvals, get the prob. matrix for each
 			# sadly, mapply() etc. crash when tried on expokit_dmexpv_wrapper
 			
@@ -1143,7 +1110,7 @@ expokit_wrapalldmexpv_tvals <- function(Qmat=NULL, tvals=c(2.1), inputprobs_for_
 			list_of_outprobs_output = matrix(NA, nrow=num_tvals, ncol=n)
 
 			for (i in 1:num_tvals)
-				{
+			{
 				t = tvals[i]
 			
 				# This must be mydmexpv_, not myDMEXPV_ !!!!
@@ -1155,8 +1122,8 @@ expokit_wrapalldmexpv_tvals <- function(Qmat=NULL, tvals=c(2.1), inputprobs_for_
 
 				list_of_outprobs_output[i,] = w_output_probs
 	
-				}
-			} else {
+			}
+		} else {
 			
 			# If there is only 1 t value, just return 1 matrix
 			#res2 <- .C("wrapalldmexpv_", as.integer(n), as.integer(m), as.double(t), as.double(v), as.double(w), as.double(tol), as.double(anorm), as.double(wsp), as.integer(lwsp), as.integer(iwsp), as.integer(liwsp), as.integer(itrace), as.integer(iflag), as.integer(ia), as.integer(ja), as.double(a), as.integer(nz), as.double(res))
@@ -1175,11 +1142,11 @@ expokit_wrapalldmexpv_tvals <- function(Qmat=NULL, tvals=c(2.1), inputprobs_for_
 			list_of_outprobs_output[1,] = w_output_probs
 	
 			return(w_output_probs)
-			}
+		}
 
 		return(list_of_matrices_output)
-		}
 	}
+}
 
 
 
@@ -1217,7 +1184,7 @@ expokit_wrapalldmexpv_tvals <- function(Qmat=NULL, tvals=c(2.1), inputprobs_for_
 #' tmpmat_in_REXPOKIT_coo_fmt
 #' 
 mat2coo <- function(tmpmat)
-	{
+{
 	defaults = '
 	tmpmat = matrix(c(-1.218, 0.504, 0.336, 0.378, 0.126, -0.882, 0.252, 0.504, 0.168, 0.504, -1.05, 0.378, 0.126, 0.672, 0.252, -1.05), nrow=4, byrow=TRUE)
 	'
@@ -1226,10 +1193,10 @@ mat2coo <- function(tmpmat)
 	numcols = ncol(tmpmat)
 
 	if (numrows != numcols)
-		{
+	{
 		stop("ERROR! mat2coo(tmpmat) says that in tmpmat, nrows != ncols")
 		return(NA)
-		}
+	}
 
 	numcells = numrows ^2
 	
@@ -1250,7 +1217,7 @@ mat2coo <- function(tmpmat)
 	# ja = cells_ij[,2][TF]	
 	# a = tmpa[TF]
 
-	require(SparseM)	# required for the as.matrix.coo function
+	#require(SparseM)	# required for the as.matrix.coo function
 	
 	# This produces a matrix in coo format
 	# (this is an S4 object)
@@ -1258,7 +1225,7 @@ mat2coo <- function(tmpmat)
 	tmpmat_in_REXPOKIT_coo_fmt = SparseM_coo_to_REXPOKIT_coo(tmpmat_in_SparseMcoo_fmt)
 	
 	return(tmpmat_in_REXPOKIT_coo_fmt)
-	}
+}
 
 
 
@@ -1298,7 +1265,7 @@ mat2coo <- function(tmpmat)
 #' tmpmat_in_REXPOKIT_coo_fmt
 #' 
 SparseM_coo_to_REXPOKIT_coo <- function(tmpmat_in_SparseMcoo_fmt)
-	{
+{
 	tmpcoo = tmpmat_in_SparseMcoo_fmt
 	
 	# We just need the 3 columns: i index, j index, and nonzero values
@@ -1308,7 +1275,7 @@ SparseM_coo_to_REXPOKIT_coo <- function(tmpmat_in_SparseMcoo_fmt)
 	colnames(tmpmat_in_REXPOKIT_coo_fmt) = c("ia", "ja", "a")
 	
 	return(tmpmat_in_REXPOKIT_coo_fmt)
-	}
+}
 
 
 
@@ -1350,7 +1317,7 @@ SparseM_coo_to_REXPOKIT_coo <- function(tmpmat_in_SparseMcoo_fmt)
 #' Qmat = coo2mat(coomat, n)
 #' print(Qmat)
 coo2mat <- function(coomat, n=max(max(coomat[,1]), max(coomat[,2])), transpose_needed=FALSE)
-	{
+{
 	defaults='
 	
 	'
@@ -1364,22 +1331,22 @@ coo2mat <- function(coomat, n=max(max(coomat[,1]), max(coomat[,2])), transpose_n
 	a = coomat[,3]
 	
 	if (transpose_needed == FALSE)
-		{
+	{
 		for (k in 1:length(ia))
-			{
+		{
 			#cat(ia[k], ja[k], a[k], "\n")
 			outmat[ia[k], ja[k]] = a[k]
-			}
-		} else {
+		}
+	} else {
 		for (k in 1:length(ia))
-			{
+		{
 			#cat(ia[k], ja[k], a[k], "\n")
 			outmat[ja[k], ia[k]] = a[k]
-			}		
-		}
+		}		
+	}
 	
 	return(outmat)
-	}
+}
 
 
 
@@ -1403,7 +1370,7 @@ coo2mat <- function(coomat, n=max(max(coomat[,1]), max(coomat[,2])), transpose_n
 #' tmpmat_in_REXPOKIT_coo_fmt
 #' 
 mat2coo_forloop <- function(tmpmat)
-	{
+{
 	# Number of non-zeros
 	nz = sum(tmpmat != 0)
 	
@@ -1414,21 +1381,21 @@ mat2coo_forloop <- function(tmpmat)
 	
 	count = 0
 	for (i in 1:nrow(tmpmat))
-		{
+	{
 		for (j in 1:ncol(tmpmat))
-			{
+		{
 			if (tmpmat[i,j] != 0)
-				{
+			{
 				count = count+1
 				ia[count] = i
 				ja[count] = j
 				a[count] = tmpmat[i,j]
-				}
 			}
-		}
+		} 
+	}
 	tmpmat_in_REXPOKIT_coo_fmt = cbind(ia, ja, a)
 	return(tmpmat_in_REXPOKIT_coo_fmt)
-	}
+}
 
 
 
@@ -1548,7 +1515,7 @@ mat2coo_forloop <- function(tmpmat)
 #' list_of_P_matrices_dgexpv
 #' 
 expokit_dgexpv_Qmat <- function(Qmat=NULL, t=2.1, inputprobs_for_fast=NULL, transpose_needed=TRUE, transform_to_coo_TF=TRUE, coo_n=NULL, anorm=NULL, check_for_0_rows=TRUE)
-	{
+{
 	defaults = '
 	Qmat=NULL
 	t = 2.1
@@ -1565,23 +1532,23 @@ expokit_dgexpv_Qmat <- function(Qmat=NULL, t=2.1, inputprobs_for_fast=NULL, tran
 	
 	# Check if Qmat is blank
 	if (is.null(matvec))
-		{
+	{
 		# Default Qmat
 		cat("\nWARNING: expokit_dgexpv_Qmat() was provided a Qmat with value NULL.  Example Qmat provided instead\n")
 		matvec = matrix(c(-1.218, 0.504, 0.336, 0.378, 0.126, -0.882, 0.252, 0.504, 0.168,  0.504, -1.05, 0.378, 0.126, 0.672, 0.252, -1.05), nrow=4, byrow=TRUE)
-		}
+	}
 	# Check if t is blank
 	if (is.null(t))
-		{
+	{
 		# Default Qmat
 		stop("\nSTOP ERROR: expokit_dgexpv_Qmat() was provided a t (time or times list) with value NULL.  \n")
-		}
+	}
 
 
 	# Zero rows will crash the FORTRAN wrapalldgexpv function, and
 	# therefore crash R.  This is annoying.
 	if (is.null(inputprobs_for_fast))
-		{ # Return the full Pmat (slow)
+	{ # Return the full Pmat (slow)
 		#######################################################
 		# Return the Pmat
 		#######################################################
@@ -1589,7 +1556,7 @@ expokit_dgexpv_Qmat <- function(Qmat=NULL, t=2.1, inputprobs_for_fast=NULL, tran
 		# Zero rows will crash the FORTRAN wrapalldgexpv function, and
 		# therefore crash R.  This is annoying.
 		if (check_for_0_rows != FALSE)
-			{
+		{
 			# If not false, check_for_0_rows is either TRUE or numeric
 
 			# Get T/F for rows with all zeros
@@ -1597,21 +1564,21 @@ expokit_dgexpv_Qmat <- function(Qmat=NULL, t=2.1, inputprobs_for_fast=NULL, tran
 			
 			# If all FALSE, do nothing
 			if (all(rows_w_all_zeros_TF == FALSE))
-				{
+			{
 				# Do nothing
 				pass = 1
-				} else {
+			} else {
 				# indices of TRUE
 				rows_allzero_indices = seq(1, length(rows_w_all_zeros_TF), 1)[rows_w_all_zeros_TF]
 
 				# Here, you have to input a small value for each zero
 				if (is.numeric(check_for_0_rows))
-					{
+				{
 					check_for_0_rows = check_for_0_rows
-					} else {
+				} else {
 					# 1e-15 appears to be the precision limit of the FORTRAN code
 					check_for_0_rows = 1e-15
-					}
+				}
 				# Input the given value into all zeros
 				newrowvals = rep(check_for_0_rows, ncol(matvec))
 				matvec[rows_allzero_indices, ] = newrowvals
@@ -1619,15 +1586,15 @@ expokit_dgexpv_Qmat <- function(Qmat=NULL, t=2.1, inputprobs_for_fast=NULL, tran
 				matvec[rows_allzero_indices, rows_allzero_indices] = diagonal_val
 				
 				cat("\nWARNING: ", sum(rows_w_all_zeros_TF), " rows of the Q matrix Qmat had all zeros. This will crash .Call('wrapalldgexpv_', ...)\nand therefore expokit_wrapalldgexpv_tvals() run with the inputprobs_for_fast=NULL option (producing a full Pmat),\nand therefore R.  Replacement value for 0:  check_for_0_rows=", check_for_0_rows, ".\n", sep="")
-				}
 			}
 		}
-		
+	}
+	
 	
 	# Count the number of NON-zeros (nz)
 	# and input the matrix size
 	if (transform_to_coo_TF == TRUE)
-		{
+	{
 		# COO format
 		# http://en.wikipedia.org/wiki/Sparse_matrix#Coordinate_list_.28COO.29
 
@@ -1640,7 +1607,7 @@ expokit_dgexpv_Qmat <- function(Qmat=NULL, t=2.1, inputprobs_for_fast=NULL, tran
 		a   = double(length=nz)	
 		n=nrow(matvec)
 		
-		} else {
+	} else {
 		n = coo_n
 		# (And make a regular matrix from COO)
 
@@ -1648,7 +1615,7 @@ expokit_dgexpv_Qmat <- function(Qmat=NULL, t=2.1, inputprobs_for_fast=NULL, tran
 		# Assumes that coo-formatted matrix columns are
 		# ia, ja, a
 		nz  = sum(matvec[,"a"] != 0)
-		}
+	}
 
 	# ideg = degree of polynomial, 6 is usually considered sufficient
 	ideg = as.integer(6)
@@ -1658,15 +1625,15 @@ expokit_dgexpv_Qmat <- function(Qmat=NULL, t=2.1, inputprobs_for_fast=NULL, tran
 	
 	# v should have as many elements as n; first element = 1 (?)
 	if (is.null(inputprobs_for_fast))
-		{
+	{
 		# Input space-fillers, these get written over by wrapall
 		v=double(n)
 		v[1] = 1
 		# Input the input probabilities, these get used directly by myDGEXPV/myDGEXPV
-		} else {
+	} else {
 		v = double(n)
 		v = inputprobs_for_fast
-		}
+	}
 	
 	# w is the same length
 	w = double(length=n)
@@ -1690,27 +1657,27 @@ expokit_dgexpv_Qmat <- function(Qmat=NULL, t=2.1, inputprobs_for_fast=NULL, tran
 	
 	# Don't transform if already coo
 	if ((transform_to_coo_TF == TRUE) && (transpose_needed == TRUE))
-		{
+	{
 		tmatvec = t(matvec)
-		} else {
+	} else {
 		tmatvec = matvec
-		}
+	}
 	#rowSums(tmatvec)
 	#colSums(tmatvec)
 	
 	# This might (?) get slow with large matrices -- doesn't seem to
 	if ((exists("anorm") == FALSE) || is.null(anorm))
-		{
+	{
 		# Use the 1-norm or one-norm
 		if (transform_to_coo_TF==FALSE && transpose_needed==FALSE)
-			{
+		{
 			tmpQmat1 = coo2mat(matvec, n=coo_n)
 			tmpQmat2 = t(tmpQmat1)
 			anorm = as.numeric(norm(tmpQmat2, type="O"))
-			} else {
+		} else {
 			anorm = as.numeric(norm(matvec, type="O"))
-			}
 		}
+	}
 	
 	# The itrace flag, if set to 1, results in dgexpv printing some details of
 	# the function's run to screen.
@@ -1725,11 +1692,11 @@ expokit_dgexpv_Qmat <- function(Qmat=NULL, t=2.1, inputprobs_for_fast=NULL, tran
 	# a  = value of that cell
 	
 	if (transform_to_coo_TF == TRUE)
-		{		
+	{		
 		tmpmat_in_REXPOKIT_coo_fmt = mat2coo(tmatvec)
-		} else {
+	} else {
 		tmpmat_in_REXPOKIT_coo_fmt = matvec
-		}
+	}
 	# Either way, store the rows/columns in the input variables for FORTRAN
 	ia = tmpmat_in_REXPOKIT_coo_fmt[,"ia"]
 	ja = tmpmat_in_REXPOKIT_coo_fmt[,"ja"]
@@ -1737,7 +1704,7 @@ expokit_dgexpv_Qmat <- function(Qmat=NULL, t=2.1, inputprobs_for_fast=NULL, tran
 
 	# Run the wrapper function	
 	if (is.null(inputprobs_for_fast))
-		{
+	{
 		######################################
 		# Return the full Pmat (slow)
 		######################################
@@ -1753,7 +1720,7 @@ expokit_dgexpv_Qmat <- function(Qmat=NULL, t=2.1, inputprobs_for_fast=NULL, tran
 		output_Pmat = matrix(res2[[18]], nrow=n, byrow=TRUE)
 		
 		return(output_Pmat)
-		} else {
+	} else {
 		######################################
 		# Instead of returning the full Pmat (slow), just return the output probabilities (fast)
 		######################################
@@ -1767,8 +1734,8 @@ expokit_dgexpv_Qmat <- function(Qmat=NULL, t=2.1, inputprobs_for_fast=NULL, tran
 		w_output_probs = res2[[5]]
 		
 		return(w_output_probs)
-		}
 	}
+}
 
 
 
@@ -1897,7 +1864,7 @@ expokit_dgexpv_Qmat <- function(Qmat=NULL, t=2.1, inputprobs_for_fast=NULL, tran
 #' print(tmpoutmat)
 #'
 expokit_dgexpv_wrapper <- function(n, m, timeval, v, w, tol, anorm, wsp, lwsp, iwsp, liwsp, itrace, iflag, ia, ja, a, nz, res)
-	{
+{
 	res2 = NULL
 	
 	res2 <- .C("wrapalldgexpv_", as.integer(n), as.integer(m), as.double(timeval), as.double(v), as.double(w), as.double(tol), as.double(anorm), as.double(wsp), as.integer(lwsp), as.integer(iwsp), as.integer(liwsp), as.integer(itrace), as.integer(iflag), as.integer(ia), as.integer(ja), as.double(a), as.integer(nz), as.double(res))
@@ -1905,7 +1872,7 @@ expokit_dgexpv_wrapper <- function(n, m, timeval, v, w, tol, anorm, wsp, lwsp, i
 	tmpoutmat = matrix(res2[[18]], nrow=n, byrow=TRUE)
 	
 	return(tmpoutmat)
-	}
+}
 
 	
 
@@ -1981,7 +1948,7 @@ expokit_dgexpv_wrapper <- function(n, m, timeval, v, w, tol, anorm, wsp, lwsp, i
 #' list_of_P_matrices_dgexpv
 #'
 expokit_wrapalldgexpv_tvals <- function(Qmat=NULL, tvals=c(2.1), inputprobs_for_fast=NULL, transpose_needed=TRUE, transform_to_coo_TF=TRUE, coo_n=NULL, force_list_if_1_tval=FALSE, check_for_0_rows=TRUE)
-	{
+{
 	defaults = '
 	Qmat=NULL
 	t = 2.1
@@ -1997,25 +1964,25 @@ expokit_wrapalldgexpv_tvals <- function(Qmat=NULL, tvals=c(2.1), inputprobs_for_
 	
 	# Check if Qmat is blank
 	if (is.null(Qmat))
-		{
+	{
 		# Default Qmat
 		warning("You supplied no matrix, so a default matrix is being used. Obviously you can't use this for anything real. YOU HAVE BEEN WARNED!!")
 		
 		Qmat = matrix(c(-1.218, 0.504, 0.336, 0.378, 0.126, -0.882, 0.252, 0.504, 0.168, 0.504, -1.05, 0.378, 0.126, 0.672, 0.252, -1.05), nrow=4, byrow=TRUE)
-		}
+	}
 	
 	if (is.null(tvals))
-		{
+	{
 		warning("You supplied no time values, so default time values are being used. Obviously you can't use this for anything real. YOU HAVE BEEN WARNED!!")
 		tvals = c(0.001, 0.005, 0.01, 0.05, 0.1, 0.5, 1, 2, 5, 14)
-		}
+	}
 
 	matvec = Qmat
 	
 	# Zero rows will crash the FORTRAN wrapalldgexpv function, and
 	# therefore crash R.  This is annoying.
 	if (is.null(inputprobs_for_fast))
-		{ # Return the full Pmat (slow)
+	{ # Return the full Pmat (slow)
 		#######################################################
 		# Return the Pmat
 		#######################################################
@@ -2023,7 +1990,7 @@ expokit_wrapalldgexpv_tvals <- function(Qmat=NULL, tvals=c(2.1), inputprobs_for_
 		# Zero rows will crash the FORTRAN wrapalldgexpv function, and
 		# therefore crash R.  This is annoying.
 		if (check_for_0_rows != FALSE)
-			{
+		{
 			# If not false, check_for_0_rows is either TRUE or numeric
 
 			# Get T/F for rows with all zeros
@@ -2031,21 +1998,21 @@ expokit_wrapalldgexpv_tvals <- function(Qmat=NULL, tvals=c(2.1), inputprobs_for_
 			
 			# If all FALSE, do nothing
 			if (all(rows_w_all_zeros_TF == FALSE))
-				{
+			{
 				# Do nothing
 				pass = 1
-				} else {
+			} else {
 				# indices of TRUE
 				rows_allzero_indices = seq(1, length(rows_w_all_zeros_TF), 1)[rows_w_all_zeros_TF]
 
 				# Here, you have to input a small value for each zero
 				if (is.numeric(check_for_0_rows))
-					{
+				{
 					check_for_0_rows = check_for_0_rows
-					} else {
+				} else {
 					# 1e-15 appears to be the precision limit of the FORTRAN code
 					check_for_0_rows = 1e-15
-					}
+				}
 				# Input the given value into all zeros
 				newrowvals = rep(check_for_0_rows, ncol(matvec))
 				matvec[rows_allzero_indices, ] = newrowvals
@@ -2053,15 +2020,15 @@ expokit_wrapalldgexpv_tvals <- function(Qmat=NULL, tvals=c(2.1), inputprobs_for_
 				matvec[rows_allzero_indices, rows_allzero_indices] = diagonal_val
 				
 				cat("\nWARNING: ", sum(rows_w_all_zeros_TF), " rows of the Q matrix Qmat had all zeros. This will crash .Call('wrapalldgexpv_', ...)\nand therefore expokit_wrapalldgexpv_tvals() run with the inputprobs_for_fast=NULL option (producing a full Pmat),\nand therefore R.  Replacement value for 0:  check_for_0_rows=", check_for_0_rows, ".\n", sep="")
-				}
 			}
-		}	
+		} 
+	}	
 
 		
 	# Count the number of NON-zeros (nz)
 	# and input the matrix size
 	if (transform_to_coo_TF == TRUE)
-		{
+	{
 		# COO format
 		# http://en.wikipedia.org/wiki/Sparse_matrix#Coordinate_list_.28COO.29
 
@@ -2073,7 +2040,7 @@ expokit_wrapalldgexpv_tvals <- function(Qmat=NULL, tvals=c(2.1), inputprobs_for_
 		ja  = integer(length=nz)
 		a   = double(length=nz)	
 		n=nrow(matvec)
-		} else {
+	} else {
 		n = coo_n
 		# (And make a regular matrix from COO)
 
@@ -2081,7 +2048,7 @@ expokit_wrapalldgexpv_tvals <- function(Qmat=NULL, tvals=c(2.1), inputprobs_for_
 		# Assumes that coo-formatted matrix columns are
 		# ia, ja, a
 		nz  = sum(matvec[,"a"] != 0)
-		}
+	}
 	
 	
 
@@ -2094,15 +2061,15 @@ expokit_wrapalldgexpv_tvals <- function(Qmat=NULL, tvals=c(2.1), inputprobs_for_
 	
 	# v should have as many elements as n; first element = 1 (?)
 	if (is.null(inputprobs_for_fast))
-		{
+	{
 		# Input space-fillers, these get written over by wrapall
 		v=double(n)
 		v[1] = 1
 		# Input the input probabilities, these get used directly by myDMEXPV/myDGEXPV
-		} else {
+	} else {
 		v = double(n)
 		v = inputprobs_for_fast
-		}
+	}
 	
 	# w is the same length
 	w = double(length=n)
@@ -2122,11 +2089,11 @@ expokit_wrapalldgexpv_tvals <- function(Qmat=NULL, tvals=c(2.1), inputprobs_for_
 	
 
 	if ((transform_to_coo_TF == TRUE) && (transpose_needed == TRUE))
-		{
+	{
 		tmatvec = t(matvec)
 		#rowSums(tmatvec)
 		#colSums(tmatvec)
-		}
+	}
 
 
 	
@@ -2140,17 +2107,17 @@ expokit_wrapalldgexpv_tvals <- function(Qmat=NULL, tvals=c(2.1), inputprobs_for_
 	# 	"O", "o" or "1"
 	# 		specifies the one norm, (maximum absolute column sum);
 	if ((exists("anorm") == FALSE) || is.null(anorm))
-		{
+	{
 		# Use the 1-norm or one-norm
 		if (transform_to_coo_TF==FALSE && transpose_needed==FALSE)
-			{
+		{
 			tmpQmat1 = coo2mat(matvec, n=coo_n)
 			tmpQmat2 = t(tmpQmat1)
 			anorm = as.numeric(norm(tmpQmat2, type="O"))
-			} else {
+		} else {
 			anorm = as.numeric(norm(matvec, type="O"))
-			}
-		}	
+		}
+	}	
 	
 	itrace = 0
 	iflag = 0	
@@ -2159,11 +2126,11 @@ expokit_wrapalldgexpv_tvals <- function(Qmat=NULL, tvals=c(2.1), inputprobs_for_
 	#a = as.numeric(tmatvec)
 	#a = as.numeric(matvec)
 	if (transform_to_coo_TF == TRUE)
-		{		
+	{		
 		tmpmat_in_REXPOKIT_coo_fmt = mat2coo(tmatvec)
-		} else {
+	} else {
 		tmpmat_in_REXPOKIT_coo_fmt = matvec
-		}
+	}
 	# Either way, store the rows/columns in the input variables for FORTRAN
 	ia = tmpmat_in_REXPOKIT_coo_fmt[,"ia"]
 	ja = tmpmat_in_REXPOKIT_coo_fmt[,"ja"]
@@ -2174,7 +2141,7 @@ expokit_wrapalldgexpv_tvals <- function(Qmat=NULL, tvals=c(2.1), inputprobs_for_
 
 	# Run the wrapper function	
 	if (is.null(inputprobs_for_fast))
-		{ # Return the full Pmat (slow)
+	{ # Return the full Pmat (slow)
 		#######################################################
 		# Return the Pmat
 		#######################################################
@@ -2186,7 +2153,7 @@ expokit_wrapalldgexpv_tvals <- function(Qmat=NULL, tvals=c(2.1), inputprobs_for_
 		# If there is more than 1 t-value, or if the user desires a list even for a single
 		# t-value, return a list
 		if ((num_tvals > 1) || (force_list_if_1_tval==TRUE))
-			{
+		{
 
 			# Loop through the list of tvals, get the prob. matrix for each
 			# sadly, mapply() etc. crash when tried on expokit_dgexpv_wrapper
@@ -2198,15 +2165,15 @@ expokit_wrapalldgexpv_tvals <- function(Qmat=NULL, tvals=c(2.1), inputprobs_for_
 			list_of_matrices_output = replicate(NA_matrix, n=num_tvals, simplify=FALSE)
 			
 			for (i in 1:num_tvals)
-				{
+			{
 				timeval = tvals[i]
 				list_of_matrices_output[[i]] = expokit_dgexpv_wrapper(n, m, timeval, v, w, tol, anorm, wsp, lwsp, iwsp, liwsp, itrace, iflag, ia, ja, a, nz, res)
 	
-				} # end forloop
+			} # end forloop
 			
 			return(list_of_matrices_output)
 			
-			} else {
+		} else {
 			# If there is only 1 t value, just return 1 matrix
 			#res2 <- .C("wrapalldgexpv_", as.integer(n), as.integer(m), as.double(t), as.double(v), as.double(w), as.double(tol), as.double(anorm), as.double(wsp), as.integer(lwsp), as.integer(iwsp), as.integer(liwsp), as.integer(itrace), as.integer(iflag), as.integer(ia), as.integer(ja), as.double(a), as.integer(nz), as.double(res))
 			
@@ -2217,8 +2184,8 @@ expokit_wrapalldgexpv_tvals <- function(Qmat=NULL, tvals=c(2.1), inputprobs_for_
 			
 			#print(tmpoutmat)
 			return(output_Pmat)
-			}
-		} else {
+		}
+	} else {
 		#######################################################
 		# Return the output probabilities
 		#######################################################
@@ -2229,7 +2196,7 @@ expokit_wrapalldgexpv_tvals <- function(Qmat=NULL, tvals=c(2.1), inputprobs_for_
 		# If there is more than 1 t-value, or if the user desires a list even for a single
 		# t-value, return a list
 		if ((num_tvals > 1) || (force_list_if_1_tval==TRUE))
-			{
+		{
 			# Loop through the list of tvals, get the prob. matrix for each
 			# sadly, mapply() etc. crash when tried on expokit_dgexpv_wrapper
 			
@@ -2237,7 +2204,7 @@ expokit_wrapalldgexpv_tvals <- function(Qmat=NULL, tvals=c(2.1), inputprobs_for_
 			list_of_outprobs_output = matrix(NA, nrow=num_tvals, ncol=n)
 
 			for (i in 1:num_tvals)
-				{
+			{
 				t = tvals[i]
 			
 				# This must be mydgexpv_, not myDGEXPV_ !!!!
@@ -2249,8 +2216,8 @@ expokit_wrapalldgexpv_tvals <- function(Qmat=NULL, tvals=c(2.1), inputprobs_for_
 
 				list_of_outprobs_output[i,] = w_output_probs
 	
-				}
-			} else {
+			}
+		} else {
 			
 			# If there is only 1 t value, just return 1 matrix
 			#res2 <- .C("wrapalldgexpv_", as.integer(n), as.integer(m), as.double(t), as.double(v), as.double(w), as.double(tol), as.double(anorm), as.double(wsp), as.integer(lwsp), as.integer(iwsp), as.integer(liwsp), as.integer(itrace), as.integer(iflag), as.integer(ia), as.integer(ja), as.double(a), as.integer(nz), as.double(res))
@@ -2269,8 +2236,8 @@ expokit_wrapalldgexpv_tvals <- function(Qmat=NULL, tvals=c(2.1), inputprobs_for_
 			list_of_outprobs_output[1,] = w_output_probs
 	
 			return(w_output_probs)
-			}
+		}
 
 		return(list_of_matrices_output)
-		}
 	}
+}

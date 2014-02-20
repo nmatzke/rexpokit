@@ -10,11 +10,11 @@ EXPOKIT_OBJS = \
     expokit/blas_mod.o \
     expokit/clock.o \
     expokit/mataid.o \
-    expokit/my_expokit.o
+    expokit/my_expokit.o \
+    expokit/my_matexp.o
 
 R_OBJS = \
-    wrappers.o \
-    expokit_wrappers.o 
+    wrappers.o
 
 
 OBJECTS = $(R_OBJS) $(EXPOKIT_OBJS)
