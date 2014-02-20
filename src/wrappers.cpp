@@ -20,10 +20,59 @@ SEXP R_dgpadm(SEXP ideg, SEXP m_, SEXP t, SEXP H, SEXP ldh)
   
   dgpadm_(INTEGER(ideg), &m, REAL(t), REAL(H), INTEGER(ldh), REAL(wsp), &lwsp, INTEGER(ipiv), INTEGER(iexph), &ns, &iflag);
   
+  //FIXME you should really be checking the iflag return...
+  
   ret["wsp"] = wsp; 
   ret["ind"] = iexph;
   
   return ret;
 }
+
+
+
+SEXP R_dmexpv(SEXP n_, SEXP m, SEXP t, SEXP v, SEXP tol, 
+  SEXP anorm, SEXP wsp, SEXP lwsp, SEXP iwsp, SEXP liwsp,
+  SEXP ia, SEXP ja, SEXP a, SEXP nz)
+{
+  int n = INTEGER(n_)[0];
+  int iflag = 0, itrace = 0;
+  Rcpp::NumericVector res(n*n);
+  Rcpp::NumericVector w(n);
+  
+  Rcpp::List ret; 
+  
+  PROTECT(lwsp);
+  PROTECT(liwsp);
+  PROTECT(iwsp);
+  PROTECT(tol);
+  PROTECT(anorm);
+  PROTECT(v);
+  PROTECT(wsp);
+  
+  wrapalldmexpv_(&n, INTEGER(m), REAL(t), REAL(v), REAL(w), 
+    REAL(tol), REAL(anorm), REAL(wsp), INTEGER(lwsp), INTEGER(iwsp), 
+    INTEGER(liwsp), &itrace, &iflag, INTEGER(ia), 
+    INTEGER(ja), REAL(a), INTEGER(nz), REAL(res));
+  
+  ret["res"] = res; 
+  ret["w"] = w;
+  
+  
+  UNPROTECT(8);
+  
+  return ret;
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 }

@@ -348,7 +348,6 @@ expokit_dmexpv_Qmat <- function(Qmat=NULL, t=2.1, inputprobs_for_fast=NULL, tran
 	}
 	
 	# w is the same length
-	w = double(length=n)
 	tol=as.numeric(0.01)
 	
 	# lwsp = length of wsp
@@ -391,11 +390,6 @@ expokit_dmexpv_Qmat <- function(Qmat=NULL, t=2.1, inputprobs_for_fast=NULL, tran
 		}
 	}
 	
-	# The itrace flag, if set to 1, results in dmexpv printing some details of
-	# the function's run to screen.
-	itrace = 0
-	iflag = 0	
-	
 	# Make the input COO matrix
 	# COO = coordinate list format, useful for sparse matrices with lots of zeros:
 	# http://en.wikipedia.org/wiki/Sparse_matrix#Coordinate_list_.28COO.29
@@ -415,35 +409,31 @@ expokit_dmexpv_Qmat <- function(Qmat=NULL, t=2.1, inputprobs_for_fast=NULL, tran
 	a = tmpmat_in_REXPOKIT_coo_fmt[,"a"]
 
 	# Run the wrapper function	
+	ret <- .Call("R_dmexpv", 
+		           as.integer(n), as.integer(m), as.double(t), 
+		           as.double(v), as.double(tol), 
+		           as.double(anorm), as.double(wsp), as.integer(lwsp), 
+		           as.integer(iwsp), as.integer(liwsp), 
+		           as.integer(ia), as.integer(ja), 
+		           as.double(a), as.integer(nz),
+		           PACKAGE="rexpokit")
+	
+	# Return the full Pmat (slow)
 	if (is.null(inputprobs_for_fast))
 	{
-		######################################
-		# Return the full Pmat (slow)
-		######################################
-		
-		# Create the space for res (the returned Pmat)
-		res = double(length=n*n)
-		
-		res2 <- .C("wrapalldmexpv_", as.integer(n), as.integer(m), as.double(t), as.double(v), as.double(w), as.double(tol), as.double(anorm), as.double(wsp), as.integer(lwsp), as.integer(iwsp), as.integer(liwsp), as.integer(itrace), as.integer(iflag), as.integer(ia), as.integer(ja), as.double(a), as.integer(nz), as.double(res))
-	
-		# wrapalldmexpv_ returns all kinds of stuff, list item 18 is the P matrix
 		# However, this may be an inefficient use of the dmexpv sparse matrix capabilities (Hansen)
 		# Try mydmexpv_ to just get the ancestral probabilities (w, res2[[5]])
-		output_Pmat = matrix(res2[[18]], nrow=n, byrow=TRUE)
+		output_Pmat = matrix(ret$res, nrow=n, byrow=TRUE)
 		
 		return(output_Pmat)
-		} else {
-		######################################
-		# Instead of returning the full Pmat (slow), just return the output probabilities (fast)
-		######################################
+	} else {
+	  # Instead of returning the full Pmat (slow), just return the output probabilities (fast)
 		
 		# Be sure to input the input probabilities
 		v = inputprobs_for_fast
 		
-		res2 <- .C("mydmexpv_", as.integer(n), as.integer(m), as.double(t), as.double(v), as.double(w), as.double(tol), as.double(anorm), as.double(wsp), as.integer(lwsp), as.integer(iwsp), as.integer(liwsp), as.integer(itrace), as.integer(iflag), as.integer(ia), as.integer(ja), as.double(a), as.integer(nz))
-		
 		# w, list item #5, contains the output probabilities
-		w_output_probs = res2[[5]]
+		w_output_probs = ret$w
 		
 		return(w_output_probs)
 	}
