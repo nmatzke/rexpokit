@@ -1,5 +1,14 @@
 #!/bin/sh
 
+### Check validity using default matrix
 Rscript -e "source('tester.r');test(x, 'expokit_dgpadm_Qmat')"
 Rscript -e "source('tester.r');test(x, 'expokit_dmexpv_Qmat')"
+Rscript -e "source('tester.r');test(x, 'expokit_wrapalldmexpv_tvals')"
+
+echo "\n"
+
+### Benchmark with some random matrix
+Rscript -e "source('tester.r');test(x, 'expokit_dgpadm_Qmat', TRUE)"
+Rscript -e "source('tester.r');test(x, 'expokit_dmexpv_Qmat', TRUE)"
+Rscript -e "source('tester.r');test(x, 'expokit_wrapalldmexpv_tvals', TRUE)"
 

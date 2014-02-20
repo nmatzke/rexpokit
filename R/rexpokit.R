@@ -462,328 +462,10 @@ expokit_dmexpv_Qmat <- function(Qmat=NULL, t=2.1, inputprobs_for_fast=NULL, tran
 
 
 
-#' EXPOKIT dmexpv wrapper function
-#'
-#' This function wraps the .C call to EXPOKIT for the dmexpv function.  Only the output probability
-#' matrix is returned.
-#'
-#' @param n number of rows in Q matrix
-#' @param m n-1
-#' @param t the value to exponentiate the rate matrix by (often e.g. a time value)
-#' @param v variable to store some results in; should have n elements (and perhaps start with 1)
-#' @param w same length as v
-#' @param tol tolerance for approximations; usually set to 0.01
-#' @param anorm the norm of the Q matrix
-#' @param lwsp length of workspace (wsp); for dmexpv, lwsp=n*(m+2)+5*(m+2)^2+ideg+1
-#' @param wsp workspace to store some results in; should be a double with lwsp elements
-#' @param liwsp length of integer workspace; for dmexpv, liwsp=m+2
-#' @param iwsp integer workspace
-#' @param itrace option, set to 0
-#' @param iflag option, set to 0
-#' @param ia i indices of Qmat nonzero values
-#' @param ja j indices of Qmat nonzero values
-#' @param a nonzero values of Qmat (ia, ja, a are columns of a COO-formatted Q matrix)
-#' @param nz number of non-zeros in Qmat
-#' @param res space for output probability matrix (n x n)
-#'
-#' EXPOKIT needs the input matrix to be transposed compared to normal.
-#' COO format is required for EXPOKIT.
-#' @return \code{tmpoutmat} the output matrix for the (first) input t-value
-#' @seealso \code{\link{expokit_dmexpv_Qmat}}
-#' @seealso \code{\link{expokit_wrapalldmexpv_tvals}}
-#' @export
-#' @author Nicholas J. Matzke \email{matzke@@berkeley.edu}
-#' @examples
-#' # Make a square instantaneous rate matrix (Q matrix)
-#' # This matrix is taken from Peter Foster's (2001) "The Idiot's Guide
-#' # to the Zen of Likelihood in a Nutshell in Seven Days for Dummies,
-#' # Unleashed" at:
-#' # \url{http://www.bioinf.org/molsys/data/idiots.pdf}
-#' #
-#' # The Q matrix includes the stationary base freqencies, which Pmat 
-#' # converges to as t becomes large.
-#' Qmat = matrix(c(-1.218, 0.504, 0.336, 0.378, 0.126, -0.882, 0.252, 0.504, 0.168, 
-#' 0.504, -1.05, 0.378, 0.126, 0.672, 0.252, -1.05), nrow=4, byrow=TRUE)
-#' 
-#' # Make a series of t values
-#' tvals = c(0.001, 0.005, 0.01, 0.05, 0.1, 0.5, 1, 2, 5, 14)
-#' 
-#' # DMEXPV and DGEXPV are designed for large, sparse Q matrices (sparse = lots of zeros).
-#' # DMEXPV is specifically designed for Markov chains and so may be slower, but more accurate.
-#' 
-#' # DMEXPV, single t-value
-#' expokit_wrapalldmexpv_tvals(Qmat=Qmat, tvals=tvals[1], transpose_needed=TRUE)
-#' expokit_wrapalldmexpv_tvals(Qmat=Qmat, tvals=2)
-#' 
-#' # This function runs a for-loop itself (sadly, we could not get mapply() to work
-#' # on a function that calls dmexpv/dgexpv), returning a list of probability matrices.
-#' 
-#' # DMEXPV functions
-#' list_of_P_matrices_dmexpv = expokit_wrapalldmexpv_tvals(Qmat=Qmat, 
-#' tvals=tvals, transpose_needed=TRUE)
-#' list_of_P_matrices_dmexpv
-#' 
-expokit_dmexpv_wrapper <- function(n, m, t, v, w, tol, anorm, wsp, lwsp, iwsp, liwsp, itrace, iflag, ia, ja, a, nz, res)
-{
-	res2 = NULL
-	
-	res2 <- .C("wrapalldmexpv_", as.integer(n), as.integer(m), as.double(t), as.double(v), as.double(w), as.double(tol), as.double(anorm), as.double(wsp), as.integer(lwsp), as.integer(iwsp), as.integer(liwsp), as.integer(itrace), as.integer(iflag), as.integer(ia), as.integer(ja), as.double(a), as.integer(nz), as.double(res))
-	
-	output_Pmat = matrix(res2[[18]], nrow=n, byrow=TRUE)
-	
-	return(output_Pmat)
-}
 
 
 
 
-#' EXPOKIT dmexpv wrapper function, return just output probs
-#'
-#' This function wraps the .C call to EXPOKIT for the dmexpv function.  Only the output probabilities
-#' not the Pmat probability matrix, are returned.
-#'
-#' @param n number of rows in Q matrix
-#' @param m n-1
-#' @param t the value to exponentiate the rate matrix by (often e.g. a time value)
-#' @param v variable to store some results in; should have n elements (and perhaps start with 1)
-#' @param w same length as v
-#' @param tol tolerance for approximations; usually set to 0.01
-#' @param anorm the norm of the Q matrix
-#' @param lwsp length of workspace (wsp); for dmexpv, lwsp=n*(m+2)+5*(m+2)^2+ideg+1
-#' @param wsp workspace to store some results in; should be a double with lwsp elements
-#' @param liwsp length of integer workspace; for dmexpv, liwsp=m+2
-#' @param iwsp integer workspace
-#' @param itrace option, set to 0
-#' @param iflag option, set to 0
-#' @param ia i indices of Qmat nonzero values
-#' @param ja j indices of Qmat nonzero values
-#' @param a nonzero values of Qmat (ia, ja, a are columns of a COO-formatted Q matrix)
-#' @param nz number of non-zeros in Qmat
-#'
-#' EXPOKIT needs the input matrix to be transposed compared to normal.
-#' COO format is required for EXPOKIT.
-#' @return \code{w_output_probs} the output probabilities (= \code{myDMEXPV} variable \code{w}, or the fifth output
-#' in the output from .Call("mydmexpv_", ...), given the (first) input t-value.
-#' @seealso \code{\link{expokit_dmexpv_Qmat}}
-#' @seealso \code{\link{expokit_wrapalldmexpv_tvals}}
-#' @export
-#' @author Nicholas J. Matzke \email{matzke@@berkeley.edu}
-#' @examples
-#' # Make a square instantaneous rate matrix (Q matrix)
-#' # This matrix is taken from Peter Foster's (2001) "The Idiot's Guide
-#' # to the Zen of Likelihood in a Nutshell in Seven Days for Dummies,
-#' # Unleashed" at:
-#' # \url{http://www.bioinf.org/molsys/data/idiots.pdf}
-#' #
-#' # The Q matrix includes the stationary base freqencies, which Pmat 
-#' # converges to as t becomes large.
-#' Qmat = matrix(c(-1.218, 0.504, 0.336, 0.378, 0.126, -0.882, 0.252, 0.504, 0.168, 
-#' 0.504, -1.05, 0.378, 0.126, 0.672, 0.252, -1.05), nrow=4, byrow=TRUE)
-#' 
-#' # Make a series of t values
-#' tvals = c(0.001, 0.005, 0.01, 0.05, 0.1, 0.5, 1, 2, 5, 14)
-#' 
-#' # DMEXPV and DGEXPV are designed for large, sparse Q matrices (sparse = lots of zeros).
-#' # DMEXPV is specifically designed for Markov chains and so may be slower, but more accurate.
-#' 
-#' # DMEXPV, single t-value
-#' expokit_wrapalldmexpv_tvals(Qmat=Qmat, tvals=tvals[1], transpose_needed=TRUE)
-#' expokit_wrapalldmexpv_tvals(Qmat=Qmat, tvals=2)
-#' 
-#' # This function runs a for-loop itself (sadly, we could not get mapply() to work
-#' # on a function that calls dmexpv/dgexpv), returning a list of probability matrices.
-#' 
-#' # DMEXPV functions
-#' list_of_P_matrices_dmexpv = expokit_wrapalldmexpv_tvals(Qmat=Qmat, 
-#' tvals=tvals, transpose_needed=TRUE)
-#' list_of_P_matrices_dmexpv
-#' 
-expokit_mydmexpv_wrapper <- function(n, m, t, v, w, tol, anorm, wsp, lwsp, iwsp, liwsp, itrace, iflag, ia, ja, a, nz)
-{
-	res2 = NULL
-	
-	# This must be mydmexpv_, not myDMEXPV_ !!!!
-	
-	res2 <- .C("mydmexpv_", as.integer(n), as.integer(m), as.double(t), as.double(v), as.double(w), as.double(tol), as.double(anorm), as.double(wsp), as.integer(lwsp), as.integer(iwsp), as.integer(liwsp), as.integer(itrace), as.integer(iflag), as.integer(ia), as.integer(ja), as.double(a), as.integer(nz))
-	
-	w_output_probs = matrix(res2[[5]], ncol=n, byrow=TRUE)
-	
-	return(w_output_probs)
-}
-
-
-
-#' EXPOKIT dgexpv wrapper function, return just output probs
-#'
-#' This function wraps the .C call to EXPOKIT for the dgexpv function.  Only the output probabilities
-#' not the Pmat probability matrix, are returned.
-#'
-#' @param n number of rows in Q matrix
-#' @param m n-1
-#' @param t the value to exponentiate the rate matrix by (often e.g. a time value)
-#' @param v variable to store some results in; should have n elements (and perhaps start with 1)
-#' @param w same length as v
-#' @param tol tolerance for approximations; usually set to 0.01
-#' @param anorm the norm of the Q matrix
-#' @param lwsp length of workspace (wsp); for dgexpv, lwsp=n*(m+2)+5*(m+2)^2+ideg+1
-#' @param wsp workspace to store some results in; should be a double with lwsp elements
-#' @param liwsp length of integer workspace; for dgexpv, liwsp=m+2
-#' @param iwsp integer workspace
-#' @param itrace option, set to 0
-#' @param iflag option, set to 0
-#' @param ia i indices of Qmat nonzero values
-#' @param ja j indices of Qmat nonzero values
-#' @param a nonzero values of Qmat (ia, ja, a are columns of a COO-formatted Q matrix)
-#' @param nz number of non-zeros in Qmat
-#'
-#' EXPOKIT needs the input matrix to be transposed compared to normal.
-#' COO format is required for EXPOKIT.
-#' @return \code{w_output_probs} the output probabilities (= \code{myDGEXPV} variable \code{w}, or the fifth output
-#' in the output from .Call("mydgexpv_", ...), given the (first) input t-value.
-#' @seealso \code{\link{expokit_dgexpv_Qmat}}
-#' @seealso \code{\link{expokit_wrapalldgexpv_tvals}}
-#' @export
-#' @author Nicholas J. Matzke \email{matzke@@berkeley.edu}
-#' @examples
-#' # Make a square instantaneous rate matrix (Q matrix)
-#' # This matrix is taken from Peter Foster's (2001) "The Idiot's Guide
-#' # to the Zen of Likelihood in a Nutshell in Seven Days for Dummies,
-#' # Unleashed" at:
-#' # \url{http://www.bioinf.org/molsys/data/idiots.pdf}
-#' #
-#' # The Q matrix includes the stationary base freqencies, which Pmat 
-#' # converges to as t becomes large.
-#' Qmat = matrix(c(-1.218, 0.504, 0.336, 0.378, 0.126, -0.882, 0.252, 0.504, 0.168, 
-#' 0.504, -1.05, 0.378, 0.126, 0.672, 0.252, -1.05), nrow=4, byrow=TRUE)
-#' 
-#' # Make a series of t values
-#' tvals = c(0.001, 0.005, 0.01, 0.05, 0.1, 0.5, 1, 2, 5, 14)
-#' 
-#' # dgexpv and DGEXPV are designed for large, sparse Q matrices (sparse = lots of zeros).
-#' # dgexpv is specifically designed for Markov chains and so may be slower, but more accurate.
-#' 
-#' # dgexpv, single t-value
-#' expokit_wrapalldgexpv_tvals(Qmat=Qmat, tvals=tvals[1], transpose_needed=TRUE)
-#' expokit_wrapalldgexpv_tvals(Qmat=Qmat, tvals=2)
-#' 
-#' # This function runs a for-loop itself (sadly, we could not get mapply() to work
-#' # on a function that calls dgexpv/dgexpv), returning a list of probability matrices.
-#' 
-#' # dgexpv functions
-#' list_of_P_matrices_dgexpv = expokit_wrapalldgexpv_tvals(Qmat=Qmat, 
-#' tvals=tvals, transpose_needed=TRUE)
-#' list_of_P_matrices_dgexpv
-#' 
-expokit_mydgexpv_wrapper <- function(n, m, t, v, w, tol, anorm, wsp, lwsp, iwsp, liwsp, itrace, iflag, ia, ja, a, nz)
-{
-	res2 = NULL
-	
-	# This must be mydgexpv_, not mydgexpv_ !!!!
-	
-	res2 <- .C("mydgexpv_", as.integer(n), as.integer(m), as.double(t), as.double(v), as.double(w), as.double(tol), as.double(anorm), as.double(wsp), as.integer(lwsp), as.integer(iwsp), as.integer(liwsp), as.integer(itrace), as.integer(iflag), as.integer(ia), as.integer(ja), as.double(a), as.integer(nz))
-	
-	w_output_probs = matrix(res2[[5]], ncol=n, byrow=TRUE)
-	
-	return(w_output_probs)
-}
-
-
-
-#' Check if a row is all zeros
-#'
-#' Q matrices with all-zero rows will crash .Call(wrapalldmexpv_, ...) and .Call(wrapalldgexpv_, ...),
-#' and therefore will crash expokit_wrapalldmexpv_tvals() and expokit_wrapalldgexpv_tvals() when 
-#' these are set (the default) to return the full P matrix.  These functions work fine with
-#' zero rows if \code{inputprobs_for_fast} is supplied, meaning that only the output probabilities
-#' of each state are returned.
-#'
-#' @param tmprow A row of a Q transition matrix
-#' @return \code{TRUE} if tmprow is all zeros, FALSE if not.
-#' @seealso \code{\link{expokit_wrapalldmexpv_tvals}}
-#' @seealso \code{\link{expokit_wrapalldgexpv_tvals}}
-#' @export
-#' @author Nicholas J. Matzke \email{matzke@@berkeley.edu}
-#' @examples
-#' # Make a square instantaneous rate matrix (Q matrix)
-#' # This matrix is taken from Peter Foster's (2001) "The Idiot's Guide
-#' # to the Zen of Likelihood in a Nutshell in Seven Days for Dummies,
-#' # Unleashed" at:
-#' # \url{http://www.bioinf.org/molsys/data/idiots.pdf}
-#' #
-#' # The Q matrix includes the stationary base freqencies, which Pmat 
-#' # converges to as t becomes large.
-#' Qmat = matrix(c(-1.218, 0.504, 0.336, 0.378, 0.126, -0.882, 0.252, 0.504, 0.168, 
-#' 0.504, -1.05, 0.378, 0.126, 0.672, 0.252, -1.05), nrow=4, byrow=TRUE)
-#' 
-#' # Make a series of t values
-#' tvals = c(0.001, 0.005, 0.01, 0.05, 0.1, 0.5, 1, 2, 5, 14)
-#' 
-#' # DMEXPV and DGEXPV are designed for large, sparse Q matrices (sparse = lots of zeros).
-#' # DMEXPV is specifically designed for Markov chains and so may be slower, but more accurate.
-#' 
-#' # DGEXPV, single t-value
-#' expokit_wrapalldgexpv_tvals(Qmat=Qmat, tvals=tvals[1], transpose_needed=TRUE)
-#' expokit_wrapalldgexpv_tvals(Qmat=Qmat, tvals=2)
-#' 
-#' # This function runs the for-loop itself (sadly, we could not get mapply() to work
-#' # on a function that calls dmexpv/dgexpv), returning a list of probability matrices.
-#' 
-#' # DGEXPV functions
-#' list_of_P_matrices_dgexpv = expokit_wrapalldgexpv_tvals(Qmat=Qmat, 
-#' tvals=tvals, transpose_needed=TRUE)
-#' list_of_P_matrices_dgexpv
-row_allzero_TF <- function(tmprow)
-{
-	return(all(tmprow == 0))
-}
-
-#' Check if a Q matrix has rows with all zeros
-#'
-#' Q matrices with all-zero rows will crash .Call(wrapalldmexpv_, ...) and .Call(wrapalldgexpv_, ...),
-#' and therefore will crash expokit_wrapalldmexpv_tvals() and expokit_wrapalldgexpv_tvals() when 
-#' these are set (the default) to return the full P matrix.  These functions work fine with
-#' zero rows if \code{inputprobs_for_fast} is supplied, meaning that only the output probabilities
-#' of each state are returned.
-#'
-#' @param matvec Q transition matrix
-#' @return A list of TRUE/FALSE, as long as the number of rows. \code{TRUE}=the is all zeros, \code{FALSE}=the row has nonzero values.
-#' @seealso \code{\link{expokit_wrapalldmexpv_tvals}}
-#' @seealso \code{\link{expokit_wrapalldgexpv_tvals}}
-#' @export
-#' @author Nicholas J. Matzke \email{matzke@@berkeley.edu}
-#' @examples
-#' # Make a square instantaneous rate matrix (Q matrix)
-#' # This matrix is taken from Peter Foster's (2001) "The Idiot's Guide
-#' # to the Zen of Likelihood in a Nutshell in Seven Days for Dummies,
-#' # Unleashed" at:
-#' # \url{http://www.bioinf.org/molsys/data/idiots.pdf}
-#' #
-#' # The Q matrix includes the stationary base freqencies, which Pmat 
-#' # converges to as t becomes large.
-#' Qmat = matrix(c(-1.218, 0.504, 0.336, 0.378, 0.126, -0.882, 0.252, 0.504, 0.168, 
-#' 0.504, -1.05, 0.378, 0.126, 0.672, 0.252, -1.05), nrow=4, byrow=TRUE)
-#' 
-#' # Make a series of t values
-#' tvals = c(0.001, 0.005, 0.01, 0.05, 0.1, 0.5, 1, 2, 5, 14)
-#' 
-#' # DMEXPV and DGEXPV are designed for large, sparse Q matrices (sparse = lots of zeros).
-#' # DMEXPV is specifically designed for Markov chains and so may be slower, but more accurate.
-#' 
-#' # DGEXPV, single t-value
-#' expokit_wrapalldgexpv_tvals(Qmat=Qmat, tvals=tvals[1], transpose_needed=TRUE)
-#' expokit_wrapalldgexpv_tvals(Qmat=Qmat, tvals=2)
-#' 
-#' # This function runs the for-loop itself (sadly, we could not get mapply() to work
-#' # on a function that calls dmexpv/dgexpv), returning a list of probability matrices.
-#' 
-#' # DGEXPV functions
-#' list_of_P_matrices_dgexpv = expokit_wrapalldgexpv_tvals(Qmat=Qmat, 
-#' tvals=tvals, transpose_needed=TRUE)
-#' list_of_P_matrices_dgexpv
-findrows_w_all_zeros <- function(matvec)
-{
-	return(apply(X=matvec, MARGIN=1, FUN=row_allzero_TF))
-}
 
 
 
@@ -967,8 +649,6 @@ expokit_wrapalldmexpv_tvals <- function(Qmat=NULL, tvals=c(2.1), inputprobs_for_
 		v = inputprobs_for_fast
 	}
 	
-	# w is the same length
-	w = double(length=n)
 	tol=as.numeric(0.01)
 	
 	# length of wsp
@@ -1063,7 +743,7 @@ expokit_wrapalldmexpv_tvals <- function(Qmat=NULL, tvals=c(2.1), inputprobs_for_
 			for (i in 1:num_tvals)
 				{
 				t = tvals[i]
-				list_of_matrices_output[[i]] = expokit_dmexpv_wrapper(n, m, t, v, w, tol, anorm, wsp, lwsp, iwsp, liwsp, itrace, iflag, ia, ja, a, nz, res)
+				list_of_matrices_output[[i]] = expokit_dmexpv_wrapper(n=n, mm, t=t, v=v, tol=tol, anorm=anorm, wsp=wsp, lwsp=lwsp, iwsp=iwsp, liwsp=liwsp, itrace=itrace, iflag=iflag, ia=ia, ja=ja, a=a, nz=nz)
 	
 				} # end forloop
 			
@@ -1076,7 +756,7 @@ expokit_wrapalldmexpv_tvals <- function(Qmat=NULL, tvals=c(2.1), inputprobs_for_
 			#tmpoutmat = matrix(res2[[18]], nrow=n, byrow=TRUE)
 	
 			t=tvals
-			output_Pmat = expokit_dmexpv_wrapper(n, m, t, v, w, tol, anorm, wsp, lwsp, iwsp, liwsp, itrace, iflag, ia, ja, a, nz, res)		
+			output_Pmat = expokit_dmexpv_wrapper(n=n, m=m, t=t, v=v, tol=tol, anorm=anorm, wsp=wsp, lwsp=lwsp, iwsp=iwsp, liwsp=liwsp, itrace=itrace, iflag=iflag, ia=ia, ja=ja, a=a, nz=nz)		
 			
 			#print(tmpoutmat)
 			return(output_Pmat)
@@ -1105,11 +785,8 @@ expokit_wrapalldmexpv_tvals <- function(Qmat=NULL, tvals=c(2.1), inputprobs_for_
 			
 				# This must be mydmexpv_, not myDMEXPV_ !!!!
 
-				res2 <- .C("mydmexpv_", as.integer(n), as.integer(m), as.double(t), as.double(v), as.double(w), as.double(tol), as.double(anorm), as.double(wsp), as.integer(lwsp), as.integer(iwsp), as.integer(liwsp), as.integer(itrace), as.integer(iflag), as.integer(ia), as.integer(ja), as.double(a), as.integer(nz))
-		
-				# w, list item #5, contains the output probabilities
-				w_output_probs = res2[[5]]
-
+				w_output_probs <- expokit_mydmexpv_wrapper(n=n, m=m, t=t, v=v, tol=tol, anorm=anorm, wsp=wsp, lwsp=lwsp, iwsp=iwsp, liwsp=liwsp, itrace=itrace, iflag=iflag, ia=ia, ja=ja, a=a, nz=nz)
+				
 				list_of_outprobs_output[i,] = w_output_probs
 	
 			}
@@ -1124,11 +801,8 @@ expokit_wrapalldmexpv_tvals <- function(Qmat=NULL, tvals=c(2.1), inputprobs_for_
 
 			# This must be mydmexpv_, not myDMEXPV_ !!!!
 
-			res2 <- .C("mydmexpv_", as.integer(n), as.integer(m), as.double(t), as.double(v), as.double(w), as.double(tol), as.double(anorm), as.double(wsp), as.integer(lwsp), as.integer(iwsp), as.integer(liwsp), as.integer(itrace), as.integer(iflag), as.integer(ia), as.integer(ja), as.double(a), as.integer(nz))
-			
-			# w, list item #5, contains the output probabilities
-			w_output_probs = res2[[5]]
-
+			w_output_probs <- expokit_mydmexpv_wrapper(n=n, m=m, t=t, v=v, tol=tol, anorm=anorm, wsp=wsp, lwsp=lwsp, iwsp=iwsp, liwsp=liwsp, itrace=itrace, iflag=iflag, ia=ia, ja=ja, a=a, nz=nz)
+      
 			list_of_outprobs_output[1,] = w_output_probs
 	
 			return(w_output_probs)

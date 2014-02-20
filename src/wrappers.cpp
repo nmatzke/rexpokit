@@ -67,12 +67,4 @@ SEXP R_dmexpv(SEXP n_, SEXP m, SEXP t, SEXP v, SEXP tol,
 
 
 
-
-
-
-
-
-
-
-
 }
