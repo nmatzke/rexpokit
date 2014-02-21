@@ -1,5 +1,16 @@
 set.seed(1234)
 
+randsparse <- function(n, sparsity=.95)
+{
+  x <- double(n*n)
+  for (i in 1L:(n*n))
+    x[i] <- sample(c(0.0, rnorm(1)), size=1, prob=c(sparsity, 1-sparsity))
+  
+  dim(x) <- c(n, n)
+  
+  x
+}
+
 shutup_and_time <- function(s)
 {
   capture.output(suppressWarnings(t <- system.time(s)))
@@ -11,8 +22,8 @@ test <- function(mat, fun, bench=FALSE)
 {
   if (bench)
   {
-    n <- 50
-    x <- matrix(rnorm(n*n), n, n)
+    n <- 100
+    x <- randsparse(n)
   }
   else
     x <- NULL
