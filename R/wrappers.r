@@ -227,9 +227,16 @@ expokit_mydgexpv_wrapper <- function(n, m, t, v, w, tol, anorm, wsp, lwsp, iwsp,
 	
 	# This must be mydgexpv_, not mydgexpv_ !!!!
 	
-	res2 <- .C("mydgexpv_", as.integer(n), as.integer(m), as.double(t), as.double(v), as.double(w), as.double(tol), as.double(anorm), as.double(wsp), as.integer(lwsp), as.integer(iwsp), as.integer(liwsp), as.integer(itrace), as.integer(iflag), as.integer(ia), as.integer(ja), as.double(a), as.integer(nz))
-	
-	w_output_probs = matrix(res2[[5]], ncol=n, byrow=TRUE)
+	ret <- .Call("R_dgexpv", 
+		           as.integer(n), as.integer(m), as.double(t), 
+		           as.double(v), as.double(tol), 
+		           as.double(anorm), as.double(wsp), as.integer(lwsp), 
+		           as.integer(iwsp), as.integer(liwsp), 
+		           as.integer(ia), as.integer(ja), 
+		           as.double(a), as.integer(nz),
+		           PACKAGE="rexpokit")
+		
+	w_output_probs = matrix(ret$w, ncol=n, byrow=TRUE)
 	
 	return(w_output_probs)
 }

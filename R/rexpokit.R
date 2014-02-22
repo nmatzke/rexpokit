@@ -1373,15 +1373,19 @@ expokit_dgexpv_Qmat <- function(Qmat=NULL, t=2.1, inputprobs_for_fast=NULL, tran
 		# Return the full Pmat (slow)
 		######################################
 		
-		# Create the space for res (the returned Pmat)
-		res = double(length=n*n)
-		
-		res2 <- .C("wrapalldgexpv_", as.integer(n), as.integer(m), as.double(t), as.double(v), as.double(w), as.double(tol), as.double(anorm), as.double(wsp), as.integer(lwsp), as.integer(iwsp), as.integer(liwsp), as.integer(itrace), as.integer(iflag), as.integer(ia), as.integer(ja), as.double(a), as.integer(nz), as.double(res))
+		ret <- .Call("R_dgexpv", 
+		           as.integer(n), as.integer(m), as.double(t), 
+		           as.double(v), as.double(tol), 
+		           as.double(anorm), as.double(wsp), as.integer(lwsp), 
+		           as.integer(iwsp), as.integer(liwsp), 
+		           as.integer(ia), as.integer(ja), 
+		           as.double(a), as.integer(nz),
+		           PACKAGE="rexpokit")
 	
 		# wrapalldgexpv_ returns all kinds of stuff, list item 18 is the P matrix
 		# However, this may be an inefficient use of the dgexpv sparse matrix capabilities (Hansen)
 		# Try mydgexpv_ to just get the ancestral probabilities (w, res2[[5]])
-		output_Pmat = matrix(res2[[18]], nrow=n, byrow=TRUE)
+		output_Pmat = matrix(ret$res, nrow=n, byrow=TRUE)
 		
 		return(output_Pmat)
 	} else {
@@ -1392,10 +1396,17 @@ expokit_dgexpv_Qmat <- function(Qmat=NULL, t=2.1, inputprobs_for_fast=NULL, tran
 		# Be sure to input the input probabilities
 		v = inputprobs_for_fast
 		
-		res2 <- .C("mydgexpv_", as.integer(n), as.integer(m), as.double(t), as.double(v), as.double(w), as.double(tol), as.double(anorm), as.double(wsp), as.integer(lwsp), as.integer(iwsp), as.integer(liwsp), as.integer(itrace), as.integer(iflag), as.integer(ia), as.integer(ja), as.double(a), as.integer(nz))
+		ret <- .Call("R_dgexpv", 
+		           as.integer(n), as.integer(m), as.double(t), 
+		           as.double(v), as.double(tol), 
+		           as.double(anorm), as.double(wsp), as.integer(lwsp), 
+		           as.integer(iwsp), as.integer(liwsp), 
+		           as.integer(ia), as.integer(ja), 
+		           as.double(a), as.integer(nz),
+		           PACKAGE="rexpokit")
 		
 		# w, list item #5, contains the output probabilities
-		w_output_probs = res2[[5]]
+		w_output_probs = ret$w
 		
 		return(w_output_probs)
 	}
