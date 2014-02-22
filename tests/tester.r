@@ -1,4 +1,10 @@
+### Compares outputs of current CRAN version of rexpokit with dev version
+
 set.seed(1234)
+
+### location of old version of rexpokit
+olddir <- "~/tmp/tmp"
+
 
 randsparse <- function(n, sparsity=.95)
 {
@@ -18,7 +24,7 @@ shutup_and_time <- function(s)
   return( t[3] )
 }
 
-test <- function(mat, fun, bench=FALSE)
+test <- function(fun, bench=FALSE)
 {
   if (bench)
   {
@@ -35,7 +41,7 @@ test <- function(mat, fun, bench=FALSE)
   library.dynam.unload("rexpokit", system.file(package = "rexpokit"))
   
   
-  suppressPackageStartupMessages(library(rexpokit, lib.loc="~/tmp/tmp"))
+  suppressPackageStartupMessages(library(rexpokit, lib.loc=olddir))
   pkg_fun <- eval(parse(text=fun))
   t_old <- shutup_and_time(B <- pkg_fun(Qmat=x))
   
