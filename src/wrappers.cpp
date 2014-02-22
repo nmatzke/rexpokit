@@ -18,7 +18,7 @@ SEXP R_dgpadm(SEXP ideg, SEXP m_, SEXP t, SEXP H, SEXP ldh)
   
   Rcpp::List ret; 
   
-  dgpadm_(INTEGER(ideg), &m, REAL(t), REAL(H), INTEGER(ldh), REAL(wsp), &lwsp, INTEGER(ipiv), INTEGER(iexph), &ns, &iflag);
+  wrapdgpadm_(INTEGER(ideg), &m, REAL(t), REAL(H), INTEGER(ldh), REAL(wsp), &lwsp, INTEGER(ipiv), INTEGER(iexph), &ns, &iflag);
   
   //FIXME you should really be checking the iflag return...
   
@@ -65,6 +65,34 @@ SEXP R_dmexpv(SEXP n_, SEXP m, SEXP t, SEXP v, SEXP tol,
 
 
 
+SEXP R_mydmexpv(SEXP n_, SEXP m, SEXP t, SEXP v, SEXP tol, 
+  SEXP anorm, SEXP wsp, SEXP lwsp, SEXP iwsp, SEXP liwsp,
+  SEXP ia, SEXP ja, SEXP a, SEXP nz)
+{
+  int n = INTEGER(n_)[0];
+  int iflag = 0, itrace = 0;
+  Rcpp::NumericVector w(n);
+  
+  PROTECT(lwsp);
+  PROTECT(liwsp);
+  PROTECT(iwsp);
+  PROTECT(tol);
+  PROTECT(anorm);
+  PROTECT(v);
+  PROTECT(wsp);
+  
+  mydmexpv_(&n, INTEGER(m), REAL(t), REAL(v), REAL(w), 
+    REAL(tol), REAL(anorm), REAL(wsp), INTEGER(lwsp), INTEGER(iwsp), 
+    INTEGER(liwsp), &itrace, &iflag, INTEGER(ia), 
+    INTEGER(ja), REAL(a), INTEGER(nz));
+  
+  UNPROTECT(7);
+  
+  return w;
+}
+
+
+
 SEXP R_dgexpv(SEXP n_, SEXP m, SEXP t, SEXP v, SEXP tol, 
   SEXP anorm, SEXP wsp, SEXP lwsp, SEXP iwsp, SEXP liwsp,
   SEXP ia, SEXP ja, SEXP a, SEXP nz)
@@ -98,5 +126,37 @@ SEXP R_dgexpv(SEXP n_, SEXP m, SEXP t, SEXP v, SEXP tol,
   
   return ret;
 }
+
+
+
+SEXP R_mydgexpv(SEXP n_, SEXP m, SEXP t, SEXP v, SEXP tol, 
+  SEXP anorm, SEXP wsp, SEXP lwsp, SEXP iwsp, SEXP liwsp,
+  SEXP ia, SEXP ja, SEXP a, SEXP nz)
+{
+  int n = INTEGER(n_)[0];
+  int iflag = 0, itrace = 0;
+  Rcpp::NumericVector w(n);
+  
+  PROTECT(lwsp);
+  PROTECT(liwsp);
+  PROTECT(iwsp);
+  PROTECT(tol);
+  PROTECT(anorm);
+  PROTECT(v);
+  PROTECT(wsp);
+  
+  
+  mydgexpv_(&n, INTEGER(m), REAL(t), REAL(v), REAL(w), 
+    REAL(tol), REAL(anorm), REAL(wsp), INTEGER(lwsp), INTEGER(iwsp), 
+    INTEGER(liwsp), &itrace, &iflag, INTEGER(ia), 
+    INTEGER(ja), REAL(a), INTEGER(nz));
+  
+  
+  UNPROTECT(7);
+  
+  return w;
+}
+
+
 
 }

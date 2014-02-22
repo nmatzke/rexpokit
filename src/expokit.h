@@ -58,12 +58,12 @@ void wrapsingledgexpv_(int *n, int *m, double *t, double *v,
 // This should be faster, especially for sparse matrices
 // Here, you input v (starting probabilities) and it fills in w, which are the
 // output probabilities (in output list item #5)
-void myDMEXPV_(int *n, int *m, double *t, double *v, double *w, 
+void mydmexpv_(int *n, int *m, double *t, double *v, double *w, 
   double* tol, double *anorm, double *wsp, int *lwsp, int *iwsp, 
   int *liwsp, int *itrace, int *iflag, int *ia, int *ja, double *a, 
   int *nz);
 
-void myDGEXPV_(int *n, int *m, double *t, double *v, double *w, 
+void mydgexpv_(int *n, int *m, double *t, double *v, double *w, 
   double *tol, double *anorm, double *wsp, int *lwsp, int *iwsp, 
   int *liwsp, int *itrace, int *iflag, int *ia, int *ja, double *a, 
   int *nz);

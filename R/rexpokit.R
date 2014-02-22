@@ -408,22 +408,13 @@ expokit_dmexpv_Qmat <- function(Qmat=NULL, t=2.1, inputprobs_for_fast=NULL, tran
 	ja = tmpmat_in_REXPOKIT_coo_fmt[,"ja"]
 	a = tmpmat_in_REXPOKIT_coo_fmt[,"a"]
 
-	# Run the wrapper function	
-	ret <- .Call("R_dmexpv", 
-		           as.integer(n), as.integer(m), as.double(t), 
-		           as.double(v), as.double(tol), 
-		           as.double(anorm), as.double(wsp), as.integer(lwsp), 
-		           as.integer(iwsp), as.integer(liwsp), 
-		           as.integer(ia), as.integer(ja), 
-		           as.double(a), as.integer(nz),
-		           PACKAGE="rexpokit")
 	
 	# Return the full Pmat (slow)
 	if (is.null(inputprobs_for_fast))
 	{
 		# However, this may be an inefficient use of the dmexpv sparse matrix capabilities (Hansen)
 		# Try mydmexpv_ to just get the ancestral probabilities (w, res2[[5]])
-		output_Pmat = matrix(ret$res, nrow=n, byrow=TRUE)
+		output_Pmat = expokit_dmexpv_wrapper(n=n, m=m, t=t, v=v, tol=tol, anorm=anorm, wsp=wsp, lwsp=lwsp, iwsp=iwsp, liwsp=liwsp, ia=ia, ja=ja, a=a, nz=nz)
 		
 		return(output_Pmat)
 	} else {
@@ -433,7 +424,7 @@ expokit_dmexpv_Qmat <- function(Qmat=NULL, t=2.1, inputprobs_for_fast=NULL, tran
 		v = inputprobs_for_fast
 		
 		# w, list item #5, contains the output probabilities
-		w_output_probs = ret$w
+		w_output_probs = expokit_mydmexpv_wrapper(n=n, m=m, t=t, v=v, tol=tol, anorm=anorm, wsp=wsp, lwsp=lwsp, iwsp=iwsp, liwsp=liwsp, ia=ia, ja=ja, a=a, nz=nz)
 		
 		return(w_output_probs)
 	}
@@ -743,7 +734,7 @@ expokit_wrapalldmexpv_tvals <- function(Qmat=NULL, tvals=c(2.1), inputprobs_for_
 			for (i in 1:num_tvals)
 				{
 				t = tvals[i]
-				list_of_matrices_output[[i]] = expokit_dmexpv_wrapper(n=n, mm, t=t, v=v, tol=tol, anorm=anorm, wsp=wsp, lwsp=lwsp, iwsp=iwsp, liwsp=liwsp, itrace=itrace, iflag=iflag, ia=ia, ja=ja, a=a, nz=nz)
+				list_of_matrices_output[[i]] = expokit_dmexpv_wrapper(n=n, m, t=t, v=v, tol=tol, anorm=anorm, wsp=wsp, lwsp=lwsp, iwsp=iwsp, liwsp=liwsp, ia=ia, ja=ja, a=a, nz=nz)
 	
 				} # end forloop
 			
@@ -756,7 +747,7 @@ expokit_wrapalldmexpv_tvals <- function(Qmat=NULL, tvals=c(2.1), inputprobs_for_
 			#tmpoutmat = matrix(res2[[18]], nrow=n, byrow=TRUE)
 	
 			t=tvals
-			output_Pmat = expokit_dmexpv_wrapper(n=n, m=m, t=t, v=v, tol=tol, anorm=anorm, wsp=wsp, lwsp=lwsp, iwsp=iwsp, liwsp=liwsp, itrace=itrace, iflag=iflag, ia=ia, ja=ja, a=a, nz=nz)		
+			output_Pmat = expokit_dmexpv_wrapper(n=n, m=m, t=t, v=v, tol=tol, anorm=anorm, wsp=wsp, lwsp=lwsp, iwsp=iwsp, liwsp=liwsp, ia=ia, ja=ja, a=a, nz=nz)		
 			
 			#print(tmpoutmat)
 			return(output_Pmat)
@@ -1415,143 +1406,6 @@ expokit_dgexpv_Qmat <- function(Qmat=NULL, t=2.1, inputprobs_for_fast=NULL, tran
 
 
 
-
-
-
-#' EXPOKIT dgexpv wrapper function
-#'
-#' This function wraps the .C call to EXPOKIT for the dgexpv function.  Only the output probability
-#' matrix is returned.
-#'
-#' NOTE: DGEXPV vs. DMEXPV. According to the EXPOKIT documentation, DGEXPV should be
-#' faster than DMEXPV, however DMEXPV runs an accuracy check appropriate for
-#' Markov chains, which is not done in DGEXPV.
-#' 
-#' @param n number of rows in Q matrix
-#' @param m n-1
-#' @param timeval the value to exponentiate the rate matrix by (often e.g. a time value)
-#' @param v variable to store some results in; should have n elements (and perhaps start with 1)
-#' @param w same length as v
-#' @param tol tolerance for approximations; usually set to 0.01
-#' @param anorm the norm of the Q matrix
-#' @param lwsp length of workspace (wsp); for dgexpv, lwsp=n*(m+2)+5*(m+2)^2+ideg+1
-#' @param wsp workspace to store some results in; should be a double with lwsp elements
-#' @param liwsp length of integer workspace; for dgexpv, liwsp=m+2
-#' @param iwsp integer workspace
-#' @param itrace option, set to 0
-#' @param iflag option, set to 0
-#' @param ia i indices of Qmat nonzero values
-#' @param ja j indices of Qmat nonzero values
-#' @param a nonzero values of Qmat (ia, ja, a are columns of a COO-formatted Q matrix)
-#' @param nz number of non-zeros in Qmat
-#' @param res space for output probability matrix (n x n)
-#'
-#' EXPOKIT needs the input matrix to be transposed compared to normal)
-#' COO format is required for EXPOKIT.
-#' @return \code{tmpoutmat} the output matrix for the (first) input t-value
-#' @seealso \code{\link{expokit_dgexpv_Qmat}}
-#' @seealso \code{\link{expokit_wrapalldgexpv_tvals}}
-#' @export
-#' @author Nicholas J. Matzke \email{matzke@@berkeley.edu}
-#' @examples # Example building the inputs from scratch:
-#'
-#' # Make a square instantaneous rate matrix (Q matrix)
-#' # This matrix is taken from Peter Foster's (2001) "The Idiot's Guide
-#' # to the Zen of Likelihood in a Nutshell in Seven Days for Dummies,
-#' # Unleashed" at:
-#' # \url{http://www.bioinf.org/molsys/data/idiots.pdf}
-#' #
-#' # The Q matrix includes the stationary base freqencies, which Pmat 
-#' # converges to as t becomes large.
-#' Qmat = matrix(c(-1.218, 0.504, 0.336, 0.378, 0.126, -0.882, 0.252, 0.504, 0.168, 
-#' 0.504, -1.05, 0.378, 0.126, 0.672, 0.252, -1.05), nrow=4, byrow=TRUE)
-#' 
-#' # Make a series of t values
-#' tvals = c(0.001, 0.005, 0.01, 0.05, 0.1, 0.5, 1, 2, 5, 14)
-#' timeval = tvals[2]
-#'
-#' 	ideg = as.integer(6)
-#'	n=nrow(Qmat)
-#'	m=n-1
-#'	# t=as.numeric(2.1)
-#'	
-#'	# v should have as many elements as n; first element = 1 (?)
-#'	v=double(n)
-#'	v[1] = 1
-#'	
-#'	# w is the same length
-#'	w = double(length=n)
-#'	tol=as.numeric(0.01)
-#'	
-#'	# length of wsp
-#'	#lwsp = as.integer(n*(m+1)+n+(m+2)^2 + 4*(m+2)^2+ideg+1)
-#'	#lwsp = as.integer(n*(m+1)+n+(m+2)^2 + 5*(m+2)^2+ideg+1)
-#'	lwsp = as.integer(n*(m+2)+5*(m+2)^2+ideg+1)
-#'	
-#'	#lwsp = 100
-#'	wsp = double(length=lwsp)
-#'	
-#'	# length of iwsp
-#'	liwsp = max(m+2, 7)
-#'	iwsp = integer(length=liwsp)
-#'	
-#'	res = double(length=n*n)
-#'	
-#'	#matvec = matrix(data=Q, nrow=n, byrow=TRUE)
-#'	matvec = Qmat
-#'	tmatvec = t(matvec)
-#'	rowSums(tmatvec)
-#'	colSums(tmatvec)
-#'	
-#'	# type="O" is being used here, this is supposed to be the
-#'	# default for norm(), although it throws an error if not
-#'	# specified
-#'	# 
-#'	# From the help:
-#'	# type - character string, specifying the type of matrix norm to be
-#'	# computed. A character indicating the type of norm desired. 
-#'	# 	"O", "o" or "1"
-#'	# 		specifies the one norm, (maximum absolute column sum);
-#'	anorm = as.numeric(norm(matvec, type="O"))
-#'	#anorm = 1
-#'	
-#'	
-#'	itrace = 0
-#'	iflag = 0	
-#'	
-#'	
-#'	#a = as.numeric(tmatvec)
-#'	#a = as.numeric(matvec)
-#'	tmpmat = tmatvec
-#'	tmpmat_in_REXPOKIT_coo_fmt = mat2coo(tmpmat)
-#'	ia = tmpmat_in_REXPOKIT_coo_fmt[,"ia"]
-#'	ja = tmpmat_in_REXPOKIT_coo_fmt[,"ja"]
-#'	a = tmpmat_in_REXPOKIT_coo_fmt[,"a"]
-#' 
-#'  # Number of non-zeros
-#'  nz = nrow(Qmat) * ncol(Qmat)
-#' 
-#' # Run the wrapper function	
-#' 
-#' tmpoutmat = expokit_dgexpv_wrapper(n, m, timeval, v, w, tol, anorm, wsp, 
-#' lwsp, iwsp, liwsp, itrace, iflag, ia, ja, a, nz, res)
-#' 
-#' print(tmpoutmat)
-#'
-expokit_dgexpv_wrapper <- function(n, m, timeval, v, w, tol, anorm, wsp, lwsp, iwsp, liwsp, itrace, iflag, ia, ja, a, nz, res)
-{
-	res2 = NULL
-	
-	res2 <- .C("wrapalldgexpv_", as.integer(n), as.integer(m), as.double(timeval), as.double(v), as.double(w), as.double(tol), as.double(anorm), as.double(wsp), as.integer(lwsp), as.integer(iwsp), as.integer(liwsp), as.integer(itrace), as.integer(iflag), as.integer(ia), as.integer(ja), as.double(a), as.integer(nz), as.double(res))
-	
-	tmpoutmat = matrix(res2[[18]], nrow=n, byrow=TRUE)
-	
-	return(tmpoutmat)
-}
-
-	
-
-
 #' Run EXPOKIT's dgexpv on one or more t-values
 #'
 #' The function runs EXPOKIT's \code{dgexpv} function on a Q matrix and \emph{one or more} time values.  If \code{Qmat} is NULL (default), a default matrix is input.\cr
@@ -1882,33 +1736,14 @@ expokit_wrapalldgexpv_tvals <- function(Qmat=NULL, tvals=c(2.1), inputprobs_for_
 			{
 				t = tvals[i]
 			
-				# This must be mydgexpv_, not myDGEXPV_ !!!!
-
-				res2 <- .C("mydgexpv_", as.integer(n), as.integer(m), as.double(t), as.double(v), as.double(w), as.double(tol), as.double(anorm), as.double(wsp), as.integer(lwsp), as.integer(iwsp), as.integer(liwsp), as.integer(itrace), as.integer(iflag), as.integer(ia), as.integer(ja), as.double(a), as.integer(nz))
-		
-				# w, list item #5, contains the output probabilities
-				w_output_probs = res2[[5]]
-
-				list_of_outprobs_output[i,] = w_output_probs
+				list_of_outprobs_output[i,] = expokit_mydgexpv_wrapper(n=n, m=m, t=t, v=v, tol=tol, anorm=anorm, wsp=wsp, lwsp=lwsp, iwsp=iwsp, liwsp=liwsp, ia=ia, ja=ja, a=a, nz=nz)
 	
 			}
 		} else {
 			
 			# If there is only 1 t value, just return 1 matrix
-			#res2 <- .C("wrapalldgexpv_", as.integer(n), as.integer(m), as.double(t), as.double(v), as.double(w), as.double(tol), as.double(anorm), as.double(wsp), as.integer(lwsp), as.integer(iwsp), as.integer(liwsp), as.integer(itrace), as.integer(iflag), as.integer(ia), as.integer(ja), as.double(a), as.integer(nz), as.double(res))
-			
-			#tmpoutmat = matrix(res2[[18]], nrow=n, byrow=TRUE)
 	
-			t=tvals
-
-			# This must be mydgexpv_, not myDGEXPV_ !!!!
-
-			res2 <- .C("mydgexpv_", as.integer(n), as.integer(m), as.double(t), as.double(v), as.double(w), as.double(tol), as.double(anorm), as.double(wsp), as.integer(lwsp), as.integer(iwsp), as.integer(liwsp), as.integer(itrace), as.integer(iflag), as.integer(ia), as.integer(ja), as.double(a), as.integer(nz))
-			
-			# w, list item #5, contains the output probabilities
-			w_output_probs = res2[[5]]
-
-			list_of_outprobs_output[1,] = w_output_probs
+			list_of_outprobs_output[1,] = expokit_mydgexpv_wrapper(n=n, m=m, t=tvals, v=v, tol=tol, anorm=anorm, wsp=wsp, lwsp=lwsp, iwsp=iwsp, liwsp=liwsp, ia=ia, ja=ja, a=a, nz=nz)
 	
 			return(w_output_probs)
 		}
