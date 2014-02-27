@@ -1,0 +1,15 @@
+      CHANGES in rexpokit VERSION 0.24.1
+
+NEW FEATURES
+
+    o removed live links to the ctarma package, which has been archived.
+    o fixed line-length issue in various places in the documentation
+
+BUG FIXES
+
+    o none
+
+OTHER CHANGES
+
+    o none
+    

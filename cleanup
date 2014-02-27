@@ -1,0 +1,11 @@
+#!/bin/sh
+
+rm -rf ./autom4te.cache
+rm -rf ./src/Makevars
+rm -rf ./src/*.so
+rm -rf ./src/*.o
+rm -rf ./src/expokit/*.o
+rm -rf ./src/*.dll
+rm -rf ./config.h
+rm -rf ./config.log
+rm -rf ./config.status
