@@ -3,7 +3,6 @@
 *     self-contained and can still run if LAPACK is not yet installed
 *     in your environement.
 *----------------------------------------------------------------------|
-*----------------------------------------------------------------------|
       subroutine ZGESV( N, M, A,LDA, IPIV, B,LDB, IFLAG )
       integer N, M, LDA, LDB, IPIV(N), IFLAG
       complex*16 A(LDA,N), B(LDB,M)
@@ -13,6 +12,9 @@
          call ZGESL( A,LDA, N, IPIV,B(1,j), 0 )
       enddo
       end
+
+
+
 *----------------------------------------------------------------------|
       subroutine ZHESV(UPLO, N,M, A,LDA, IPIV, B,LDB, WRK,LWRK, IFLAG )
       character UPLO*1
@@ -24,6 +26,23 @@
          call ZHISL( A,LDA, N, IPIV,B(1,j) )
       enddo
       end
+
+
+
+*----------------------------------------------------------------------|
+      subroutine ZSYSV(UPLO, N,M, A,LDA, IPIV, B,LDB, WRK,LWRK, IFLAG )
+      character UPLO*1
+      integer N, M, LDA, LDB, LWRK, IFLAG, IPIV(N)
+      complex*16 A(LDA,N), B(LDB,M), WRK(LWRK)
+      call ZSIFA( A,LDA, N, IPIV, IFLAG )
+*      if ( IFLAG.ne.0 ) stop "Error in ZSYSV (LDL' factorisation)"
+      do j = 1,M
+         call ZSISL( A,LDA, N, IPIV, B(1,j) )
+      enddo
+      end
+
+
+
 *----------------------------------------------------------------------|
       subroutine zgefa(a,lda,n,ipvt,info)
       integer lda,n,ipvt(1),info
@@ -139,7 +158,7 @@ c
 
 
 
-
+*----------------------------------------------------------------------|
       subroutine zgesl(a,lda,n,ipvt,b,job)
       integer lda,n,ipvt(1),job
       complex*16 a(lda,1),b(1)
@@ -265,6 +284,7 @@ c
 
 
 
+*----------------------------------------------------------------------|
       subroutine zhifa(a,lda,n,kpvt,info)
       integer lda,n,kpvt(1),info
       complex*16 a(lda,1)
@@ -500,7 +520,7 @@ c
 
 
 
-
+*----------------------------------------------------------------------|
       subroutine zhisl(a,lda,n,kpvt,b)
       integer lda,n,kpvt(1)
       complex*16 a(lda,1),b(1)
@@ -675,7 +695,7 @@ c
 
 
 
-
+*----------------------------------------------------------------------|
       subroutine zsifa(a,lda,n,kpvt,info)
       integer lda,n,kpvt(1),info
       complex*16 a(lda,1)
@@ -908,6 +928,7 @@ c
 
 
 
+*----------------------------------------------------------------------|
       subroutine zsisl(a,lda,n,kpvt,b)
       integer lda,n,kpvt(1)
       complex*16 a(lda,1),b(1)
