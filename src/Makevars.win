@@ -8,10 +8,10 @@ PKG_LIBS = `$(R_HOME)/bin/Rscript -e "Rcpp:::LdFlags()"` \
 
 R_OBJS = \
     expokit/blas_mod.o \
-    expokit/clock.o \
     expokit/mataid.o \
     expokit/my_expokit.o \
     expokit/my_matexp.o \
+    lapack.o \
     wrappers.o
 
 
