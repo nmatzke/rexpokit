@@ -7,3 +7,5 @@ rm -rf ./src/*.o
 rm -rf ./src/expokit/*.o
 rm -rf ./src/*.dll
 rm -rf ./config.h
+rm -rf ./config.log
+rm -rf ./config.status
