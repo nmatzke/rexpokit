@@ -394,7 +394,6 @@ on `(hostname || uname -n) 2>/dev/null | sed 1q`
 
 # Files that config.status was made for.
 config_files=" src/Makevars"
-config_headers=" config.h"
 
 ac_cs_usage="\
 \`$as_me' instantiates files and other configuration actions
@@ -412,14 +411,9 @@ Usage: $0 [OPTION]... [TAG]...
       --recheck    update $as_me by reconfiguring in the same conditions
       --file=FILE[:TEMPLATE]
                    instantiate the configuration file FILE
-      --header=FILE[:TEMPLATE]
-                   instantiate the configuration header FILE
 
 Configuration files:
 $config_files
-
-Configuration headers:
-$config_headers
 
 Report bugs to the package provider."
 
@@ -476,18 +470,7 @@ do
     esac
     as_fn_append CONFIG_FILES " '$ac_optarg'"
     ac_need_defaults=false;;
-  --header | --heade | --head | --hea )
-    $ac_shift
-    case $ac_optarg in
-    *\'*) ac_optarg=`$as_echo "$ac_optarg" | sed "s/'/'\\\\\\\\''/g"` ;;
-    esac
-    as_fn_append CONFIG_HEADERS " '$ac_optarg'"
-    ac_need_defaults=false;;
-  --he | --h)
-    # Conflict between --help and --header
-    as_fn_error $? "ambiguous option: \`$1'
-Try \`$0 --help' for more information.";;
-  --help | --hel | -h )
+  --he | --h |  --help | --hel | -h )
     $as_echo "$ac_cs_usage"; exit ;;
   -q | -quiet | --quiet | --quie | --qui | --qu | --q \
   | -silent | --silent | --silen | --sile | --sil | --si | --s)
@@ -534,7 +517,6 @@ _ASBOX
 for ac_config_target in $ac_config_targets
 do
   case $ac_config_target in
-    "config.h") CONFIG_HEADERS="$CONFIG_HEADERS config.h" ;;
     "src/Makevars") CONFIG_FILES="$CONFIG_FILES src/Makevars" ;;
 
   *) as_fn_error $? "invalid argument: \`$ac_config_target'" "$LINENO" 5;;
@@ -548,7 +530,6 @@ done
 # bizarre bug on SunOS 4.1.3.
 if $ac_need_defaults; then
   test "${CONFIG_FILES+set}" = set || CONFIG_FILES=$config_files
-  test "${CONFIG_HEADERS+set}" = set || CONFIG_HEADERS=$config_headers
 fi
 
 # Have a temporary directory for convenience.  Make it in the build tree
@@ -602,21 +583,11 @@ echo 'BEGIN {' >"$ac_tmp/subs1.awk" &&
 cat >>"$ac_tmp/subs1.awk" <<\_ACAWK &&
 S["LTLIBOBJS"]=""
 S["LIBOBJS"]=""
-S["QZ_OBJS"]=""
-S["EGREP"]="/bin/grep -E"
-S["GREP"]="/bin/grep"
-S["CPP"]="gcc -E"
+S["REXPOKIT_OBJS"]=""
 S["grep_ok"]="yes"
 S["sed_ok"]="yes"
 S["echo_ok"]="yes"
 S["ls_ok"]="yes"
-S["OBJEXT"]="o"
-S["EXEEXT"]=""
-S["ac_ct_CC"]="gcc"
-S["CPPFLAGS"]=""
-S["LDFLAGS"]=""
-S["CFLAGS"]="-g -O2"
-S["CC"]="gcc"
 S["target_alias"]=""
 S["host_alias"]=""
 S["build_alias"]=""
@@ -624,7 +595,7 @@ S["LIBS"]=""
 S["ECHO_T"]=""
 S["ECHO_N"]="-n"
 S["ECHO_C"]=""
-S["DEFS"]="-DHAVE_CONFIG_H"
+S["DEFS"]="-DPACKAGE_NAME=\\\"\\\" -DPACKAGE_TARNAME=\\\"\\\" -DPACKAGE_VERSION=\\\"\\\" -DPACKAGE_STRING=\\\"\\\" -DPACKAGE_BUGREPORT=\\\"\\\" -DPACKAGE_URL=\\\"\\\""
 S["mandir"]="${datarootdir}/man"
 S["localedir"]="${datarootdir}/locale"
 S["libdir"]="${exec_prefix}/lib"
@@ -690,66 +661,8 @@ fi < "$ac_tmp/subs1.awk" > "$ac_tmp/subs.awk" \
   || as_fn_error $? "could not setup config files machinery" "$LINENO" 5
 fi # test -n "$CONFIG_FILES"
 
-# Set up the scripts for CONFIG_HEADERS section.
-# No need to generate them if there are no CONFIG_HEADERS.
-# This happens for instance with `./config.status Makefile'.
-if test -n "$CONFIG_HEADERS"; then
-cat >"$ac_tmp/defines.awk" <<\_ACAWK ||
-BEGIN {
-D["PACKAGE_NAME"]=" \"\""
-D["PACKAGE_TARNAME"]=" \"\""
-D["PACKAGE_VERSION"]=" \"\""
-D["PACKAGE_STRING"]=" \"\""
-D["PACKAGE_BUGREPORT"]=" \"\""
-D["PACKAGE_URL"]=" \"\""
-D["STDC_HEADERS"]=" 1"
-D["HAVE_SYS_TYPES_H"]=" 1"
-D["HAVE_SYS_STAT_H"]=" 1"
-D["HAVE_STDLIB_H"]=" 1"
-D["HAVE_STRING_H"]=" 1"
-D["HAVE_MEMORY_H"]=" 1"
-D["HAVE_STRINGS_H"]=" 1"
-D["HAVE_INTTYPES_H"]=" 1"
-D["HAVE_STDINT_H"]=" 1"
-D["HAVE_UNISTD_H"]=" 1"
-D["HAVE_STDLIB_H"]=" 1"
-  for (key in D) D_is_set[key] = 1
-  FS = ""
-}
-/^[\t ]*#[\t ]*(define|undef)[\t ]+[_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ][_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789]*([\t (]|$)/ {
-  line = $ 0
-  split(line, arg, " ")
-  if (arg[1] == "#") {
-    defundef = arg[2]
-    mac1 = arg[3]
-  } else {
-    defundef = substr(arg[1], 2)
-    mac1 = arg[2]
-  }
-  split(mac1, mac2, "(") #)
-  macro = mac2[1]
-  prefix = substr(line, 1, index(line, defundef) - 1)
-  if (D_is_set[macro]) {
-    # Preserve the white space surrounding the "#".
-    print prefix "define", macro P[macro] D[macro]
-    next
-  } else {
-    # Replace #undef with comments.  This is necessary, for example,
-    # in the case of _POSIX_SOURCE, which is predefined and required
-    # on some systems where configure will not decide to define it.
-    if (defundef == "undef") {
-      print "/*", prefix defundef, macro, "*/"
-      next
-    }
-  }
-}
-{ print }
-_ACAWK
-  as_fn_error $? "could not setup config headers machinery" "$LINENO" 5
-fi # test -n "$CONFIG_HEADERS"
 
-
-eval set X "  :F $CONFIG_FILES  :H $CONFIG_HEADERS    "
+eval set X "  :F $CONFIG_FILES      "
 shift
 for ac_tag
 do
@@ -959,30 +872,7 @@ which seems to be undefined.  Please make sure it is defined" >&2;}
   esac \
   || as_fn_error $? "could not create $ac_file" "$LINENO" 5
  ;;
-  :H)
-  #
-  # CONFIG_HEADER
-  #
-  if test x"$ac_file" != x-; then
-    {
-      $as_echo "/* $configure_input  */" \
-      && eval '$AWK -f "$ac_tmp/defines.awk"' "$ac_file_inputs"
-    } >"$ac_tmp/config.h" \
-      || as_fn_error $? "could not create $ac_file" "$LINENO" 5
-    if diff "$ac_file" "$ac_tmp/config.h" >/dev/null 2>&1; then
-      { $as_echo "$as_me:${as_lineno-$LINENO}: $ac_file is unchanged" >&5
-$as_echo "$as_me: $ac_file is unchanged" >&6;}
-    else
-      rm -f "$ac_file"
-      mv "$ac_tmp/config.h" "$ac_file" \
-	|| as_fn_error $? "could not create $ac_file" "$LINENO" 5
-    fi
-  else
-    $as_echo "/* $configure_input  */" \
-      && eval '$AWK -f "$ac_tmp/defines.awk"' "$ac_file_inputs" \
-      || as_fn_error $? "could not create -" "$LINENO" 5
-  fi
- ;;
+
 
 
   esac

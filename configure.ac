@@ -2,11 +2,6 @@
 
 AC_INIT(DESCRIPTION)
 
-AC_CONFIG_HEADERS([config.h])
-
-# Checks for programs.
-AC_PROG_CC
-
 # Obtain from R.
 R_SCMD="${R_HOME}/bin/R CMD config"
 FLIBS=`${R_SCMD} FLIBS`
@@ -37,53 +32,31 @@ fi
 
 if test "X$Rlapack_ok" = "XNA"; then
   # An external LAPACK is used in run time.
-  R_OBJS=""
+  REXPOKIT_OBJS=""
 else
   dnl Rlapack is used.
-
-  ### XERBLA_ is not available.
-  # AC_LANG(Fortran)
-  # AC_SEARCH_LIBS([zgeev], [Rlapack], [zgeev_ok=yes], [zgeev_ok=no],
-  # [$LAPACK_LIBS $BLAS_LIBS $FLIBS])
-  # AC_CHECK_FUNC([zgeev], [zgeev_ok=yes], [zgeev_ok=no])
-
-  ### F77_CALL() is not available.
-  # R_INCLUDE="${R_HOME}/include/"
-  # CPPFLAGS="-I${R_INCLUDE}"
-  # AC_CHECK_HEADER([R.h])
-  # AC_CHECK_HEADER([Rinternals.h])
-  # AC_CHECK_HEADER([R_ext/Lapack.h])
-  # AC_CHECK_FUNC([zgeev], [zgeev_ok=yes], [zgeev_ok=no])
-
+  
   if test "X$ls_ok" = "Xyes" -a "X$sed_ok" = "Xyes" -a "X$grep_ok" = "Xyes"; then
     ### Check R_ext/Lapack.h
     LAPACK_HEADER="${R_HOME}/include/R_ext/Lapack.h"
-
+  
     funcs=`ls src/pcapack/src/*.f | sed -e "s/.*\/\(.*\)\.f/\\1/"`
-    R_OBJS=""
+    REXPOKIT_OBJS=""
     for func in ${funcs}
     do
       func_ok=`grep "F77_NAME($func)" ${LAPACK_HEADER}`
       echo "Found $func from ${func_ok}"
       if test "X${func_ok}" = "X"; then
-        R_OBJS="${R_OBJS} pcapack/$func.o"
+        REXPOKIT_OBJS="${REXPOKIT_OBJS} pcapack/$func.o"
       fi
     done
   else
     ### Use default if all above fail.
-    R_OBJS="\$(R_OBJS)"
+    REXPOKIT_OBJS="\$(REXPOKIT_OBJS)"
   fi
 fi
 
-# Checks for header files.
-AC_CHECK_HEADERS([stdlib.h])
 
-# Checks for typedefs, structures, and compiler characteristics.
-AC_C_INLINE
-
-# Checks for library functions.
-AC_CHECK_FUNCS([pow sqrt])
-
-AC_SUBST(QZ_OBJS)
+AC_SUBST(REXPOKIT_OBJS)
 AC_OUTPUT(src/Makevars)
 

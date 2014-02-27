@@ -6,18 +6,16 @@ PKG_LIBS = `$(R_HOME)/bin/Rscript -e "Rcpp:::LdFlags()"` \
     $(LAPACK_LIBS) $(BLAS_LIBS) $(FLIBS)
 
 
-EXPOKIT_OBJS = \
+R_OBJS = \
     expokit/blas_mod.o \
     expokit/clock.o \
     expokit/mataid.o \
     expokit/my_expokit.o \
-    expokit/my_matexp.o
-
-R_OBJS = \
+    expokit/my_matexp.o \
     wrappers.o
 
 
-OBJECTS = $(R_OBJS) $(EXPOKIT_OBJS)
+OBJECTS = @REXPOKIT_OBJS@ $(R_OBJS)
 
 all: $(SHLIB)
 
