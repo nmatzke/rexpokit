@@ -94,8 +94,6 @@ list_of_P_matrices_dgexpv
   Nicholas J. Matzke \email{matzke@berkeley.edu}
 }
 \seealso{
-  \code{\link{expokit_dmexpv_wrapper}}
-
   \code{\link{expokit_dmexpv_Qmat}}
 }
 

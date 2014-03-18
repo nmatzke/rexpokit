@@ -1,2 +1,12 @@
+import(Rcpp, SparseM)
+
 useDynLib(rexpokit)
-exportPattern("^[[:alpha:]]+")
+
+
+export(
+  expokit_dgpadm_Qmat, expokit_dmexpv_Qmat, expokit_dgexpv_Qmat,
+  expokit_wrapalldmexpv_tvals, expokit_wrapalldgexpv_tvals,
+  SparseM_coo_to_REXPOKIT_coo, mat2coo, coo2mat, mat2coo_forloop,
+  expm
+)
+

@@ -1,11 +1,11 @@
 #!/bin/sh
 
 #### Check validity using default matrix
-#Rscript -e "source('tester.r');test('expokit_dgpadm_Qmat')"
-#Rscript -e "source('tester.r');test('expokit_dmexpv_Qmat')"
-#Rscript -e "source('tester.r');test('expokit_wrapalldmexpv_tvals')"
-#Rscript -e "source('tester.r');test('expokit_dgexpv_Qmat')"
-#Rscript -e "source('tester.r');test('expokit_wrapalldgexpv_tvals')"
+Rscript -e "source('tester.r');test('expokit_dgpadm_Qmat')"
+Rscript -e "source('tester.r');test('expokit_dmexpv_Qmat')"
+Rscript -e "source('tester.r');test('expokit_wrapalldmexpv_tvals')"
+Rscript -e "source('tester.r');test('expokit_dgexpv_Qmat')"
+Rscript -e "source('tester.r');test('expokit_wrapalldgexpv_tvals')"
 
 
 #echo "\n"

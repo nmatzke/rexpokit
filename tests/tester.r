@@ -28,7 +28,7 @@ test <- function(fun, bench=FALSE)
 {
   if (bench)
   {
-    n <- 100
+    n <- 1000
     x <- randsparse(n)
   }
   else

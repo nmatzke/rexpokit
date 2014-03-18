@@ -120,8 +120,6 @@ for (t in tvals)
 \seealso{
   \code{\link{mat2coo}}
 
-  \code{\link{expokit_dmexpv_wrapper}}
-
   \code{\link{expokit_wrapalldmexpv_tvals}}
 }
 

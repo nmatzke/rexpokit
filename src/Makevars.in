@@ -1,6 +1,6 @@
 #################################################################
 
-PKG_CXXFLAGS = $(SAFE_CXXLAGS) -w
+PKG_CXXFLAGS = `$(R_HOME)/bin/Rscript -e "Rcpp:::CxxFlags()"`
 PKG_FFLAGS = $(SAFE_FFLAGS) -w
 PKG_LIBS = `$(R_HOME)/bin/Rscript -e "Rcpp:::LdFlags()"` \
     $(LAPACK_LIBS) $(BLAS_LIBS) $(FLIBS)
@@ -24,4 +24,4 @@ $(SHLIB): $(OBJECTS)
 
 clean:
 	@rm -rf *.o *.so *.dll \
-		Makevars $(USER_CONF) $(SHLIB) $(OBJECTS) \
+		Makevars $(USER_CONF) $(SHLIB) $(OBJECTS)

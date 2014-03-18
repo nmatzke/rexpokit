@@ -144,8 +144,6 @@ list_of_P_matrices_dgexpv
 \seealso{
   \code{\link{mat2coo}}
 
-  \code{\link{expokit_dgexpv_wrapper}}
-
   \code{\link{expokit_wrapalldgexpv_tvals}}
 }
 
