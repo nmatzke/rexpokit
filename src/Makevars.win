@@ -1,8 +1,7 @@
 #################################################################
 
-PKG_CXXFLAGS = $(SAFE_CXXLAGS) -w
-PKG_FFLAGS = $(SAFE_FFLAGS) -w
-PKG_LIBS = `$(R_HOME)/bin/Rscript -e "Rcpp:::LdFlags()"` \
+PKG_CXXFLAGS = $(shell "${R_HOME}/bin${R_ARCH_BIN}/Rscript.exe" -e "Rcpp:::CxxFlags()")
+PKG_LIBS = $(shell "${R_HOME}/bin${R_ARCH_BIN}/Rscript.exe" -e "Rcpp:::LdFlags()") \
     $(LAPACK_LIBS) $(BLAS_LIBS) $(FLIBS)
 
 

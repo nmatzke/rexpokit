@@ -1635,7 +1635,7 @@
          wsp(iz+j-1) = y(j)
          y(j) = y(j)*alpha0
       enddo
-      do ip = 1,2*ndeg
+      do ip = 1,ndeg
          alpha(ip) = 0.5d0*alpha(ip)
 *---     Solve each fraction using Gaussian elimination with pivoting...
          do j = 1,m
