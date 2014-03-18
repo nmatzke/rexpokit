@@ -42,7 +42,7 @@ x <- matrix(1:25, nrow=5)/100
 expm(x)
 }
 \author{
-  Nicholas J. Matzke \email{matzke@berkeley.edu}
+  Drew Schmidt \email{schmidt@math.utk.edu}
 }
 
 

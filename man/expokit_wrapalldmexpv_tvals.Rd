@@ -91,7 +91,8 @@ tvals=tvals, transpose_needed=TRUE)
 list_of_P_matrices_dgexpv
 }
 \author{
-  Nicholas J. Matzke \email{matzke@berkeley.edu}
+  Nicholas J. Matzke \email{matzke@berkeley.edu} and Drew Schmidt
+  \email{schmidt@math.utk.edu}
 }
 \seealso{
   \code{\link{expokit_dmexpv_Qmat}}

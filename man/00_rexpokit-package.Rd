@@ -204,7 +204,8 @@ for (i in 1:length(list_of_P_matrices_dmexpv))
 }
 \author{
   Nicholas J. Matzke \email{matzke@berkeley.edu}, Roger B.
-  Sidje \email{roger.b.sidje@ua.edu}
+  Sidje \email{roger.b.sidje@ua.edu}, Drew Schmidt
+  \email{schmidt@math.utk.edu}
 }
 \references{
   \url{http://www.maths.uq.edu.au/expokit/} \cr

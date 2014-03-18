@@ -115,7 +115,8 @@ for (t in tvals)
 	}
 }
 \author{
-  Nicholas J. Matzke \email{matzke@berkeley.edu}
+  Nicholas J. Matzke \email{matzke@berkeley.edu} and Drew Schmidt
+  \email{schmidt@math.utk.edu}
 }
 \seealso{
   \code{\link{mat2coo}}
