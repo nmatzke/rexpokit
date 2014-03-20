@@ -1849,14 +1849,14 @@ else
     ### Check R_ext/Lapack.h
     LAPACK_HEADER="${R_HOME}/include/R_ext/Lapack.h"
 
-    funcs=`ls src/pcapack/src/*.f | sed -e "s/.*\/\(.*\)\.f/\\1/"`
+    funcs=`ls src/expokit/src/*.f | sed -e "s/.*\/\(.*\)\.f/\\1/"`
     REXPOKIT_OBJS=""
     for func in ${funcs}
     do
       func_ok=`grep "F77_NAME($func)" ${LAPACK_HEADER}`
       echo "Found $func from ${func_ok}"
       if test "X${func_ok}" = "X"; then
-        REXPOKIT_OBJS="${REXPOKIT_OBJS} pcapack/$func.o"
+        REXPOKIT_OBJS="${REXPOKIT_OBJS} expokit/$func.o"
       fi
     done
   else
