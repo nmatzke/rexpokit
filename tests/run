@@ -1,14 +1,12 @@
 #!/bin/sh
 
 #### Check validity using default matrix
-Rscript -e "source('tester.r');test('expokit_dgpadm_Qmat')"
-Rscript -e "source('tester.r');test('expokit_dmexpv_Qmat')"
-Rscript -e "source('tester.r');test('expokit_wrapalldmexpv_tvals')"
-Rscript -e "source('tester.r');test('expokit_dgexpv_Qmat')"
-Rscript -e "source('tester.r');test('expokit_wrapalldgexpv_tvals')"
+#Rscript -e "source('tester.r');test('expokit_dgpadm_Qmat')"
+#Rscript -e "source('tester.r');test('expokit_dmexpv_Qmat')"
+#Rscript -e "source('tester.r');test('expokit_wrapalldmexpv_tvals')"
+#Rscript -e "source('tester.r');test('expokit_dgexpv_Qmat')"
+#Rscript -e "source('tester.r');test('expokit_wrapalldgexpv_tvals')"
 
-
-#echo "\n"
 
 #### Benchmark with some random matrix
 #Rscript -e "source('tester.r');test('expokit_dgpadm_Qmat', TRUE)"
@@ -19,5 +17,5 @@ Rscript -e "source('tester.r');test('expokit_wrapalldgexpv_tvals')"
 
 
 ### Valgrind tests
-#R -d "valgrind --tool=memcheck --leak-check=full" --vanilla < valgrind.r
+R -d "valgrind --tool=memcheck --leak-check=full" --vanilla < valgrind.r
 
