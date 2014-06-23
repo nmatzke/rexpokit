@@ -6,11 +6,6 @@ NEW FEATURES
     o Fixed Fortran flags.
     o Added demos.
 
-BUG FIXES
-    
-    o Fixed issues with linking with external BLAS/LAPCK.
-    o Fixed 
-
 OTHER CHANGES
     
     o none
