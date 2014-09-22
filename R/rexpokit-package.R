@@ -3,8 +3,8 @@
 #' \tabular{ll}{
 #' Package: \tab rexpokit\cr
 #' Type: \tab Package\cr
-#' Version: \tab 0.24.1\cr
-#' Date: \tab 2013-07-08\cr
+#' Version: \tab 0.25\cr
+#' Date: \tab 2014-09-22\cr
 #' License: \tab GPL (>= 2)\cr
 #' LazyLoad: \tab yes\cr
 #' }
@@ -35,7 +35,7 @@
 #'
 #' Various messages on discussion boards have asked whether or
 #' not there is an R package that uses EXPOKIT.  There are only two as of this
-#' writing (January 2013) -- \code{\link[diversitree:find.mle]{diversitree}} and \code{ctarma}.
+#' writing (January 2013) -- \code{diversitree} and \code{ctarma}.
 #' However, diversitree's usage is nested deeply in a series of dynamic functions
 #' and integrated with additional libraries (e.g. deSolve) and so is very difficult
 #' to extract for general usage, and \code{ctarma} implements only
@@ -82,7 +82,7 @@
 #' \bold{Acknowledgements/sources}\cr
 #' \cr
 #' \bold{1.} Niels Richard Hansen \email{Niels.R.Hansen@@math.ku.dk} helped greatly with the 
-#' initial setup of the package.  See his \code{\link[expoRkit:expoRkit]{expoRkit}} for another R
+#' initial setup of the package.  See his \code{expoRkit} for another R
 #' implementation of EXPOKIT routines.\cr
 #' \cr
 #' \bold{2.} EXPOKIT, original FORTRAN package, by Roger B. Sidje \email{rbs@@maths.uq.edu.au}, 
@@ -146,7 +146,7 @@
 #'   @cite moler2003nineteen
 #'   @cite FosterIdiots
 #' @keywords package, matrix, matrix exponentiation, phylogenetics, transition matrix, expokit
-#' @seealso \code{\link[expoRkit:expoRkit]{expoRkit}} \code{\link{expokit_wrapalldmexpv_tvals}}
+#' @seealso \code{expoRkit} \code{\link{expokit_wrapalldmexpv_tvals}}
 #' @examples # Example code
 #' # For background and basic principles, see rexpokit/notes/EXPOKIT_For_Dummies_notes_v1.txt
 #' 

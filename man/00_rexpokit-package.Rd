@@ -40,7 +40,7 @@
   Various messages on discussion boards have asked whether
   or not there is an R package that uses EXPOKIT.  There
   are only two as of this writing (January 2013) --
-  \code{\link[diversitree:find.mle]{diversitree}} and
+  \code{diversitree} and
   \code{ctarma}. However, diversitree's usage is nested
   deeply in a series of dynamic functions and integrated
   with additional libraries (e.g. deSolve) and so is very
@@ -93,7 +93,7 @@
   \bold{Acknowledgements/sources}\cr \cr \bold{1.} Niels
   Richard Hansen \email{Niels.R.Hansen@math.ku.dk} helped
   greatly with the initial setup of the package.  See his
-  \code{\link[expoRkit:expoRkit]{expoRkit}} for another R
+  \code{expoRkit} for another R
   implementation of EXPOKIT routines.\cr \cr \bold{2.}
   EXPOKIT, original FORTRAN package, by Roger B. Sidje
   \email{rbs@maths.uq.edu.au}, Department of Mathematics,
@@ -247,7 +247,7 @@ for (i in 1:length(list_of_P_matrices_dmexpv))
   \url{http://www.bioinf.org/molsys/data/idiots.pdf}>.
 }
 \seealso{
-  \code{\link[expoRkit:expoRkit]{expoRkit}}
+  \code{expoRkit}
   \code{\link{expokit_wrapalldmexpv_tvals}}
 }
 \keyword{expokit}
