@@ -8,7 +8,6 @@ Authors@R: c(person("Nicholas J.", "Matzke", email = "matzke@berkeley.edu", role
         "roger.b.sidje@ua.edu", role = c("aut", "cph")),
         c(person("Drew", "Schmidt", email="schmidt@math.utk.edu", role="aut")))
 Maintainer: Nicholas J. Matzke <matzke@berkeley.edu>
-Depends: 
 LinkingTo: Rcpp
 Imports: SparseM
 Copyright: See rexpokit/inst/LAPACK_LICENSE.txt for the files in src/lapack.f.
