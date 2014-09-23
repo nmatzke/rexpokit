@@ -1,3 +1,5 @@
+import(Rcpp)
+
 useDynLib(rexpokit)
 
 export(
