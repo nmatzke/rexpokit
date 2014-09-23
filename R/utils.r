@@ -171,8 +171,7 @@ mat2coo <- function(tmpmat)
 	
 	# This produces a matrix in coo format
 	# (this is an S4 object)
-	tmpmat_in_SparseMcoo_fmt = as.matrix.coo(tmpmat)
-	tmpmat_in_REXPOKIT_coo_fmt = SparseM_coo_to_REXPOKIT_coo(tmpmat_in_SparseMcoo_fmt)
+	tmpmat_in_REXPOKIT_coo_fmt <- rexpokit_as_coo(tmpmat)
 	
 	return(tmpmat_in_REXPOKIT_coo_fmt)
 }

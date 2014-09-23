@@ -23,16 +23,13 @@ extern "C" {
 SEXP rexpokit_as_coo(SEXP x_)
 {
   Rcpp::NumericMatrix x(x_);
-  Rcpp::List ret;
   
   int ct = 0, i, j;
   const int n = x.nrow();
   const int sparsity = sparse_count_zeros(n, n, x.begin());
   const int len = n*n - sparsity;
   
-  Rcpp::NumericVector ra(len);
-  Rcpp::IntegerVector ja(len);
-  Rcpp::IntegerVector ia(len);
+  Rcpp::NumericMatrix ret(len, 3);
   
   for (i=0; i<n; i++)
   {
@@ -40,19 +37,15 @@ SEXP rexpokit_as_coo(SEXP x_)
     {
       if (x(i, j) != 0.)
       {
-        ra[ct] = x(i, j);
-        ja[ct] = j + 1;
-        ia[ct] = i + 1;
+        ret(0, ct) = i + 1;       // ia
+        ret(1, ct) = j + 1;       // ja
+        ret(2, ct) = x(i, j);     // a
         
         ct++;
       }
     }
   }
   
-  
-  ret["ra"] = ra;
-  ret["ja"] = ja;
-  ret["ia"] = ia;
   
   return ret;
 }

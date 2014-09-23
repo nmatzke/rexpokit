@@ -9,7 +9,6 @@ Authors@R: c(person("Nicholas J.", "Matzke", email = "matzke@berkeley.edu", role
         c(person("Drew", "Schmidt", email="schmidt@math.utk.edu", role="aut")))
 Maintainer: Nicholas J. Matzke <matzke@berkeley.edu>
 LinkingTo: Rcpp
-Imports: SparseM
 Copyright: See rexpokit/inst/LAPACK_LICENSE.txt for the files in src/lapack.f.
 Description: This package wraps some of the matrix exponentiation 
         utilities from EXPOKIT (http://www.maths.uq.edu.au/expokit/), 

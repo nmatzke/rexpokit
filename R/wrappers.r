@@ -1086,7 +1086,10 @@ rexpokit_as_coo <- function(x)
   if (!is.double(x))
     storage.mode(x) <- "double"
   
-  .Call("rexpokit_as_coo", x, PACKAGE="rexpokit")
+  ret <- .Call("rexpokit_as_coo", x, PACKAGE="rexpokit")
+  names(ret) <- c("ia", "ja", "a")
+  
+  return(ret)
 }
 
 
