@@ -12,6 +12,7 @@ R_OBJS = \
     expokit/my_expokit.o \
     expokit/my_matexp.o \
     lapack.o \
+    coo.o \
     wrappers.o
 
 

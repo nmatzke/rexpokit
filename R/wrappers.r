@@ -1076,3 +1076,20 @@ expokit_wrapalldmexpv_tvals <- function(Qmat=NULL, tvals=c(2.1), inputprobs_for_
 	}
 }
 
+
+
+
+
+
+rexpokit_as_coo <- function(x)
+{
+  if (!is.double(x))
+    storage.mode(x) <- "double"
+  
+  .Call("rexpokit_as_coo", x, PACKAGE="rexpokit")
+}
+
+
+
+
+
