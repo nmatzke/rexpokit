@@ -10,3 +10,5 @@ OTHER CHANGES
     
     o Added Drew Schmidt, Univ. Tennessee Knoxville, as a coauthor
     o Minor changes to documentation to avoid links outside of package (to diversitree and expoRkit)
+	o Wrote local alternative for as.matrix.coo to remove dependency on SparseM package
+	
