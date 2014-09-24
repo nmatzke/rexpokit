@@ -2,7 +2,7 @@
 
 NEW FEATURES
     
-    o Rewrote compiled code wrappers to imrpove performance (~10-40%).
+    o Rewrote compiled code wrappers to improve performance (~10-40%).
     o Fixed Fortran flags.
     o Added demos.
 
