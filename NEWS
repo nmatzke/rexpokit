@@ -2,16 +2,13 @@
 
 NEW FEATURES
     
-    o Rewrote compiled code wrappers to imrpove performance (~10-40%).
+    o Rewrote compiled code wrappers to improve performance (~10-40%).
     o Fixed Fortran flags.
     o Added demos.
 
 OTHER CHANGES
     
+    o Added Drew Schmidt, Univ. Tennessee Knoxville, as a coauthor
     o Minor changes to documentation to avoid links outside of package (to diversitree and expoRkit)
-    o Changed DESCRIPTION file to have this, reducing dependencies:
-        Depends: 
-        LinkingTo: Rcpp
-        Imports: SparseM
-    o Changed NAMESPACE file to have this, reducing dependencies:
-        importFrom(SparseM, as.matrix.coo)
+	o Wrote local alternative for as.matrix.coo to remove dependency on SparseM package
+	
