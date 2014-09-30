@@ -20,4 +20,4 @@ $(SHLIB): $(OBJECTS)
 
 
 clean:
-	@rm -rf *.o *.so *.dll $(USER_CONF) $(SHLIB) $(OBJECTS)
+	@rm -rf *.o *.so *.dll lapack/*.o $(USER_CONF) $(SHLIB) $(OBJECTS)

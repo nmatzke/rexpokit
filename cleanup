@@ -2,5 +2,5 @@
 
 rm -rf ./src/*.so
 rm -rf ./src/*.o
-rm -rf ./src/expokit/*.o
+rm -rf ./src/lapack/*.o
 rm -rf ./src/*.dll
