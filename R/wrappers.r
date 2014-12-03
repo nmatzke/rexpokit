@@ -61,14 +61,13 @@
 #' 
 expokit_dmexpv_wrapper <- function(n, m, t, v, tol, anorm, wsp, lwsp, iwsp, liwsp, ia, ja, a, nz)
 {
-	ret <- .Call("R_dmexpv", 
+	ret <- .Call(R_dmexpv, 
 		           as.integer(n), as.integer(m), as.double(t), 
 		           as.double(v), as.double(tol), 
 		           as.double(anorm), as.double(wsp), as.integer(lwsp), 
 		           as.integer(iwsp), as.integer(liwsp), 
 		           as.integer(ia), as.integer(ja), 
-		           as.double(a), as.integer(nz),
-		           PACKAGE="rexpokit")
+		           as.double(a), as.integer(nz))
 		
 	output_Pmat = matrix(ret$res, nrow=n, byrow=TRUE)
 	
@@ -143,14 +142,13 @@ expokit_dmexpv_wrapper <- function(n, m, t, v, tol, anorm, wsp, lwsp, iwsp, liws
 #' 
 expokit_mydmexpv_wrapper <- function(n, m, t, v, tol, anorm, wsp, lwsp, iwsp, liwsp, itrace, iflag, ia, ja, a, nz)
 {
-	ret <- .Call("R_mydmexpv", 
+	ret <- .Call(R_mydmexpv, 
 		           as.integer(n), as.integer(m), as.double(t), 
 		           as.double(v), as.double(tol), 
 		           as.double(anorm), as.double(wsp), as.integer(lwsp), 
 		           as.integer(iwsp), as.integer(liwsp), 
 		           as.integer(ia), as.integer(ja), 
-		           as.double(a), as.integer(nz),
-		           PACKAGE="rexpokit")
+		           as.double(a), as.integer(nz))
 	
 	w_output_probs = matrix(ret$w, ncol=n, byrow=TRUE)
 	
@@ -228,14 +226,13 @@ expokit_mydgexpv_wrapper <- function(n, m, t, v, tol, anorm, wsp, lwsp, iwsp, li
 	
 	# This must be mydgexpv_, not mydgexpv_ !!!!
 	
-	ret <- .Call("R_mydgexpv", 
+	ret <- .Call(R_mydgexpv, 
 		           as.integer(n), as.integer(m), as.double(t), 
 		           as.double(v), as.double(tol), 
 		           as.double(anorm), as.double(wsp), as.integer(lwsp), 
 		           as.integer(iwsp), as.integer(liwsp), 
 		           as.integer(ia), as.integer(ja), 
-		           as.double(a), as.integer(nz),
-		           PACKAGE="rexpokit")
+		           as.double(a), as.integer(nz))
 		
 	w_output_probs = matrix(ret$w, ncol=n, byrow=TRUE)
 	
@@ -1086,7 +1083,7 @@ rexpokit_as_coo <- function(x)
   if (!is.double(x))
     storage.mode(x) <- "double"
   
-  ret <- .Call("rexpokit_as_coo", x, PACKAGE="rexpokit")
+  ret <- .Call(R_rexpokit_as_coo, x)
   colnames(ret) <- c("ia", "ja", "a")
   
   return(ret)

@@ -21,7 +21,7 @@ int sparse_count_zeros(const int n, double *x)
 }
 
 // Reimplentation of SparseM's dense-to-coo converter
-SEXP rexpokit_as_coo(SEXP x_)
+SEXP R_rexpokit_as_coo(SEXP x_)
 {
   Rcpp::NumericMatrix x(x_);
   

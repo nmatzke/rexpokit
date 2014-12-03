@@ -129,9 +129,7 @@ expokit_dgpadm_Qmat <- function(Qmat=NULL, t=2.1, transpose_needed=TRUE)
 	if (!is.double(H))
 	  storage.mode(H) <- "double"
 	
-	res <- .Call("R_dgpadm", 
-	              as.integer(ideg), as.integer(m), as.double(t), H, as.integer(ldh), 
-	              PACKAGE="rexpokit")
+	res <- .Call(R_dgpadm, as.integer(ideg), as.integer(m), as.double(t), H, as.integer(ldh))
 	
 	output = res$wsp
 	ind <- res$ind
@@ -739,14 +737,13 @@ expokit_dgexpv_Qmat <- function(Qmat=NULL, t=2.1, inputprobs_for_fast=NULL, tran
 		# Return the full Pmat (slow)
 		######################################
 		
-		ret <- .Call("R_dgexpv", 
+		ret <- .Call(R_dgexpv, 
 		           as.integer(n), as.integer(m), as.double(t), 
 		           as.double(v), as.double(tol), 
 		           as.double(anorm), as.double(wsp), as.integer(lwsp), 
 		           as.integer(iwsp), as.integer(liwsp), 
 		           as.integer(ia), as.integer(ja), 
-		           as.double(a), as.integer(nz),
-		           PACKAGE="rexpokit")
+		           as.double(a), as.integer(nz))
 	
 		# wrapalldgexpv_ returns all kinds of stuff, list item 18 is the P matrix
 		# However, this may be an inefficient use of the dgexpv sparse matrix capabilities (Hansen)
@@ -762,14 +759,13 @@ expokit_dgexpv_Qmat <- function(Qmat=NULL, t=2.1, inputprobs_for_fast=NULL, tran
 		# Be sure to input the input probabilities
 		v = inputprobs_for_fast
 		
-		ret <- .Call("R_dgexpv", 
+		ret <- .Call(R_dgexpv, 
 		           as.integer(n), as.integer(m), as.double(t), 
 		           as.double(v), as.double(tol), 
 		           as.double(anorm), as.double(wsp), as.integer(lwsp), 
 		           as.integer(iwsp), as.integer(liwsp), 
 		           as.integer(ia), as.integer(ja), 
-		           as.double(a), as.integer(nz),
-		           PACKAGE="rexpokit")
+		           as.double(a), as.integer(nz))
 		
 		# w, list item #5, contains the output probabilities
 		w_output_probs = ret$w

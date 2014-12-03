@@ -1,6 +1,13 @@
-import(Rcpp)
+useDynLib(rexpokit,
+  R_dgpadm,
+  R_dgexpv,
+  R_dmexpv,
+  R_mydmexpv,
+  R_mydgexpv,
+  R_rexpokit_as_coo
+)
 
-useDynLib(rexpokit)
+import(Rcpp)
 
 export(
   expokit_dgpadm_Qmat, expokit_dmexpv_Qmat, expokit_dgexpv_Qmat,
