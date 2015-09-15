@@ -8,6 +8,7 @@ useDynLib(rexpokit,
 )
 
 import(Rcpp)
+importFrom("stats", "runif")
 
 export(
   expokit_dgpadm_Qmat, expokit_dmexpv_Qmat, expokit_dgexpv_Qmat,
