@@ -84,8 +84,7 @@ HINTS:
 
 Modernizing Old Fortran
 http://fortranwiki.org/fortran/show/Modernizing+Old+Fortran 
-      
-      
+    
 
 COMPLEX(KIND=8) (DOUBLE COMPLEX) Representation
 http://kiwi.atmos.colostate.edu/rr/old/tidbits/intel/macintel/doc_files/source/extfile/bldaps_for/pg11fltc.htm
@@ -110,7 +109,39 @@ F77 code (must be old style fixed source form)
 
 
 
+CHANGES, random notes:
 
+   	o Numerous changes were made to FORTRAN source to solve CRAN check
+   	  warnings or installation issues on e.g. Windows machines
+   	  (https://win-builder.r-project.org). Typically these were obsolescence
+      issues with legacy F77 code. Typically the solution was to convert to
+      F90 standard. Summary below.
+   	o Fix to a CRAN-identified NOTE: "Packages in Depends field not imported from:
+	    'Rcpp'  'SparseM' 'methods'."  Solution: removed methods and SparseM from 
+	    Depends, moved Rcpp to Imports in NAMESPACE file
+    o Commented out -W flag in Makevars, in order to remove "Non-portable 
+      flags in variable 'PKG_FFLAGS'" warning
+    o Summary of modernization edits to FORTRAN:
+    o complex*16 -> complex(kind=8)
+    o CHARACTER*6 -> CHARACTER(LEN=6)
+    o double complex -> complex(kind=8)
+    o absx = dabs(dreal(zx(i))) -> absx = DABS(REALPART(Zx(i)))
+    o absx = dabs(dimag(zx(i))) -> absx = DABS(IMAGPART(Zx(i)))
+    o Removed all "statement functions", replaced with basic math in-line
+    o Variable declarations for dreal, dimag, dzum, dzumi, dzumr now unnecessary and
+      commented out
+    o Replaced "Computed GO TO" statements loops re-coded using On-Line 
+      Fortran F77 - F90 Converter: https://www.fortran.uk/plusfortonline.php
+    o Problems like "Index '2' of dimension 1 of array 'dx' above upper bound of 1"
+      solved with changing dx(1) -> dx(n), dy(1) -> dy(n)
+    o cabs1 "statement function" replaced with several in-line calculations
+    o All example matrix exponentiations checked after FORTRAN edits
+    o Generated "init.c" using package_native_routine_registration_skeleton() in 
+      order to register native routines. 
+      (Following instructions at: 
+      https://stat.ethz.ch/pipermail/r-devel/2017-February/073755.html)
+    o init.c content was integrated into pre-existing "wrappers.cpp", adding
+      "R_CMethodDef CEntries[]" and "R_init_rexpokit" entries
 
 
 
@@ -131,17 +162,18 @@ c        print*,INFO
 
 
 
-
-COMMON ERRORS THAT HAVE STUPID REASONS
-
+****************************************************
+* COMMON ERRORS THAT HAVE STUPID REASONS
+****************************************************
+* 1.
+* 
 * pta = REALPART(a)
 * 1
 * Error: Non-numeric character in statement label at (1)
 *
 * THIS MEANS: THE CODE MUST START AT COLUMN 7!!
 * 
-
-
+* 2.
 *  if ((dabs(REALPART(a(1,1)))+dabs(IMAGPART(a(1,1)))).eq.0.0d0) &
 * Warning: Line truncated at (1) [-Wline-truncation]
 * 
@@ -149,6 +181,8 @@ COMMON ERRORS THAT HAVE STUPID REASONS
 * (Because that's how long ticker-tape was in 1965,
 *  or something like that)
 *
+****************************************************
+
 
 *     NOTE
 *     Fixing compiling errors noted by CRAN check in some 
