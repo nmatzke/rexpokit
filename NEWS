@@ -1,8 +1,64 @@
-      CHANGES in rexpokit VERSION 0.25
+CHANGES in rexpokit VERSION 0.26
 
 NEW FEATURES
     
-    o Rewrote compiled code wrappers to improve performance (~10-40%).
+    o None
+
+BUG FIXES
+
+   	o Numerous changes were made to FORTRAN source to solve CRAN check
+   	  warnings or installation issues on e.g. Windows machines
+   	  (https://win-builder.r-project.org). Typically these were obsolescence
+      issues with legacy F77 code. Typically the solution was to convert to
+      F90 standard. Summary below.
+   	o Fix to a CRAN-identified NOTE: "Packages in Depends field not imported from:
+	    'Rcpp'  'SparseM' 'methods'."  Solution: removed methods and SparseM from 
+	    Depends, moved Rcpp to Imports in NAMESPACE file
+    o Commented out -W flag in Makevars, in order to remove "Non-portable 
+      flags in variable 'PKG_FFLAGS'" warning
+    o Summary of modernization edits to FORTRAN:
+    o complex*16 -> complex(kind=8)
+    o CHARACTER*6 -> CHARACTER(LEN=6)
+    o double complex -> complex(kind=8)
+    o absx = dabs(dreal(zx(i))) -> absx = DABS(REALPART(Zx(i)))
+    o absx = dabs(dimag(zx(i))) -> absx = DABS(IMAGPART(Zx(i)))
+    o Removed all "statement functions", replaced with basic math in-line
+    o Variable declarations for dreal, dimag, dzum, dzumi, dzumr now unnecessary and
+      commented out
+    o Replaced "Computed GO TO" statements loops re-coded using On-Line 
+      Fortran F77 - F90 Converter: https://www.fortran.uk/plusfortonline.php
+    o Problems like "Index '2' of dimension 1 of array 'dx' above upper bound of 1"
+      solved with changing dx(1) -> dx(n), dy(1) -> dy(n)
+    o cabs1 "statement function" replaced with several in-line calculations
+    o All example matrix exponentiations checked after FORTRAN edits
+    o Generated "init.c" using package_native_routine_registration_skeleton() in 
+      order to register native routines. 
+      (Following instructions at: 
+      https://stat.ethz.ch/pipermail/r-devel/2017-February/073755.html)
+    o init.c content was integrated into pre-existing "wrappers.cpp", adding
+      "R_CMethodDef CEntries[]" and "R_init_rexpokit" entries
+
+
+OTHER CHANGES
+    
+    o Changed Maintainer email (Nicholas J. Matzke, matzke@berkeley.edu -> 
+      Nicholas J. Matzke, nickmatzke.ncse@gmail.com); this is a permanent email.
+      All functions changed as well.
+    o Added maxent function to avoid BioGeoBEARS dependency on FD
+    o Minor edits to documentation
+    o Made examples not depend on SparseM
+    o updated CITATION file to refer to first publication on BioGeoBEARS/rexpokit: 
+      Matzke, Nicholas J. (2013). Probabilistic historical biogeography: 
+      new models for founder-event speciation, imperfect detection, and fossils allow 
+      improved accuracy and model-testing. Frontiers of Biogeography, 5(4), 242-248. 
+      http://escholarship.org/uc/item/44j7n141
+
+
+CHANGES in rexpokit VERSION 0.25 (2014-05-17, GitHub version)
+
+NEW FEATURES
+    
+    o (Drew Schmidt) rewrote compiled code wrappers to improve performance (~10-40%).
     o Fixed Fortran flags.
     o Added demos.
 
@@ -11,3 +67,24 @@ OTHER CHANGES
     o Added Drew Schmidt, Univ. Tennessee Knoxville, as a coauthor
     o Minor changes to documentation to avoid links outside of package (to diversitree and expoRkit)
     o Wrote local alternative for as.matrix.coo to remove dependency on SparseM package
+
+
+
+CHANGES in rexpokit VERSION 0.24.1
+
+NEW FEATURES
+
+    o removed live links to the ctarma package, which has been archived (ctarma was
+      not a dependency, it was just linked from the documentation for explanatory
+      purposes)
+    o fixed line-length issue in various places in the documentation
+    o added NEWS file
+
+BUG FIXES
+
+    o none
+
+OTHER CHANGES
+
+    o none
+    

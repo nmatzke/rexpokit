@@ -35,7 +35,7 @@
 # Example use:
 }
 \author{
-  Nicholas J. Matzke \email{matzke@berkeley.edu}
+  Nicholas J. Matzke \email{nickmatzke.ncse@gmail.com}
 }
 \seealso{
   \code{\link{mat2coo_forloop}}

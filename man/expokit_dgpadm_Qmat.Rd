@@ -63,7 +63,7 @@ for (t in tvals)
 	}
 }
 \author{
-  Nicholas J. Matzke \email{matzke@berkeley.edu} and Drew Schmidt
+  Nicholas J. Matzke \email{nickmatzke.ncse@gmail.com} and Drew Schmidt
   \email{schmidt@math.utk.edu}
 }
 \seealso{

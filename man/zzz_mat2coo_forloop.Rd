@@ -27,7 +27,7 @@ tmpmat_in_REXPOKIT_coo_fmt = mat2coo_forloop(tmpmat)
 tmpmat_in_REXPOKIT_coo_fmt
 }
 \author{
-  Nicholas J. Matzke \email{matzke@berkeley.edu}
+  Nicholas J. Matzke \email{nickmatzke.ncse@gmail.com}
 }
 \seealso{
   \code{\link{mat2coo}}

@@ -11,7 +11,7 @@
 #' @seealso \code{\link{expokit_wrapalldmexpv_tvals}}
 #' @seealso \code{\link{expokit_wrapalldgexpv_tvals}}
 #' @export
-#' @author Nicholas J. Matzke \email{matzke@@berkeley.edu}
+#' @author Nicholas J. Matzke \email{nickmatzke.ncse@@gmail.com}
 #' @examples
 #' # Make a square instantaneous rate matrix (Q matrix)
 #' # This matrix is taken from Peter Foster's (2001) "The Idiot's Guide
@@ -61,7 +61,7 @@ row_allzero_TF <- function(tmprow)
 #' @seealso \code{\link{expokit_wrapalldmexpv_tvals}}
 #' @seealso \code{\link{expokit_wrapalldgexpv_tvals}}
 #' @export
-#' @author Nicholas J. Matzke \email{matzke@@berkeley.edu}
+#' @author Nicholas J. Matzke \email{nickmatzke.ncse@@gmail.com}
 #' @examples
 #' # Make a square instantaneous rate matrix (Q matrix)
 #' # This matrix is taken from Peter Foster's (2001) "The Idiot's Guide
@@ -122,7 +122,7 @@ findrows_w_all_zeros <- function(matvec)
 #' @return tmpmat_in_REXPOKIT_coo_fmt A \code{cbind} of \code{ia}, \code{ja}, and \code{a} 
 #' @seealso \code{\link{mat2coo_forloop}}
 #' @export
-#' @author Nicholas J. Matzke \email{matzke@@berkeley.edu}
+#' @author Nicholas J. Matzke \email{nickmatzke.ncse@@gmail.com}
 #' @examples # Example use:
 #' @examples
 #' # Make a Q matrix
@@ -200,14 +200,14 @@ mat2coo <- function(tmpmat)
 #' @return tmpmat_in_REXPOKIT_coo_fmt A \code{cbind} of \code{ia}, \code{ja}, and \code{a} 
 #' @seealso \code{\link{mat2coo_forloop}}
 #' @export
-#' @author Nicholas J. Matzke \email{matzke@@berkeley.edu}
+#' @author Nicholas J. Matzke \email{nickmatzke.ncse@@gmail.com}
 #' @examples # Example use:
 #' # Make a Q matrix
 #' tmpmat = matrix(c(-1.218, 0.504, 0.336, 0.378, 0.126, -0.882, 0.252, 0.504, 0.168, 
 #' 0.504, -1.05, 0.378, 0.126, 0.672, 0.252, -1.05), nrow=4, byrow=TRUE)
 #' 
 #' # Covert to SparseM coo format
-#' tmpmat_in_SparseMcoo_fmt = as.matrix.coo(tmpmat)
+#' tmpmat_in_SparseMcoo_fmt = SparseM::as.matrix.coo(tmpmat)
 #' 
 #' # Convert to REXPOKIT coo format
 #' tmpmat_in_REXPOKIT_coo_fmt = SparseM_coo_to_REXPOKIT_coo(tmpmat_in_SparseMcoo_fmt)
@@ -254,7 +254,7 @@ SparseM_coo_to_REXPOKIT_coo <- function(tmpmat_in_SparseMcoo_fmt)
 #' EXPOKIT needs the input matrix to be transposed compared to normal)
 #' @return outmat
 #' @export
-#' @author Nicholas J. Matzke \email{matzke@@berkeley.edu}
+#' @author Nicholas J. Matzke \email{nickmatzke.ncse@@gmail.com}
 #' @examples # Example use:
 #' ia = c(1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4)
 #' ja = c(1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4)
@@ -308,7 +308,7 @@ coo2mat <- function(coomat, n=max(max(coomat[,1]), max(coomat[,2])), transpose_n
 #' @return tmpmat_in_REXPOKIT_coo_fmt A \code{cbind} of \code{ia}, \code{ja}, and \code{a} 
 #' @seealso \code{\link{mat2coo}}
 #' @export
-#' @author Nicholas J. Matzke \email{matzke@@berkeley.edu}
+#' @author Nicholas J. Matzke \email{nickmatzke.ncse@@gmail.com}
 #' @examples # Example use:
 #' # Make a Q matrix
 #' tmpmat = matrix(c(-1.218, 0.504, 0.336, 0.378, 0.126, -0.882, 0.252, 0.504, 0.168, 

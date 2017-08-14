@@ -135,7 +135,7 @@
 #' @aliases rexpokit
 #' @docType package
 #' @title Matrix exponentiation with EXPOKIT in R
-#' @author Nicholas J. Matzke \email{matzke@@berkeley.edu}, Roger B. Sidje \email{roger.b.sidje@@ua.edu}
+#' @author Nicholas J. Matzke \email{nickmatzke.ncse@@gmail.com}, Roger B. Sidje \email{roger.b.sidje@@ua.edu}
 #' @references
 #' \url{http://www.maths.uq.edu.au/expokit/} \cr
 #' \url{http://www.maths.uq.edu.au/expokit/copyright}

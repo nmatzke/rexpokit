@@ -28,7 +28,7 @@
 #' @seealso \code{\link{expokit_dmexpv_Qmat}}
 #' @seealso \code{\link{expokit_wrapalldmexpv_tvals}}
 #' @export
-#' @author Nicholas J. Matzke \email{matzke@@berkeley.edu}
+#' @author Nicholas J. Matzke \email{nickmatzke.ncse@@gmail.com}
 #' @examples
 #' # Make a square instantaneous rate matrix (Q matrix)
 #' # This matrix is taken from Peter Foster's (2001) "The Idiot's Guide
@@ -109,7 +109,7 @@ expokit_dmexpv_wrapper <- function(n, m, t, v, tol, anorm, wsp, lwsp, iwsp, liws
 #' @seealso \code{\link{expokit_dmexpv_Qmat}}
 #' @seealso \code{\link{expokit_wrapalldmexpv_tvals}}
 #' @export
-#' @author Nicholas J. Matzke \email{matzke@@berkeley.edu}
+#' @author Nicholas J. Matzke \email{nickmatzke.ncse@@gmail.com}
 #' @examples
 #' # Make a square instantaneous rate matrix (Q matrix)
 #' # This matrix is taken from Peter Foster's (2001) "The Idiot's Guide
@@ -189,7 +189,7 @@ expokit_mydmexpv_wrapper <- function(n, m, t, v, tol, anorm, wsp, lwsp, iwsp, li
 #' @seealso \code{\link{expokit_dgexpv_Qmat}}
 #' @seealso \code{\link{expokit_wrapalldgexpv_tvals}}
 #' @export
-#' @author Nicholas J. Matzke \email{matzke@@berkeley.edu}
+#' @author Nicholas J. Matzke \email{nickmatzke.ncse@@gmail.com}
 #' @examples
 #' # Make a square instantaneous rate matrix (Q matrix)
 #' # This matrix is taken from Peter Foster's (2001) "The Idiot's Guide
@@ -276,7 +276,7 @@ expokit_mydgexpv_wrapper <- function(n, m, t, v, tol, anorm, wsp, lwsp, iwsp, li
 #' @seealso \code{\link{expokit_dgexpv_Qmat}}
 #' @seealso \code{\link{expokit_wrapalldgexpv_tvals}}
 #' @export
-#' @author Nicholas J. Matzke \email{matzke@@berkeley.edu}
+#' @author Nicholas J. Matzke \email{nickmatzke.ncse@@gmail.com}
 #' @examples # Example building the inputs from scratch:
 #'
 #' # Make a square instantaneous rate matrix (Q matrix)
@@ -375,6 +375,53 @@ expokit_dgexpv_wrapper <- function(n, m, timeval, v, w, tol, anorm, wsp, lwsp, i
 
 
 
+#' wrapper function for FORTRAN itscale5 (for FD's maxent)
+#'
+#' This function wraps a .C call to FORTRAN for the itscale5 function.
+#' 
+#' @param SXT is a Groups (rows) X Traits (columns) matrix
+#' @param ngroups is an integer (nb: NJM's interpretation)
+#' @param ntraits is an integer (nb: NJM's interpretation)
+#' @param const is a vector of the constraint values (means, variances)
+#' @param prior is the prior distribution
+#' @param prob is the return vector of the maximum entropy
+#' @param entropy is the maximum entropy probabilities
+#' @param niter is the number of iterations required
+#' @param tol is the convergence tolerance value; tolerance is mean square difference
+#' @param denom are final moments
+#'
+#' The itscale5 function is in the "itscale5.f" FORTRAN file.  itscale5 is used by
+#' the FD::maxent function.
+#' 
+#' The maxent function is used by BioGeoBEARS, merely to provide a simple method 
+#' of putting flat or skewed probability distributions on the ordered categorical variable
+#' "size of smaller daughter range"). 
+#'
+#' As the package FD has a number of other dependencies, some of which cause problems on 
+#' some machines, I am just including maxent and itscale5 here, in order to avoid 
+#' "dependency hell".
+#'
+#' I am putting it in rexpokit rather than BioGeoBEARS, to make rexpokit the only
+#' package using FORTRAN code (which has a list of its own issues).
+#' 
+#' @return \code{res} A list of outputs
+#' @seealso \code{\link{maxent}}
+#' @export
+#' @author Nicholas J. Matzke \email{nickmatzke.ncse@@gmail.com}
+#' @examples # See maxent() function
+#'
+#' test=1
+#' 
+expokit_itscale5_wrapper <- function(SXT, ngroups, ntraits, const, prior, prob, entropy, niter, tol, denom)
+{
+	res2 = NULL
+	
+	res2 <- .C("itscale5_", as.double(SXT), as.integer(ngroups), as.integer(ntraits), as.double(const), as.double(prior), as.double(prob), as.double(entropy), as.integer(niter), as.double(tol), as.double(denom))
+	
+	#tmpoutmat = matrix(res2[[10]], nrow=n, byrow=TRUE)
+	
+	return(res2)
+}
 
 
 
@@ -407,7 +454,7 @@ expokit_dgexpv_wrapper <- function(n, m, timeval, v, w, tol, anorm, wsp, lwsp, i
 #' @seealso \code{\link{expokit_dgexpv_wrapper}}
 #' @seealso \code{\link{expokit_dgexpv_Qmat}}
 #' @export
-#' @author Nicholas J. Matzke \email{matzke@@berkeley.edu}
+#' @author Nicholas J. Matzke \email{nickmatzke.ncse@@gmail.com} and Drew Schmidt \email{schmidt@@math.utk.edu}
 #' @examples # Example:
 #' # Make a square instantaneous rate matrix (Q matrix)
 #' # This matrix is taken from Peter Foster's (2001) "The Idiot's Guide
@@ -755,7 +802,7 @@ expokit_wrapalldgexpv_tvals <- function(Qmat=NULL, tvals=c(2.1), inputprobs_for_
 #' @seealso \code{\link{expokit_dmexpv_wrapper}}
 #' @seealso \code{\link{expokit_dmexpv_Qmat}}
 #' @export
-#' @author Nicholas J. Matzke \email{matzke@@berkeley.edu}
+#' @author Nicholas J. Matzke \email{nickmatzke.ncse@@gmail.com} and Drew Schmidt \email{schmidt@@math.utk.edu}
 #' @examples
 #' # Make a square instantaneous rate matrix (Q matrix)
 #' # This matrix is taken from Peter Foster's (2001) "The Idiot's Guide

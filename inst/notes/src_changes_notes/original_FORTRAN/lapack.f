@@ -5,7 +5,7 @@
 *----------------------------------------------------------------------|
       subroutine ZGESV( N, M, A,LDA, IPIV, B,LDB, IFLAG )
       integer N, M, LDA, LDB, IPIV(N), IFLAG
-      complex(kind=8) A(LDA,N), B(LDB,M)
+      complex*16 A(LDA,N), B(LDB,M)
       call ZGEFA( A,LDA, N, IPIV, IFLAG )
 *      if ( IFLAG.ne.0 ) stop "Error in ZGESV (LU factorisation)"
       do j = 1,M
@@ -19,23 +19,12 @@
       subroutine ZHESV(UPLO, N,M, A,LDA, IPIV, B,LDB, WRK,LWRK, IFLAG )
       character UPLO*1
       integer N, M, LDA, LDB, LWRK, IFLAG, IPIV(N)
-      complex(kind=8) A(LDA,N), B(LDB,M), WRK(LWRK)
+      complex*16 A(LDA,N), B(LDB,M), WRK(LWRK)
       call ZHIFA( A,LDA, N, IPIV, IFLAG )
 *      if ( IFLAG.ne.0 ) stop "Error in ZHESV (LDL' factorisation)"
       do j = 1,M
          call ZHISL( A,LDA, N, IPIV,B(1,j) )
       enddo
-
-c     FIX for Warning: Unused dummy argument 'uplo'
-      if (LEN(UPLO) > 0) then
-        continue
-      end if
-
-c     FIX for Warning: Unused dummy argument 'wrk'
-      if (REALPART(WRK(LWRK)) > 0) then
-        continue
-      end if
-
       end
 
 
@@ -44,23 +33,12 @@ c     FIX for Warning: Unused dummy argument 'wrk'
       subroutine ZSYSV(UPLO, N,M, A,LDA, IPIV, B,LDB, WRK,LWRK, IFLAG )
       character UPLO*1
       integer N, M, LDA, LDB, LWRK, IFLAG, IPIV(N)
-      complex(kind=8) A(LDA,N), B(LDB,M), WRK(LWRK)
+      complex*16 A(LDA,N), B(LDB,M), WRK(LWRK)
       call ZSIFA( A,LDA, N, IPIV, IFLAG )
 *      if ( IFLAG.ne.0 ) stop "Error in ZSYSV (LDL' factorisation)"
       do j = 1,M
          call ZSISL( A,LDA, N, IPIV, B(1,j) )
       enddo
-
-c     FIX for Warning: Unused dummy argument 'uplo'
-      if (LEN(UPLO) > 0) then
-        continue
-      end if
-
-c     FIX for Warning: Unused dummy argument 'wrk'
-      if (REALPART(WRK(LWRK)) > 0) then
-        continue
-      end if
-
       end
 
 
@@ -68,9 +46,9 @@ c     FIX for Warning: Unused dummy argument 'wrk'
 *----------------------------------------------------------------------|
       subroutine zgefa(a,lda,n,ipvt,info)
       integer lda,n,ipvt(1),info
-      complex(kind=8) a(lda,1)
+      complex*16 a(lda,1)
 c
-c     zgefa factors a complex(kind=8) matrix by gaussian elimination.
+c     zgefa factors a complex*16 matrix by gaussian elimination.
 c
 c     zgefa is usually called by zgeco, but it can be called
 c     directly with a saving in time if  rcond  is not needed.
@@ -78,7 +56,7 @@ c     (time for zgeco) = (1 + 9/n)*(time for zgefa) .
 c
 c     on entry
 c
-c        a       complex(kind=8)(lda, n)
+c        a       complex*16(lda, n)
 c                the matrix to be factored.
 c
 c        lda     integer
@@ -116,28 +94,16 @@ c     fortran dabs
 c
 c     internal variables
 c
-      complex(kind=8) t
+      complex*16 t
       integer izamax,j,k,kp1,l,nm1
 c
-c      complex(kind=8) zdum
+      complex*16 zdum
       double precision cabs1
-      double precision pta, ptb
-
-c      double precision dreal,dimag
-c      complex(kind=8) zdumr,zdumi
-c     dreal(zdumr) = zdumr
-c     dimag(zdumi) = (0.0d0,-1.0d0)*zdumi
-
-c     Statement function:
-c      cabs1(zdum) = dabs(REALPART(zdum)) + dabs(IMAGPART(zdum))
-c     FIX:
-c      double precision cabs1
-c      double precision pta, ptb
-c      pta = REALPART(zdum)
-c      ptb = IMAGPART(zdum)
-c      ((dabs(pta)+dabs(ptb))
-
-
+      double precision dreal,dimag
+      complex*16 zdumr,zdumi
+      dreal(zdumr) = zdumr
+      dimag(zdumi) = (0.0d0,-1.0d0)*zdumi
+      cabs1(zdum) = dabs(dreal(zdum)) + dabs(dimag(zdum))
 c
 c     gaussian elimination with partial pivoting
 c
@@ -154,13 +120,7 @@ c
 c
 c        zero pivot implies this column already triangularized
 c
-
-c        FIX:
-         pta = REALPART(a(l,k))
-         ptb = IMAGPART(a(l,k))
-         cabs1 = dabs(pta)+dabs(ptb)
-c         if (cabs1(a(l,k)) .eq. 0.0d0) go to 40
-         if (cabs1 .eq. 0.0d0) go to 40
+         if (cabs1(a(l,k)) .eq. 0.0d0) go to 40
 c
 c           interchange if necessary
 c
@@ -192,14 +152,7 @@ c
    60 continue
    70 continue
       ipvt(n) = n
-
-c     FIX:
-      pta = REALPART(a(n,n))
-      ptb = IMAGPART(a(n,n))
-      cabs1 = dabs(pta)+dabs(ptb)
-
-c     if (cabs1(a(n,n)) .eq. 0.0d0) info = n
-      if (cabs1 .eq. 0.0d0) info = n
+      if (cabs1(a(n,n)) .eq. 0.0d0) info = n
       return
       end
 
@@ -208,15 +161,15 @@ c     if (cabs1(a(n,n)) .eq. 0.0d0) info = n
 *----------------------------------------------------------------------|
       subroutine zgesl(a,lda,n,ipvt,b,job)
       integer lda,n,ipvt(1),job
-      complex(kind=8) a(lda,1),b(1)
+      complex*16 a(lda,1),b(1)
 c
-c     zgesl solves the complex(kind=8) system
+c     zgesl solves the complex*16 system
 c     a * x = b  or  ctrans(a) * x = b
 c     using the factors computed by zgeco or zgefa.
 c
 c     on entry
 c
-c        a       complex(kind=8)(lda, n)
+c        a       complex*16(lda, n)
 c                the output from zgeco or zgefa.
 c
 c        lda     integer
@@ -228,7 +181,7 @@ c
 c        ipvt    integer(n)
 c                the pivot vector from zgeco or zgefa.
 c
-c        b       complex(kind=8)(n)
+c        b       complex*16(n)
 c                the right hand side vector.
 c
 c        job     integer
@@ -267,12 +220,12 @@ c     fortran dconjg
 c
 c     internal variables
 c
-      complex(kind=8) zdotc,t
+      complex*16 zdotc,t
       integer k,kb,l,nm1
-c      double precision dreal,dimag
-c      complex(kind=8) zdumr,zdumi
-c      dreal(zdumr) = zdumr
-c      dimag(zdumi) = (0.0d0,-1.0d0)*zdumi
+      double precision dreal,dimag
+      complex*16 zdumr,zdumi
+      dreal(zdumr) = zdumr
+      dimag(zdumi) = (0.0d0,-1.0d0)*zdumi
 c
       nm1 = n - 1
       if (job .ne. 0) go to 50
@@ -334,9 +287,9 @@ c
 *----------------------------------------------------------------------|
       subroutine zhifa(a,lda,n,kpvt,info)
       integer lda,n,kpvt(1),info
-      complex(kind=8) a(lda,1)
+      complex*16 a(lda,1)
 c
-c     zhifa factors a complex(kind=8) hermitian matrix by elimination
+c     zhifa factors a complex*16 hermitian matrix by elimination
 c     with symmetric pivoting.
 c
 c     to solve  a*x = b , follow zhifa by zhisl.
@@ -347,7 +300,7 @@ c     to compute  inverse(a) , follow zhifa by zhidi.
 c
 c     on entry
 c
-c        a       complex(kind=8)(lda,n)
+c        a       complex*16(lda,n)
 c                the hermitian matrix to be factored.
 c                only the diagonal and upper triangle are used.
 c
@@ -387,22 +340,18 @@ c     fortran dabs,dmax1,dcmplx,dconjg,dsqrt
 c
 c     internal variables
 c
-      complex(kind=8) ak,akm1,bk,bkm1,denom,mulk,mulkm1,t
+      complex*16 ak,akm1,bk,bkm1,denom,mulk,mulkm1,t
       double precision absakk,alpha,colmax,rowmax
       integer imax,imaxp1,j,jj,jmax,k,km1,km2,kstep,izamax
       logical swap
 c
-c     complex(kind=8) zdum
+      complex*16 zdum
       double precision cabs1
-c     FIX:
-      double precision pta, ptb
-c      double precision dreal,dimag
-c      complex(kind=8) zdumr,zdumi
-c      dreal(zdumr) = zdumr
-c      dimag(zdumi) = (0.0d0,-1.0d0)*zdumi
-
-c FIX:
-c      cabs1(zdum) = dabs(REALPART(zdum)) + dabs(IMAGPART(zdum))
+      double precision dreal,dimag
+      complex*16 zdumr,zdumi
+      dreal(zdumr) = zdumr
+      dimag(zdumi) = (0.0d0,-1.0d0)*zdumi
+      cabs1(zdum) = dabs(dreal(zdum)) + dabs(dimag(zdum))
 c
 c     initialize
 c
@@ -422,14 +371,7 @@ c     ...exit
          if (k .eq. 0) go to 200
          if (k .gt. 1) go to 20
             kpvt(1) = 1
-            
-c           FIX:
-            pta = REALPART(a(1,1))
-            ptb = IMAGPART(a(1,1))
-            cabs1 = dabs(pta)+dabs(ptb)
-           
-c           if (cabs1(a(1,1)) .eq. 0.0d0) info = 1
-            if (cabs1 .eq. 0.0d0) info = 1
+            if (cabs1(a(1,1)) .eq. 0.0d0) info = 1
 c     ......exit
             go to 200
    20    continue
@@ -441,30 +383,13 @@ c        swap will be set to .true. if an interchange is
 c        required.
 c
          km1 = k - 1
-
-c        FIX:
-         pta = REALPART(a(k,k))
-         ptb = IMAGPART(a(k,k))
-         cabs1 = dabs(pta)+dabs(ptb)
-
-c        absakk = cabs1(a(k,k))
-         absakk = cabs1
-
-
-
+         absakk = cabs1(a(k,k))
 c
 c        determine the largest off-diagonal element in
 c        column k.
 c
          imax = izamax(k-1,a(1,k),1)
-
-c        FIX:
-         pta = REALPART(a(imax,k))
-         ptb = IMAGPART(a(imax,k))
-         cabs1 = dabs(pta)+dabs(ptb)
-
-c        colmax = cabs1(a(imax,k))
-         colmax = cabs1
+         colmax = cabs1(a(imax,k))
          if (absakk .lt. alpha*colmax) go to 30
             kstep = 1
             swap = .false.
@@ -477,34 +402,13 @@ c
             rowmax = 0.0d0
             imaxp1 = imax + 1
             do 40 j = imaxp1, k
-
-c              FIX:
-               pta = REALPART(a(imax,j))
-               ptb = IMAGPART(a(imax,j))
-               cabs1 = dabs(pta)+dabs(ptb)
-
-c              rowmax = dmax1(rowmax,cabs1(a(imax,j)))
-               rowmax = dmax1(rowmax,cabs1)
+               rowmax = dmax1(rowmax,cabs1(a(imax,j)))
    40       continue
             if (imax .eq. 1) go to 50
                jmax = izamax(imax-1,a(1,imax),1)
-
-c              FIX:
-               pta = REALPART(a(jmax,imax))
-               ptb = IMAGPART(a(jmax,imax))
-               cabs1 = dabs(pta)+dabs(ptb)
-
-c              rowmax = dmax1(rowmax,cabs1(a(jmax,imax)))
-               rowmax = dmax1(rowmax,cabs1)
+               rowmax = dmax1(rowmax,cabs1(a(jmax,imax)))
    50       continue
-
-c           FIX:
-            pta = REALPART(a(imax,imax))
-            ptb = IMAGPART(a(imax,imax))
-            cabs1 = dabs(pta)+dabs(ptb)
-
-c           if (cabs1(a(imax,imax)) .lt. alpha*rowmax) go to 60
-            if (cabs1 .lt. alpha*rowmax) go to 60
+            if (cabs1(a(imax,imax)) .lt. alpha*rowmax) go to 60
                kstep = 1
                swap = .true.
             go to 80
@@ -550,7 +454,7 @@ c
                mulk = -a(j,k)/a(k,k)
                t = dconjg(mulk)
                call zaxpy(j,t,a(1,k),1,a(1,j),1)
-               a(j,j) = dcmplx(REALPART(a(j,j)),0.0d0)
+               a(j,j) = dcmplx(dreal(a(j,j)),0.0d0)
                a(j,k) = mulk
   130       continue
 c
@@ -598,7 +502,7 @@ c
                   call zaxpy(j,t,a(1,k-1),1,a(1,j),1)
                   a(j,k) = mulk
                   a(j,k-1) = mulkm1
-                  a(j,j) = dcmplx(REALPART(a(j,j)),0.0d0)
+                  a(j,j) = dcmplx(dreal(a(j,j)),0.0d0)
   170          continue
   180       continue
 c
@@ -619,15 +523,15 @@ c
 *----------------------------------------------------------------------|
       subroutine zhisl(a,lda,n,kpvt,b)
       integer lda,n,kpvt(1)
-      complex(kind=8) a(lda,1),b(1)
+      complex*16 a(lda,1),b(1)
 c
-c     zhisl solves the complex(kind=8) hermitian system
+c     zhisl solves the complex*16 hermitian system
 c     a * x = b
 c     using the factors computed by zhifa.
 c
 c     on entry
 c
-c        a       complex(kind=8)(lda,n)
+c        a       complex*16(lda,n)
 c                the output from zhifa.
 c
 c        lda     integer
@@ -639,7 +543,7 @@ c
 c        kpvt    integer(n)
 c                the pivot vector from zhifa.
 c
-c        b       complex(kind=8)(n)
+c        b       complex*16(n)
 c                the right hand side vector.
 c
 c     on return
@@ -669,7 +573,7 @@ c     fortran dconjg,iabs
 c
 c     internal variables.
 c
-      complex(kind=8) ak,akm1,bk,bkm1,zdotc,denom,temp
+      complex*16 ak,akm1,bk,bkm1,zdotc,denom,temp
       integer k,kp
 c
 c     loop backward applying the transformations and
@@ -794,9 +698,9 @@ c
 *----------------------------------------------------------------------|
       subroutine zsifa(a,lda,n,kpvt,info)
       integer lda,n,kpvt(1),info
-      complex(kind=8) a(lda,1)
+      complex*16 a(lda,1)
 c
-c     zsifa factors a complex(kind=8) symmetric matrix by elimination
+c     zsifa factors a complex*16 symmetric matrix by elimination
 c     with symmetric pivoting.
 c
 c     to solve  a*x = b , follow zsifa by zsisl.
@@ -806,7 +710,7 @@ c     to compute  inverse(a) , follow zsifa by zsidi.
 c
 c     on entry
 c
-c        a       complex(kind=8)(lda,n)
+c        a       complex*16(lda,n)
 c                the symmetric matrix to be factored.
 c                only the diagonal and upper triangle are used.
 c
@@ -846,22 +750,18 @@ c     fortran dabs,dmax1,dsqrt
 c
 c     internal variables
 c
-      complex(kind=8) ak,akm1,bk,bkm1,denom,mulk,mulkm1,t
+      complex*16 ak,akm1,bk,bkm1,denom,mulk,mulkm1,t
       double precision absakk,alpha,colmax,rowmax
       integer imax,imaxp1,j,jj,jmax,k,km1,km2,kstep,izamax
       logical swap
 c
-c      complex(kind=8) zdum
+      complex*16 zdum
       double precision cabs1
-      double precision pta
-      double precision ptb
-
-c      double precision dreal,dimag
-c      complex(kind=8) zdumr,zdumi
-
-c      dreal(zdumr) = zdumr
-c      dimag(zdumi) = (0.0d0,-1.0d0)*zdumi
-c      cabs1(zdum) = dabs(REALPART(zdum)) + dabs(IMAGPART(zdum))
+      double precision dreal,dimag
+      complex*16 zdumr,zdumi
+      dreal(zdumr) = zdumr
+      dimag(zdumi) = (0.0d0,-1.0d0)*zdumi
+      cabs1(zdum) = dabs(dreal(zdum)) + dabs(dimag(zdum))
 c
 c     initialize
 c
@@ -881,15 +781,7 @@ c     ...exit
          if (k .eq. 0) go to 200
          if (k .gt. 1) go to 20
             kpvt(1) = 1
-
-c           FIX:
-c           if (cabs1(a(1,1)) .eq. 0.0d0) info = 1
-      pta = REALPART(a(1,1))
-      ptb = IMAGPART(a(1,1))
-      cabs1 = dabs(pta)+dabs(ptb)
-      if (cabs1 .eq. 0.0d0) info=1
-
-
+            if (cabs1(a(1,1)) .eq. 0.0d0) info = 1
 c     ......exit
             go to 200
    20    continue
@@ -901,28 +793,13 @@ c        swap will be set to .true. if an interchange is
 c        required.
 c
          km1 = k - 1
-
-c        FIX:
-         pta = REALPART(a(k,k))
-         ptb = IMAGPART(a(k,k))
-         cabs1 = dabs(pta)+dabs(ptb)
-
-c        absakk = cabs1(a(k,k))
-         absakk = cabs1
+         absakk = cabs1(a(k,k))
 c
 c        determine the largest off-diagonal element in
 c        column k.
 c
          imax = izamax(k-1,a(1,k),1)
-
-
-c        FIX:
-         pta = REALPART(a(imax,k))
-         ptb = IMAGPART(a(imax,k))
-         cabs1 = dabs(pta)+dabs(ptb)
-
-c        colmax = cabs1(a(imax,k))
-         colmax = cabs1
+         colmax = cabs1(a(imax,k))
          if (absakk .lt. alpha*colmax) go to 30
             kstep = 1
             swap = .false.
@@ -935,28 +812,13 @@ c
             rowmax = 0.0d0
             imaxp1 = imax + 1
             do 40 j = imaxp1, k
-c              FIX:
-               pta = REALPART(a(imax,j))
-               ptb = IMAGPART(a(imax,j))
-               cabs1 = dabs(pta)+dabs(ptb)
-c              rowmax = dmax1(rowmax,cabs1(a(imax,j)))
-               rowmax = dmax1(rowmax,cabs1)
+               rowmax = dmax1(rowmax,cabs1(a(imax,j)))
    40       continue
             if (imax .eq. 1) go to 50
                jmax = izamax(imax-1,a(1,imax),1)
-c              FIX:
-               pta = REALPART(a(jmax,imax))
-               ptb = IMAGPART(a(jmax,imax))
-               cabs1 = dabs(pta)+dabs(ptb)
-c              rowmax = dmax1(rowmax,cabs1(a(jmax,imax)))
-               rowmax = dmax1(rowmax,cabs1)
+               rowmax = dmax1(rowmax,cabs1(a(jmax,imax)))
    50       continue
-c              FIX:
-            pta = REALPART(a(imax,imax))
-            ptb = IMAGPART(a(imax,imax))
-            cabs1 = dabs(pta)+dabs(ptb)
-c           if (cabs1(a(imax,imax)) .lt. alpha*rowmax) go to 60
-            if (cabs1 .lt. alpha*rowmax) go to 60
+            if (cabs1(a(imax,imax)) .lt. alpha*rowmax) go to 60
                kstep = 1
                swap = .true.
             go to 80
@@ -1069,15 +931,15 @@ c
 *----------------------------------------------------------------------|
       subroutine zsisl(a,lda,n,kpvt,b)
       integer lda,n,kpvt(1)
-      complex(kind=8) a(lda,1),b(1)
+      complex*16 a(lda,1),b(1)
 c
-c     zsisl solves the complex(kind=8) symmetric system
+c     zsisl solves the complex*16 symmetric system
 c     a * x = b
 c     using the factors computed by zsifa.
 c
 c     on entry
 c
-c        a       complex(kind=8)(lda,n)
+c        a       complex*16(lda,n)
 c                the output from zsifa.
 c
 c        lda     integer
@@ -1089,7 +951,7 @@ c
 c        kpvt    integer(n)
 c                the pivot vector from zsifa.
 c
-c        b       complex(kind=8)(n)
+c        b       complex*16(n)
 c                the right hand side vector.
 c
 c     on return
@@ -1119,7 +981,7 @@ c     fortran iabs
 c
 c     internal variables.
 c
-      complex(kind=8) ak,akm1,bk,bkm1,zdotu,denom,temp
+      complex*16 ak,akm1,bk,bkm1,zdotu,denom,temp
       integer k,kp
 c
 c     loop backward applying the transformations and

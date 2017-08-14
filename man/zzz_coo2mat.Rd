@@ -54,7 +54,7 @@ Qmat = coo2mat(coomat, n)
 print(Qmat)
 }
 \author{
-  Nicholas J. Matzke \email{matzke@berkeley.edu}
+  Nicholas J. Matzke \email{nickmatzke.ncse@gmail.com}
 }
 
 

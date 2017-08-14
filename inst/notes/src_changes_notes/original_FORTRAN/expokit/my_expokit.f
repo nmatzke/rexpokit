@@ -813,7 +813,7 @@
       implicit none
       double precision t
       integer          ideg, m, ldh, lwsp, iexph, ns, iflag, ipiv(m)
-      complex(kind=8)       H(ldh,m), wsp(lwsp)
+      complex*16       H(ldh,m), wsp(lwsp)
 
 *-----Purpose----------------------------------------------------------|
 *
@@ -857,7 +857,7 @@
 *
       integer i,j,k,icoef,mm,ih2,iodd,iused,ifree,iq,ip,iput,iget
       double precision hnorm
-      complex(kind=8) cp, cq, scale, scale2, ZERO, ONE
+      complex*16 cp, cq, scale, scale2, ZERO, ONE
 
       parameter( ZERO=(0.0d0,0.0d0), ONE=(1.0d0,0.0d0) )
       intrinsic ABS, CMPLX, DBLE, INT, LOG, MAX
@@ -985,7 +985,7 @@
       implicit none
       double precision t
       integer          ideg, m, ldh, lwsp, iexph, ns, iflag, ipiv(m)
-      complex(kind=8)       H(ldh,m), wsp(lwsp)
+      complex*16       H(ldh,m), wsp(lwsp)
 
 *-----Purpose----------------------------------------------------------|
 *
@@ -1029,7 +1029,7 @@
 *
       integer i,j,k,icoef,mm,ih2,iodd,iused,ifree,iq,ip,iput,iget
       double precision hnorm
-      complex(kind=8) cp, cq, scale, scale2, ZERO, ONE
+      complex*16 cp, cq, scale, scale2, ZERO, ONE
 
       parameter( ZERO=(0.0d0,0.0d0), ONE=(1.0d0,0.0d0) )
       intrinsic ABS, CMPLX, DBLE, INT, LOG, MAX
@@ -1157,7 +1157,7 @@
       implicit none
       integer          m, ldh, iflag, iwsp(m)
       double precision t, H(ldh,m), y(m)
-      complex(kind=8)       wsp(m*(m+2))
+      complex*16       wsp(m*(m+2))
 
 *-----Purpose----------------------------------------------------------|
 *
@@ -1193,7 +1193,7 @@
       integer ndeg, i, j, ip, ih, iy, iz
       parameter ( ndeg=7 )
       double precision alpha0
-      complex(kind=8) alpha(ndeg), theta(ndeg)
+      complex*16 alpha(ndeg), theta(ndeg)
 
       intrinsic DBLE
       
@@ -1252,7 +1252,7 @@
       implicit none
       integer          m, ldh, iflag, iwsp(m)
       double precision t, H(ldh,m), y(m)
-      complex(kind=8)       wsp(m*(m+2))
+      complex*16       wsp(m*(m+2))
 
 *-----Purpose----------------------------------------------------------|
 *
@@ -1288,7 +1288,7 @@
       integer ndeg, i, j, ip, ih, iy, iz
       parameter ( ndeg=7 )
       double precision alpha0
-      complex(kind=8) alpha(ndeg), theta(ndeg), w
+      complex*16 alpha(ndeg), theta(ndeg), w
 
       intrinsic ABS,CMPLX,DBLE,MIN
       
@@ -1347,7 +1347,7 @@
       implicit none
       integer          m, ldh, iflag, iwsp(m)
       double precision t
-      complex(kind=8)       H(ldh,m), y(m), wsp(m*(m+2))
+      complex*16       H(ldh,m), y(m), wsp(m*(m+2))
 
 *-----Purpose----------------------------------------------------------|
 *
@@ -1383,7 +1383,7 @@
       integer     ndeg, i, j, ip, ih, iy, iz
       parameter ( ndeg=7 )
       double      precision alpha0
-      complex(kind=8)  alpha(2*ndeg), theta(2*ndeg)
+      complex*16  alpha(2*ndeg), theta(2*ndeg)
       
 *---  Pointers ...
 
@@ -1476,11 +1476,11 @@
 *     ACM - Transactions On Mathematical Software, 24(1):130-156, 1998
 *----------------------------------------------------------------------|
 *
-      complex(kind=8) ZERO
+      complex*16 ZERO
       integer ndeg, i, j, k, ip, ih, iy, iz
       parameter ( ndeg=7, ZERO=(0.0d0,0.0d0) )
       double precision alpha0
-      complex(kind=8) alpha(ndeg), theta(ndeg), tmpc
+      complex*16 alpha(ndeg), theta(ndeg), tmpc
 
       intrinsic ABS,DBLE,MIN
       
@@ -1560,7 +1560,7 @@
       implicit none
       integer          m, ldh
       double precision t
-      complex(kind=8)       H(ldh,m), y(m), wsp(m*(m+2))
+      complex*16       H(ldh,m), y(m), wsp(m*(m+2))
 
 *-----Purpose----------------------------------------------------------|
 *
@@ -1591,11 +1591,11 @@
 *     ACM - Transactions On Mathematical Software, 24(1):130-156, 1998
 *----------------------------------------------------------------------|
 *
-      complex(kind=8) ZERO
+      complex*16 ZERO
       integer ndeg, i, j, k, ip, ih, iy, iz
       parameter ( ndeg=7, ZERO=(0.0d0,0.0d0) )
       double precision alpha0
-      complex(kind=8) alpha(ndeg), theta(ndeg), tmpc
+      complex*16 alpha(ndeg), theta(ndeg), tmpc
 
       intrinsic ABS,DBLE,CONJG,MIN
       
@@ -2454,7 +2454,7 @@
       implicit none
       integer          n, m, lwsp, liwsp, itrace, iflag, iwsp(liwsp)
       double precision t, tol, anorm
-      complex(kind=8)       v(n), w(n), wsp(lwsp)
+      complex*16       v(n), w(n), wsp(lwsp)
       external         matvec
 
 *-----Purpose----------------------------------------------------------|
@@ -2500,7 +2500,7 @@
 *
 *     matvec : external subroutine for matrix-vector multiplication.
 *              synopsis: matvec( x, y )
-*                        complex(kind=8) x(*), y(*)
+*                        complex*16 x(*), y(*)
 *              computes: y(1:n) <- A*x(1:n)
 *                        where A is the principal matrix.
 *
@@ -2577,7 +2577,7 @@
 *     ACM - Transactions On Mathematical Software, 24(1):130-156, 1998
 *----------------------------------------------------------------------|
 
-      complex(kind=8) ZERO, ONE
+      complex*16 ZERO, ONE
       parameter( ZERO=(0.0d0,0.0d0), ONE=(1.0d0,0.0d0) )
       integer i, j, k1, mh, mx, iv, ih, j1v, ns, ifree, lfree, iexph,
      .        ireject,ibrkflag,mbrkdwn, nmult, nreject, nexph, nscale,
@@ -2586,10 +2586,10 @@
      .                 s_error, x_error, t_now, t_new, t_step, t_old,
      .                 xm, beta, break_tol, p1, p2, p3, eps, rndoff,
      .                 vnorm, avnorm, hj1j, hump, SQR1
-      complex(kind=8) hij
+      complex*16 hij
 
       intrinsic AINT,ABS,CMPLX,DBLE,INT,LOG10,MAX,MIN,NINT,SIGN,SQRT
-      complex(kind=8) ZDOTC
+      complex*16 ZDOTC
       double precision DZNRM2
 *
 *---  check restrictions on input parameters ...
@@ -2831,7 +2831,7 @@
       implicit none
       integer          n, m, lwsp, liwsp, itrace, iflag, iwsp(liwsp)
       double precision t, tol, anorm
-      complex(kind=8)       v(n), w(n), wsp(lwsp)
+      complex*16       v(n), w(n), wsp(lwsp)
       external         matvec
 
 *-----Purpose----------------------------------------------------------|
@@ -2876,7 +2876,7 @@
 *
 *     matvec : external subroutine for matrix-vector multiplication.
 *              synopsis: matvec( x, y )
-*                        complex(kind=8) x(*), y(*)
+*                        complex*16 x(*), y(*)
 *              computes: y(1:n) <- A*x(1:n)
 *                        where A is the principal matrix.
 *
@@ -2953,7 +2953,7 @@
 *     ACM - Transactions On Mathematical Software, 24(1):130-156, 1998
 *----------------------------------------------------------------------|
 *
-      complex(kind=8) ZERO, ONE
+      complex*16 ZERO, ONE
       parameter( ZERO=(0.0d0,0.0d0), ONE=(1.0d0,0.0d0) )
       integer i, j, k1, mh, mx, iv, ih, j1v, ns, ifree, lfree, iexph,
      .        ireject,ibrkflag,mbrkdwn, nmult, nreject, nexph, nscale,
@@ -2962,10 +2962,10 @@
      .                 s_error, x_error, t_now, t_new, t_step, t_old,
      .                 xm, beta, break_tol, p1, p2, p3, eps, rndoff,
      .                 vnorm, avnorm, hj1j, hump, SQR1
-      complex(kind=8) hjj
+      complex*16 hjj
 
       intrinsic AINT,ABS,CMPLX,DBLE,INT,LOG10,MAX,MIN,NINT,SIGN,SQRT
-      complex(kind=8) ZDOTC
+      complex*16 ZDOTC
       double precision DZNRM2
 *
 *---  check restrictions on input parameters ...
@@ -3915,7 +3915,7 @@
       implicit none
       integer          n, m, lwsp, liwsp, itrace, iflag, iwsp(liwsp)
       double precision t, tol, anorm
-      complex(kind=8)       u(n), v(n), w(n), wsp(lwsp)
+      complex*16       u(n), v(n), w(n), wsp(lwsp)
       external         matvec
 
 *-----Purpose----------------------------------------------------------|
@@ -4028,7 +4028,7 @@
 *     ACM - Transactions On Mathematical Software, 24(1):130-156, 1998
 *----------------------------------------------------------------------|
 *
-      complex(kind=8) ZERO, ONE
+      complex*16 ZERO, ONE
       parameter( ZERO=(0.0d0,0.0d0), ONE=(1.0d0,0.0d0) )
       integer i, j, k1, mh, mx, iv, ih, j1v, ns, ifree, lfree, iexph,
      .        ireject,ibrkflag,mbrkdwn, nmult, nreject, nexph, nscale,
@@ -4037,10 +4037,10 @@
      .                 s_error, x_error, t_now, t_new, t_step, t_old,
      .                 xm, beta, break_tol, p1, p2, p3, eps, rndoff,
      .                 avnorm, hj1j, SQR1
-      complex(kind=8) hij
+      complex*16 hij
 
       intrinsic AINT,ABS,CMPLX,DBLE,INT,LOG10,MAX,MIN,NINT,SIGN,SQRT
-      complex(kind=8) ZDOTC
+      complex*16 ZDOTC
       double precision DZNRM2
 *
 *---  check restrictions on input parameters ...
@@ -4275,7 +4275,7 @@
       implicit none
       integer          n, m, lwsp, liwsp, itrace, iflag, iwsp(liwsp)
       double precision t, tol, anorm
-      complex(kind=8)       u(n), v(n), w(n), wsp(lwsp)
+      complex*16       u(n), v(n), w(n), wsp(lwsp)
       external         matvec
 
 *-----Purpose----------------------------------------------------------|
@@ -4387,7 +4387,7 @@
 *     ACM - Transactions On Mathematical Software, 24(1):130-156, 1998
 *----------------------------------------------------------------------|
 *
-      complex(kind=8) ZERO, ONE
+      complex*16 ZERO, ONE
       parameter( ZERO=(0.0d0,0.0d0), ONE=(1.0d0,0.0d0) )
       integer i, j, k1, mh, mx, iv, ih, j1v, ns, ifree, lfree, iexph,
      .        ireject,ibrkflag,mbrkdwn, nmult, nreject, nexph, nscale,
@@ -4396,10 +4396,10 @@
      .                 s_error, x_error, t_now, t_new, t_step, t_old,
      .                 xm, beta, break_tol, p1, p2, p3, eps, rndoff,
      .                 avnorm, hj1j, SQR1
-      complex(kind=8) hjj
+      complex*16 hjj
 
       intrinsic AINT,ABS,CMPLX,DBLE,INT,LOG10,MAX,MIN,NINT,SIGN,SQRT
-      complex(kind=8) ZDOTC
+      complex*16 ZDOTC
       double precision DZNRM2
 *
 *---  check restrictions on input parameters ...

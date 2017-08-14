@@ -1,107 +1,3 @@
-
-COMMON ERRORS THAT HAVE STUPID REASONS
-
-* pta = REALPART(a)
-* 1
-* Error: Non-numeric character in statement label at (1)
-*
-* THIS MEANS: THE CODE MUST START AT COLUMN 7!!
-* 
-
-
-*  if ((dabs(REALPART(a(1,1)))+dabs(IMAGPART(a(1,1)))).eq.0.0d0) &
-* Warning: Line truncated at (1) [-Wline-truncation]
-* 
-* THIS MEANS: Lines have to end at about column 70
-* (Because that's how long ticker-tape was in 1965,
-*  or something like that)
-*
-
-*     NOTE
-*     Fixing compiling errors noted by CRAN check in some 
-*     Windows machines
-*     
-*     PROBLEM:
-*     my_expokit.f:816:16:
-*     complex*16       H(ldh,m), wsp(lwsp)
-*     Warning: GNU Extension: Nonstandard type declaration COMPLEX*16 at (1)
-*     
-*     FIX:
-*     complex*16 --> complex(kind=8)
-*     
-*     
-*     
-*     PROBLEM:
-*     CHARACTER*6        SRNAME
-*     Warning: Obsolescent feature: Old-style character length at (1)
-*     
-*     
-*     FIX:
-*     CHARACTER*6 --> CHARACTER(LEN=6)
-*     
-*     
-*     
-*     PROBLEM:
-*     lapack/blas_mod.f:2512:20:
-*     double complex zx(1),zy(1),ztemp
-*     Warning: GNU Extension: DOUBLE COMPLEX at (1)
-*     
-*     
-*     
-*     FIX:
-*     double complex --> complex(kind=8)
-*     
-*     
-*     
-*     PROBLEM:
-*      !absx = dabs(dreal(zx(i)))
-*     
-*     
-*     
-*     FIX:
-*      absx = DABS(REALPART(Zx(i)))
-*     
-*     
-!     ERROR:
-!     lapack/blas_mod.f:1884:26:
-!     absx = dabs(dimag(zx(i)))
-!     Error: Syntax error in argument list at (1)
-!     FIX:
-!     NO:   absx = dabs(dimag(zx(i)))
-!     NO:   absx = dabs((0.0d0,-1.0d0)*zx(i))
-!     YES:  Comment out dimag "statement function",
-!           Just use IMAGPART
-*             absx = DABS(IMAGPART(Zx(i)))
-* 
-* 
-*     PROBLEM:
-*     
-*     
-*     
-*     
-*     FIX:
-*     
-*     
-*     
-*     
-*     PROBLEM:
-*     
-*     
-*     
-*     
-*     FIX:
-*     
-*     
-*     
-*     
-
-
-
-       
-
-
-
-*     
 *     NOTE -- MODIFIED by Nick Matzke to fix these warnings when
 *     compiling with g77:
 *     
@@ -196,38 +92,7 @@ COMMON ERRORS THAT HAVE STUPID REASONS
       SUBROUTINE XERBLA ( SRNAME, INFO )
 *     ..    Scalar Arguments ..
       INTEGER            INFO
-      CHARACTER(LEN=6)   SRNAME
-
-c     Putting some if statements, so that these are not dummy variables 
-      if (SRNAME .EQ. 'DGEMV ') then
-         continue
-c        print*,"DGEMV problem: no INFO, see XERBLA in blas_mod.f"
-c        print*,"Attempting to print INFO below:"
-c        print*,INFO
-      end if
-
-      if (SRNAME .EQ. 'DGEMM ') then
-        continue
-c        print*,"DGEMM problem: no INFO, see XERBLA in blas_mod.f"
-c        print*,"Attempting to print INFO below:"
-c        print*,INFO
-      end if
-
-      if (SRNAME .EQ. 'ZGEMV ') then
-        continue
-c        print*,"ZGEMV problem: no INFO, see XERBLA in blas_mod.f"
-c        print*,"Attempting to print INFO below:"
-c        print*,INFO
-      end if
-
-      if (SRNAME .EQ. 'ZGEMM ') then
-        continue
-c        print*,"ZGEMM problem: no INFO, see XERBLA in blas_mod.f"
-c        print*,"Attempting to print INFO below:"
-c        print*,INFO
-      end if
-
-
+      CHARACTER*6        SRNAME
 *     ..
 *
 *  Purpose
@@ -355,30 +220,22 @@ c        print*,INFO
 *     End of LSAME
 *
       END
-
-
-c This looks like a complex way to get the sum
-c of the absolute values of a complex vector
 *----------------------------------------------------------------------|
       double precision function dcabs1(z)
-c      complex(kind=8) z,zz
-      complex(kind=8) z
-c      double precision t(2)
-c      equivalence (zz,t(1))
-c      zz = z
-      dcabs1 = dabs(REALPART(z)) + dabs(IMAGPART(z))
+      complex*16 z,zz
+      double precision t(2)
+      equivalence (zz,t(1))
+      zz = z
+      dcabs1 = dabs(t(1)) + dabs(t(2))
       return
       end
 *----------------------------------------------------------------------|
-
-
-
       subroutine zaxpy(n,za,zx,incx,zy,incy)
 c
 c     constant times a vector plus a vector.
 c     jack dongarra, 3/11/78.
 c
-      complex(kind=8) zx(1),zy(1),za
+      complex*16 zx(1),zy(1),za
       double precision dcabs1
       if(n.le.0)return
       if (dcabs1(za) .eq. 0.0d0) return
@@ -412,9 +269,8 @@ c     finds the index of element having max. absolute value.
 c     jack dongarra, linpack, 3/11/78.
 c     modified 3/93 to return if incx .le. 0.
 c
+      double precision dx(1),dmax
       integer i,incx,ix,n
-c      double precision dx(1),dmax
-      double precision dx(n),dmax
 c
       idamax = 0
       if( n.lt.1 .or. incx.le.0 ) return
@@ -452,9 +308,8 @@ c     takes the sum of the absolute values.
 c     jack dongarra, linpack, 3/11/78.
 c     modified 3/93 to return if incx .le. 0.
 c
-c      double precision dx(1),dtemp
+      double precision dx(1),dtemp
       integer i,incx,m,mp1,n,nincx
-      double precision dx(n),dtemp
 c
       dasum = 0.0d0
       dtemp = 0.0d0
@@ -497,10 +352,8 @@ c     uses unrolled loops for increment equal to one.
 c     jack dongarra, linpack, 3/11/78.
 c     modified 3/93 to return if incx .le. 0.
 c
+      double precision da,dx(1)
       integer i,incx,m,mp1,n,nincx
-c      double precision da,dx(1)
-      double precision da,dx(n)
-
 c
       if( n.le.0 .or. incx.le.0 )return
       if(incx.eq.1)go to 20
@@ -541,11 +394,8 @@ c     copies a vector, x, to a vector, y.
 c     uses unrolled loops for increments equal to one.
 c     jack dongarra, linpack, 3/11/78.
 c
+      double precision dx(1),dy(1)
       integer i,incx,incy,ix,iy,m,mp1,n
-c     FIX:
-c     double precision dx(1),dy(1),da
-      double precision dx(n),dy(n),da
-
 c
       if(n.le.0)return
       if(incx.eq.1.and.incy.eq.1)go to 20
@@ -587,180 +437,144 @@ c
    50 continue
       return
       end
-
 *----------------------------------------------------------------------|
-* Removing this warning:
-*     20    go to (30, 50, 70, 110) next
-* Warning: Obsolescent feature: Computed GOTO at (1)
-* 
-* USING:
-* 
-* On-Line Fortran F77 - F90 Converter
-* https://www.fortran.uk/plusfortonline.php
-* 
-* Also -- this produced " , " which I manually changed to ", "
-* And I removed "&" symbols for line-wrapping
-*----------------------------------------------------------------------|
-!*==DNRM2.spg  processed by SPAG 6.72Dc at 05:54 on 12 Aug 2017
-      DOUBLE PRECISION FUNCTION DNRM2(N,Dx,Incx)
-      IMPLICIT NONE
-!*--DNRM24
-      INTEGER i, Incx, ix, j, N, next
-c     DOUBLE PRECISION Dx(1), cutlo, cuthi, hitest, sum, xmax, zero, one
-      DOUBLE PRECISION Dx(N), cutlo, cuthi, hitest, sum, xmax, zero, one
-      DATA zero, one/0.0D0, 1.0D0/
-!
-!     euclidean norm of the n-vector stored in dx() with storage
-!     increment incx .
-!     if    n .le. 0 return with result = 0.
-!     if n .ge. 1 then incx must be .ge. 1
-!
-!           c.l.lawson, 1978 jan 08
-!     modified to correct failure to update ix, 1/25/92.
-!     modified 3/93 to return if incx .le. 0.
-!
-!     four phase method     using two built-in constants that are
-!     hopefully applicable to all machines.
-!         cutlo = maximum of  dsqrt(u/eps)  over all known machines.
-!         cuthi = minimum of  dsqrt(v)      over all known machines.
-!     where
-!         eps = smallest no. such that eps + 1. .gt. 1.
-!         u   = smallest positive no.   (underflow limit)
-!         v   = largest  no.            (overflow  limit)
-!
-!     brief outline of algorithm..
-!
-!     phase 1    scans zero components.
-!     move to phase 2 when a component is nonzero and .le. cutlo
-!     move to phase 3 when a component is .gt. cutlo
-!     move to phase 4 when a component is .ge. cuthi/m
-!     where m = n for x() real and m = 2*n for complex.
-!
-!     values for cutlo and cuthi..
-!     from the environmental parameters listed in the imsl converter
-!     document the limiting values are as follows..
-!     cutlo, s.p.   u/eps = 2**(-102) for  honeywell.  close seconds are
-!                   univac and dec at 2**(-103)
-!                   thus cutlo = 2**(-51) = 4.44089e-16
-!     cuthi, s.p.   v = 2**127 for univac, honeywell, and dec.
-!                   thus cuthi = 2**(63.5) = 1.30438e19
-!     cutlo, d.p.   u/eps = 2**(-67) for honeywell and dec.
-!                   thus cutlo = 2**(-33.5) = 8.23181d-11
-!     cuthi, d.p.   same as s.p.  cuthi = 1.30438d19
-!     data cutlo, cuthi / 8.232d-11,  1.304d19 /
-!     data cutlo, cuthi / 4.441e-16,  1.304e19 /
-      DATA cutlo, cuthi/8.232D-11, 1.304D19/
-!
-      IF ( N.GT.0 .AND. Incx.GT.0 ) THEN
-!
-         next = 30
-         sum = zero
-         i = 1
-         ix = 1
-      ELSE
-         DNRM2 = zero
-         GOTO 99999
-      ENDIF
-!                                                 begin main loop
- 100  IF ( next.EQ.2 ) THEN
-      ELSEIF ( next.EQ.3 ) THEN
-!
-!                   phase 2.  sum is small.
-!                             scale to avoid destructive underflow.
-!
-         IF ( DABS(Dx(i)).LE.cutlo ) GOTO 400
-!
-!
-!                  prepare for phase 3.
-!
-         sum = (sum*xmax)*xmax
-         GOTO 500
-      ELSEIF ( next.EQ.4 ) THEN
-         GOTO 400
-      ELSE
-         IF ( DABS(Dx(i)).GT.cutlo ) GOTO 500
-         next = 50
-         xmax = zero
-      ENDIF
-!
-!                        phase 1.  sum is zero
-!
-      IF ( Dx(i).EQ.zero ) GOTO 600
-      IF ( DABS(Dx(i)).GT.cutlo ) GOTO 500
-!
-!                                prepare for phase 2.
+      double precision function dnrm2 ( n, dx, incx)
+      integer i, incx, ix, j, n, next
+      double precision   dx(1), cutlo, cuthi, hitest, sum, xmax,zero,one
+      data   zero, one /0.0d0, 1.0d0/
+c
+c     euclidean norm of the n-vector stored in dx() with storage
+c     increment incx .
+c     if    n .le. 0 return with result = 0.
+c     if n .ge. 1 then incx must be .ge. 1
+c
+c           c.l.lawson, 1978 jan 08
+c     modified to correct failure to update ix, 1/25/92.
+c     modified 3/93 to return if incx .le. 0.
+c
+c     four phase method     using two built-in constants that are
+c     hopefully applicable to all machines.
+c         cutlo = maximum of  dsqrt(u/eps)  over all known machines.
+c         cuthi = minimum of  dsqrt(v)      over all known machines.
+c     where
+c         eps = smallest no. such that eps + 1. .gt. 1.
+c         u   = smallest positive no.   (underflow limit)
+c         v   = largest  no.            (overflow  limit)
+c
+c     brief outline of algorithm..
+c
+c     phase 1    scans zero components.
+c     move to phase 2 when a component is nonzero and .le. cutlo
+c     move to phase 3 when a component is .gt. cutlo
+c     move to phase 4 when a component is .ge. cuthi/m
+c     where m = n for x() real and m = 2*n for complex.
+c
+c     values for cutlo and cuthi..
+c     from the environmental parameters listed in the imsl converter
+c     document the limiting values are as follows..
+c     cutlo, s.p.   u/eps = 2**(-102) for  honeywell.  close seconds are
+c                   univac and dec at 2**(-103)
+c                   thus cutlo = 2**(-51) = 4.44089e-16
+c     cuthi, s.p.   v = 2**127 for univac, honeywell, and dec.
+c                   thus cuthi = 2**(63.5) = 1.30438e19
+c     cutlo, d.p.   u/eps = 2**(-67) for honeywell and dec.
+c                   thus cutlo = 2**(-33.5) = 8.23181d-11
+c     cuthi, d.p.   same as s.p.  cuthi = 1.30438d19
+c     data cutlo, cuthi / 8.232d-11,  1.304d19 /
+c     data cutlo, cuthi / 4.441e-16,  1.304e19 /
+      data cutlo, cuthi / 8.232d-11,  1.304d19 /
+c
+      if(n .gt. 0 .and. incx.gt.0) go to 10
+         dnrm2  = zero
+         go to 300
+c
+   10 next = 30
+      sum = zero
+      i = 1
+      ix = 1
+c                                                 begin main loop
+   20    go to (30, 50, 70, 110) next
+   30 if( dabs(dx(i)) .gt. cutlo) go to 85
+      next = 50
+      xmax = zero
+c
+c                        phase 1.  sum is zero
+c
+   50 if( dx(i) .eq. zero) go to 200
+      if( dabs(dx(i)) .gt. cutlo) go to 85
+c
+c                                prepare for phase 2.
       next = 70
-      GOTO 300
-!
-!                                prepare for phase 4.
-!
- 200  ix = j
+      go to 105
+c
+c                                prepare for phase 4.
+c
+  100 continue
+      ix = j
       next = 110
-      sum = (sum/Dx(i))/Dx(i)
- 300  xmax = DABS(Dx(i))
-!
-      sum = sum + (Dx(i)/xmax)**2
-      GOTO 600
-!
-!                     common code for phases 2 and 4.
-!                     in phase 4 sum is large.  scale to avoid overflow.
-!
- 400  IF ( DABS(Dx(i)).LE.xmax ) THEN
-         sum = sum + (Dx(i)/xmax)**2
-      ELSE
-         sum = one + sum*(xmax/Dx(i))**2
-         xmax = DABS(Dx(i))
-      ENDIF
-      GOTO 600
-!
-!
-!     for real or d.p. set hitest = cuthi/n
-!     for complex      set hitest = cuthi/(2*n)
-!
- 500  hitest = cuthi/FLOAT(N)
-!
-!                   phase 3.  sum is mid-range.  no scaling.
-!
-      DO j = ix , N
-         IF ( DABS(Dx(i)).GE.hitest ) GOTO 200
-         sum = sum + Dx(i)**2
-         i = i + Incx
-      ENDDO
-      DNRM2 = DSQRT(sum)
-      GOTO 99999
-!
- 600  ix = ix + 1
-      i = i + Incx
-      IF ( ix.LE.N ) GOTO 100
-!
-!              end of main loop.
-!
-!              compute square root and adjust for scaling.
-!
-      DNRM2 = xmax*DSQRT(sum)
-99999 END
-!----------------------------------------------------------------------|
-* END OF REFACTORED CODE
-!----------------------------------------------------------------------|
-
-
-
-
-
-
-
-!----------------------------------------------------------------------|
+      sum = (sum / dx(i)) / dx(i)
+  105 xmax = dabs(dx(i))
+      go to 115
+c
+c                   phase 2.  sum is small.
+c                             scale to avoid destructive underflow.
+c
+   70 if( dabs(dx(i)) .gt. cutlo ) go to 75
+c
+c                     common code for phases 2 and 4.
+c                     in phase 4 sum is large.  scale to avoid overflow.
+c
+  110 if( dabs(dx(i)) .le. xmax ) go to 115
+         sum = one + sum * (xmax / dx(i))**2
+         xmax = dabs(dx(i))
+         go to 200
+c
+  115 sum = sum + (dx(i)/xmax)**2
+      go to 200
+c
+c
+c                  prepare for phase 3.
+c
+   75 sum = (sum * xmax) * xmax
+c
+c
+c     for real or d.p. set hitest = cuthi/n
+c     for complex      set hitest = cuthi/(2*n)
+c
+   85 hitest = cuthi/float( n )
+c
+c                   phase 3.  sum is mid-range.  no scaling.
+c
+      do 95 j = ix,n
+      if(dabs(dx(i)) .ge. hitest) go to 100
+         sum = sum + dx(i)**2
+         i = i + incx
+   95 continue
+      dnrm2 = dsqrt( sum )
+      go to 300
+c
+  200 continue
+      ix = ix + 1
+      i = i + incx
+      if( ix .le. n ) go to 20
+c
+c              end of main loop.
+c
+c              compute square root and adjust for scaling.
+c
+      dnrm2 = xmax * dsqrt(sum)
+  300 continue
+      return
+      end
+*----------------------------------------------------------------------|
       double precision function ddot(n,dx,incx,dy,incy)
 c
 c     forms the dot product of two vectors.
 c     uses unrolled loops for increments equal to one.
 c     jack dongarra, linpack, 3/11/78.
 c
+      double precision dx(1),dy(1),dtemp
       integer i,incx,incy,ix,iy,m,mp1,n
-c      double precision dx(1),dy(1),dtemp
-      double precision dx(n),dy(n),dtemp
-
-
 c
       ddot = 0.0d0
       dtemp = 0.0d0
@@ -808,12 +622,8 @@ c     constant times a vector plus a vector.
 c     uses unrolled loops for increments equal to one.
 c     jack dongarra, linpack, 3/11/78.
 c
+      double precision dx(1),dy(1),da
       integer i,incx,incy,ix,iy,m,mp1,n
-c     FIX:
-c     double precision dx(1),dy(1),da
-      double precision dx(n),dy(n),da
-
-
 c
       if(n.le.0)return
       if (da .eq. 0.0d0) return
@@ -845,7 +655,6 @@ c
    30 continue
       if( n .lt. 4 ) return
    40 mp1 = m + 1
-c loop from mp1 to n, by increment 4
       do 50 i = mp1,n,4
         dy(i) = dy(i) + da*dx(i)
         dy(i + 1) = dy(i + 1) + da*dx(i + 1)
@@ -860,7 +669,7 @@ c
 c     interchanges two vectors.
 c     jack dongarra, 3/11/78.
 c
-      complex(kind=8) zx(1),zy(1),ztemp
+      complex*16 zx(1),zy(1),ztemp
 c
       if(n.le.0)return
       if(incx.eq.1.and.incy.eq.1)go to 20
@@ -895,7 +704,7 @@ c       code for both increments equal to 1
 *     .. Scalar Arguments ..
       DOUBLE PRECISION   ALPHA, BETA
       INTEGER            INCX, INCY, LDA, M, N
-      CHARACTER(LEN=1)   TRANS
+      CHARACTER*1        TRANS
 *     .. Array Arguments ..
       DOUBLE PRECISION   A( LDA, * ), X( * ), Y( * )
 *     ..
@@ -1155,7 +964,7 @@ c       code for both increments equal to 1
       SUBROUTINE DGEMM ( TRANSA, TRANSB, M, N, K, ALPHA, A, LDA, B, LDB,
      $                   BETA, C, LDC )
 *     .. Scalar Arguments ..
-      CHARACTER(LEN=1)   TRANSA, TRANSB
+      CHARACTER*1        TRANSA, TRANSB
       INTEGER            M, N, K, LDA, LDB, LDC
       DOUBLE PRECISION   ALPHA, BETA
 *     .. Array Arguments ..
@@ -1469,7 +1278,7 @@ c       code for both increments equal to 1
 *
 ************************************************************************
 *
-*     File of the complex(kind=8)       Level-2 BLAS.
+*     File of the COMPLEX*16       Level-2 BLAS.
 *     ==========================================
 *
 *     SUBROUTINE ZGEMV ( TRANS, M, N, ALPHA, A, LDA, X, INCX,
@@ -1531,11 +1340,11 @@ c       code for both increments equal to 1
       SUBROUTINE ZGEMV ( TRANS, M, N, ALPHA, A, LDA, X, INCX,
      $                   BETA, Y, INCY )
 *     .. Scalar Arguments ..
-      complex(kind=8)    ALPHA, BETA
+      COMPLEX*16         ALPHA, BETA
       INTEGER            INCX, INCY, LDA, M, N
-      CHARACTER(LEN=1)   TRANS
+      CHARACTER*1        TRANS
 *     .. Array Arguments ..
-      complex(kind=8)    A( LDA, * ), X( * ), Y( * )
+      COMPLEX*16         A( LDA, * ), X( * ), Y( * )
 *     ..
 *
 *  Purpose
@@ -1575,11 +1384,11 @@ c       code for both increments equal to 1
 *           N must be at least zero.
 *           Unchanged on exit.
 *
-*  ALPHA  - complex(kind=8)      .
+*  ALPHA  - COMPLEX*16      .
 *           On entry, ALPHA specifies the scalar alpha.
 *           Unchanged on exit.
 *
-*  A      - complex(kind=8)       array of DIMENSION ( LDA, n ).
+*  A      - COMPLEX*16       array of DIMENSION ( LDA, n ).
 *           Before entry, the leading m by n part of the array A must
 *           contain the matrix of coefficients.
 *           Unchanged on exit.
@@ -1590,7 +1399,7 @@ c       code for both increments equal to 1
 *           max( 1, m ).
 *           Unchanged on exit.
 *
-*  X      - complex(kind=8)       array of DIMENSION at least
+*  X      - COMPLEX*16       array of DIMENSION at least
 *           ( 1 + ( n - 1 )*abs( INCX ) ) when TRANS = 'N' or 'n'
 *           and at least
 *           ( 1 + ( m - 1 )*abs( INCX ) ) otherwise.
@@ -1603,12 +1412,12 @@ c       code for both increments equal to 1
 *           X. INCX must not be zero.
 *           Unchanged on exit.
 *
-*  BETA   - complex(kind=8)      .
+*  BETA   - COMPLEX*16      .
 *           On entry, BETA specifies the scalar beta. When BETA is
 *           supplied as zero then Y need not be set on input.
 *           Unchanged on exit.
 *
-*  Y      - complex(kind=8)       array of DIMENSION at least
+*  Y      - COMPLEX*16       array of DIMENSION at least
 *           ( 1 + ( m - 1 )*abs( INCY ) ) when TRANS = 'N' or 'n'
 *           and at least
 *           ( 1 + ( n - 1 )*abs( INCY ) ) otherwise.
@@ -1632,12 +1441,12 @@ c       code for both increments equal to 1
 *
 *
 *     .. Parameters ..
-      complex(kind=8)         ONE
+      COMPLEX*16         ONE
       PARAMETER        ( ONE  = ( 1.0D+0, 0.0D+0 ) )
-      complex(kind=8)         ZERO
+      COMPLEX*16         ZERO
       PARAMETER        ( ZERO = ( 0.0D+0, 0.0D+0 ) )
 *     .. Local Scalars ..
-      complex(kind=8)         TEMP
+      COMPLEX*16         TEMP
       INTEGER            I, INFO, IX, IY, J, JX, JY, KX, KY, LENX, LENY
       LOGICAL            NOCONJ
 *     .. External Functions ..
@@ -1814,7 +1623,7 @@ c
 c     copies a vector, x, to a vector, y.
 c     jack dongarra, linpack, 4/11/78.
 c
-      complex(kind=8) zx(1),zy(1)
+      double complex zx(1),zy(1)
       integer i,incx,incy,ix,iy,n
 c
       if(n.le.0)return
@@ -1841,248 +1650,147 @@ c
    30 continue
       return
       end
-      
-
-
-************************************************************************
-* Refactored DZNRM2 code with:
-* On-Line Fortran F77 - F90 Converter
-* https://www.fortran.uk/plusfortonline.php
-*
-* To fix: 
-* lapack/blas_mod.f:1890:72:
-* go to (30, 50, 70, 90, 110) next
-* Warning: Obsolescent feature: Computed GOTO at (1)
-* 
-* lapack/blas_mod.f:1960:72:
-*   go to (  50, 70, 90, 110 ) next
-* Warning: Obsolescent feature: Computed GOTO at (1)
-*
-************************************************************************
-      
-      
-!*==DZNRM2.spg  processed by SPAG 6.72Dc at 06:00 on 12 Aug 2017
-      DOUBLE PRECISION FUNCTION DZNRM2(N,Zx,Incx)
-      IMPLICIT NONE
-!*--DZNRM24
-!*** Start of declarations inserted by SPAG
-      INTEGER IMAGPART
-      REAL REALPART
-!*** End of declarations inserted by SPAG
- 
-      LOGICAL imag , scale
-      INTEGER i, Incx, ix, N, next
-      DOUBLE PRECISION cutlo, cuthi, hitest, sum, xmax, absx, zero, one
- 
-!     Note: moved data statement to the top
-      DATA zero, one/0.0D0, 1.0D0/
-      DATA cutlo, cuthi/8.232D-11, 1.304D19/
- 
-      COMPLEX(KIND=8) Zx(1)
-!      double precision dreal,dimag
-!      complex(kind=8) zdumr,zdumi
- 
- 
-!     2017-08-11 fixes for "statement function" error
-!     dreal(zdumr) = zdumr
-!      dreal = REALPART(zdumr)
- 
-!     dimag(zdumi) = (0.0d0,-1.0d0)*zdumi
-!      dimag = (0.0d0,-1.0d0)*zdumi
-!      dimag = IMAGPART(zdumi)
- 
-!     PROBLEM:
-!     Obsolescent feature: DATA statement at (1) after the first executable statement
-!
-!     FIX:
-!     http://fortranwiki.org/fortran/show/Modernizing+Old+Fortran
-!     move the offending DATA statements to a position above all
-!     the executable statements in that program unit. In some
-!     cases the initialisation of a variable can be done more
-!     clearly in the corresponding type declaration statement.
-!
-!      data         zero, one /0.0d0, 1.0d0/
- 
-!
-!     unitary norm of the complex n-vector stored in zx() with storage
-!     increment incx .
-!     if    n .le. 0 return with result = 0.
-!     if n .ge. 1 then incx must be .ge. 1
-!
-!           c.l.lawson , 1978 jan 08
-!     modified 3/93 to return if incx .le. 0.
-!
-!     four phase method     using two built-in constants that are
-!     hopefully applicable to all machines.
-!         cutlo = maximum of  sqrt(u/eps)  over all known machines.
-!         cuthi = minimum of  sqrt(v)      over all known machines.
-!     where
-!         eps = smallest no. such that eps + 1. .gt. 1.
-!         u   = smallest positive no.   (underflow limit)
-!         v   = largest  no.            (overflow  limit)
-!
-!     brief outline of algorithm..
-!
-!     phase 1    scans zero components.
-!     move to phase 2 when a component is nonzero and .le. cutlo
-!     move to phase 3 when a component is .gt. cutlo
-!     move to phase 4 when a component is .ge. cuthi/m
-!     where m = n for x() real and m = 2*n for complex.
-!
-!     values for cutlo and cuthi..
-!     from the environmental parameters listed in the imsl converter
-!     document the limiting values are as follows..
-!     cutlo, s.p.   u/eps = 2**(-102) for  honeywell.  close seconds are
-!                   univac and dec at 2**(-103)
-!                   thus cutlo = 2**(-51) = 4.44089e-16
-!     cuthi, s.p.   v = 2**127 for univac, honeywell, and dec.
-!                   thus cuthi = 2**(63.5) = 1.30438e19
-!     cutlo, d.p.   u/eps = 2**(-67) for honeywell and dec.
-!                   thus cutlo = 2**(-33.5) = 8.23181d-11
-!     cuthi, d.p.   same as s.p.  cuthi = 1.30438d19
-!     data cutlo, cuthi / 8.232d-11,  1.304d19 /
-!     data cutlo, cuthi / 4.441e-16,  1.304e19 /
- 
- 
-!     FIX:
-!     http://fortranwiki.org/fortran/show/Modernizing+Old+Fortran
-!     move the offending DATA statements to a position above all
-!     the executable statements in that program unit. In some
-!     cases the initialisation of a variable can be done more
-!     clearly in the corresponding type declaration statement.
-!     data cutlo, cuthi / 8.232d-11,  1.304d19 /
- 
-!
-      IF ( N.GT.0 .AND. Incx.GT.0 ) THEN
-!
-         next = 30
-         sum = zero
-         i = 1
-!                                                 begin main loop
-         DO ix = 1 , N
-!         absx = dabs(dreal(zx(i)))
-            absx = DABS(REALPART(Zx(i)))
- 
- 
-            imag = .FALSE.
-            IF ( next.EQ.2 ) THEN
-            ELSEIF ( next.EQ.3 ) THEN
-               GOTO 60
-            ELSEIF ( next.EQ.4 ) THEN
-               GOTO 120
-            ELSEIF ( next.EQ.5 ) THEN
-               GOTO 80
-            ELSE
-               IF ( absx.GT.cutlo ) GOTO 100
-               next = 50
-               scale = .FALSE.
-            ENDIF
-!
-!                        phase 1.  sum is zero
-!
- 20         IF ( absx.EQ.zero ) GOTO 140
-            IF ( absx.GT.cutlo ) GOTO 100
-!
-!                                prepare for phase 2.
-            next = 70
- 40         scale = .TRUE.
-            xmax = absx
-!
-            sum = sum + (absx/xmax)**2
-            GOTO 140
-!
-!                   phase 2.  sum is small.
-!                             scale to avoid destructive underflow.
-!
- 60         IF ( absx.GT.cutlo ) THEN
-!
-!
-!                  prepare for phase 3.
-!
-               sum = (sum*xmax)*xmax
-               GOTO 100
-            ENDIF
-!
-!                     common code for phases 2 and 4.
-!                     in phase 4 sum is large.  scale to avoid overflow.
-!
- 80         IF ( absx.LE.xmax ) THEN
-               sum = sum + (absx/xmax)**2
-            ELSE
-               sum = one + sum*(xmax/absx)**2
-               xmax = absx
-            ENDIF
-            GOTO 140
-!
- 100        next = 90
-            scale = .FALSE.
-!
-!     for real or d.p. set hitest = cuthi/n
-!     for complex      set hitest = cuthi/(2*n)
-!
-            hitest = cuthi/DBLE(2*N)
-!
-!                   phase 3.  sum is mid-range.  no scaling.
-!
- 120        IF ( absx.GE.hitest ) THEN
-!
-!                                prepare for phase 4.
-!
-               next = 110
-               sum = (sum/absx)/absx
-               GOTO 40
-            ELSE
-               sum = sum + absx**2
-            ENDIF
-!                  control selection of real and imaginary parts.
-!
- 140        IF ( .NOT.(imag) ) THEN
- 
-!     ERROR:
-!     lapack/blas_mod.f:1884:26:
-!     absx = dabs(dimag(zx(i)))
-!     Error: Syntax error in argument list at (1)
-!     FIX:
-!     NO:   absx = dabs(dimag(zx(i)))
-!     NO:   absx = dabs((0.0d0,-1.0d0)*zx(i))
-!     YES:  Comment out dimag "statement function",
-!           Just use IMAGPART
-               absx = DABS(IMAGPART(Zx(i)))
- 
-               imag = .TRUE.
-               IF ( next.EQ.1 ) GOTO 20
-               IF ( next.EQ.2 ) GOTO 60
-               IF ( next.EQ.3 ) GOTO 120
-               IF ( next.EQ.4 ) GOTO 80
-            ENDIF
-!
-            i = i + Incx
-         ENDDO
-!
-!              end of main loop.
-!              compute square root and adjust for scaling.
-!
-         DZNRM2 = DSQRT(sum)
-         IF ( scale ) DZNRM2 = DZNRM2*xmax
-      ELSE
-         DZNRM2 = zero
-      ENDIF
-      END
-************************************************************************
-* END REFACTORED DZNRM2 code
-************************************************************************
- 
-
-
-
-
-
-
-
+      double precision function dznrm2( n, zx, incx)
+      logical imag, scale
+      integer i, incx, ix, n, next
+      double precision cutlo, cuthi, hitest, sum, xmax, absx, zero, one
+      double complex      zx(1)
+      double precision dreal,dimag
+      double complex zdumr,zdumi
+      dreal(zdumr) = zdumr
+      dimag(zdumi) = (0.0d0,-1.0d0)*zdumi
+      data         zero, one /0.0d0, 1.0d0/
+c
+c     unitary norm of the complex n-vector stored in zx() with storage
+c     increment incx .
+c     if    n .le. 0 return with result = 0.
+c     if n .ge. 1 then incx must be .ge. 1
+c
+c           c.l.lawson , 1978 jan 08
+c     modified 3/93 to return if incx .le. 0.
+c
+c     four phase method     using two built-in constants that are
+c     hopefully applicable to all machines.
+c         cutlo = maximum of  sqrt(u/eps)  over all known machines.
+c         cuthi = minimum of  sqrt(v)      over all known machines.
+c     where
+c         eps = smallest no. such that eps + 1. .gt. 1.
+c         u   = smallest positive no.   (underflow limit)
+c         v   = largest  no.            (overflow  limit)
+c
+c     brief outline of algorithm..
+c
+c     phase 1    scans zero components.
+c     move to phase 2 when a component is nonzero and .le. cutlo
+c     move to phase 3 when a component is .gt. cutlo
+c     move to phase 4 when a component is .ge. cuthi/m
+c     where m = n for x() real and m = 2*n for complex.
+c
+c     values for cutlo and cuthi..
+c     from the environmental parameters listed in the imsl converter
+c     document the limiting values are as follows..
+c     cutlo, s.p.   u/eps = 2**(-102) for  honeywell.  close seconds are
+c                   univac and dec at 2**(-103)
+c                   thus cutlo = 2**(-51) = 4.44089e-16
+c     cuthi, s.p.   v = 2**127 for univac, honeywell, and dec.
+c                   thus cuthi = 2**(63.5) = 1.30438e19
+c     cutlo, d.p.   u/eps = 2**(-67) for honeywell and dec.
+c                   thus cutlo = 2**(-33.5) = 8.23181d-11
+c     cuthi, d.p.   same as s.p.  cuthi = 1.30438d19
+c     data cutlo, cuthi / 8.232d-11,  1.304d19 /
+c     data cutlo, cuthi / 4.441e-16,  1.304e19 /
+      data cutlo, cuthi / 8.232d-11,  1.304d19 /
+c
+      if(n .gt. 0 .and. incx.gt.0) go to 10
+         dznrm2  = zero
+         go to 300
+c
+   10 next = 30
+      sum = zero
+      i = 1
+c                                                 begin main loop
+      do 220 ix = 1,n
+         absx = dabs(dreal(zx(i)))
+         imag = .false.
+         go to (30, 50, 70, 90, 110) next
+   30 if( absx .gt. cutlo) go to 85
+      next = 50
+      scale = .false.
+c
+c                        phase 1.  sum is zero
+c
+   50 if( absx .eq. zero) go to 200
+      if( absx .gt. cutlo) go to 85
+c
+c                                prepare for phase 2.
+      next = 70
+      go to 105
+c
+c                                prepare for phase 4.
+c
+  100 next = 110
+      sum = (sum / absx) / absx
+  105 scale = .true.
+      xmax = absx
+      go to 115
+c
+c                   phase 2.  sum is small.
+c                             scale to avoid destructive underflow.
+c
+   70 if( absx .gt. cutlo ) go to 75
+c
+c                     common code for phases 2 and 4.
+c                     in phase 4 sum is large.  scale to avoid overflow.
+c
+  110 if( absx .le. xmax ) go to 115
+         sum = one + sum * (xmax / absx)**2
+         xmax = absx
+         go to 200
+c
+  115 sum = sum + (absx/xmax)**2
+      go to 200
+c
+c
+c                  prepare for phase 3.
+c
+   75 sum = (sum * xmax) * xmax
+c
+   85 next = 90
+      scale = .false.
+c
+c     for real or d.p. set hitest = cuthi/n
+c     for complex      set hitest = cuthi/(2*n)
+c
+      hitest = cuthi/dble( 2*n )
+c
+c                   phase 3.  sum is mid-range.  no scaling.
+c
+   90 if(absx .ge. hitest) go to 100
+         sum = sum + absx**2
+  200 continue
+c                  control selection of real and imaginary parts.
+c
+      if(imag) go to 210
+         absx = dabs(dimag(zx(i)))
+         imag = .true.
+      go to (  50, 70, 90, 110 ) next
+c
+  210 continue
+      i = i + incx
+  220 continue
+c
+c              end of main loop.
+c              compute square root and adjust for scaling.
+c
+      dznrm2 = dsqrt(sum)
+      if(scale) dznrm2 = dznrm2 * xmax
+  300 continue
+      return
+      end
 *
 ************************************************************************
 *
-*     File of the complex(kind=8)       Level-3 BLAS.
+*     File of the COMPLEX*16       Level-3 BLAS.
 *     ==========================================
 *
 *     SUBROUTINE ZGEMM ( TRANSA, TRANSB, M, N, K, ALPHA, A, LDA, B, LDB,
@@ -2126,11 +1834,11 @@ c
       SUBROUTINE ZGEMM ( TRANSA, TRANSB, M, N, K, ALPHA, A, LDA, B, LDB,
      $                   BETA, C, LDC )
 *     .. Scalar Arguments ..
-      CHARACTER(LEN=1)   TRANSA, TRANSB
+      CHARACTER*1        TRANSA, TRANSB
       INTEGER            M, N, K, LDA, LDB, LDC
-      complex(kind=8)    ALPHA, BETA
+      COMPLEX*16         ALPHA, BETA
 *     .. Array Arguments ..
-      complex(kind=8)    A( LDA, * ), B( LDB, * ), C( LDC, * )
+      COMPLEX*16         A( LDA, * ), B( LDB, * ), C( LDC, * )
 *     ..
 *
 *  Purpose
@@ -2191,11 +1899,11 @@ c
 *           be at least  zero.
 *           Unchanged on exit.
 *
-*  ALPHA  - complex(kind=8)      .
+*  ALPHA  - COMPLEX*16      .
 *           On entry, ALPHA specifies the scalar alpha.
 *           Unchanged on exit.
 *
-*  A      - complex(kind=8)       array of DIMENSION ( LDA, ka ), where ka is
+*  A      - COMPLEX*16       array of DIMENSION ( LDA, ka ), where ka is
 *           k  when  TRANSA = 'N' or 'n',  and is  m  otherwise.
 *           Before entry with  TRANSA = 'N' or 'n',  the leading  m by k
 *           part of the array  A  must contain the matrix  A,  otherwise
@@ -2210,7 +1918,7 @@ c
 *           least  max( 1, k ).
 *           Unchanged on exit.
 *
-*  B      - complex(kind=8)       array of DIMENSION ( LDB, kb ), where kb is
+*  B      - COMPLEX*16       array of DIMENSION ( LDB, kb ), where kb is
 *           n  when  TRANSB = 'N' or 'n',  and is  k  otherwise.
 *           Before entry with  TRANSB = 'N' or 'n',  the leading  k by n
 *           part of the array  B  must contain the matrix  B,  otherwise
@@ -2225,12 +1933,12 @@ c
 *           least  max( 1, n ).
 *           Unchanged on exit.
 *
-*  BETA   - complex(kind=8)      .
+*  BETA   - COMPLEX*16      .
 *           On entry,  BETA  specifies the scalar  beta.  When  BETA  is
 *           supplied as zero then C need not be set on input.
 *           Unchanged on exit.
 *
-*  C      - complex(kind=8)       array of DIMENSION ( LDC, n ).
+*  C      - COMPLEX*16       array of DIMENSION ( LDC, n ).
 *           Before entry, the leading  m by n  part of the array  C must
 *           contain the matrix  C,  except when  beta  is zero, in which
 *           case C need not be set on entry.
@@ -2263,11 +1971,11 @@ c
 *     .. Local Scalars ..
       LOGICAL            CONJA, CONJB, NOTA, NOTB
       INTEGER            I, INFO, J, L, NCOLA, NROWA, NROWB
-      complex(kind=8)         TEMP
+      COMPLEX*16         TEMP
 *     .. Parameters ..
-      complex(kind=8)         ONE
+      COMPLEX*16         ONE
       PARAMETER        ( ONE  = ( 1.0D+0, 0.0D+0 ) )
-      complex(kind=8)         ZERO
+      COMPLEX*16         ZERO
       PARAMETER        ( ZERO = ( 0.0D+0, 0.0D+0 ) )
 *     ..
 *     .. Executable Statements ..
@@ -2538,12 +2246,12 @@ c
 *     End of ZGEMM .
 *
       END
-      complex(kind=8) function zdotc(n,zx,incx,zy,incy)
+      double complex function zdotc(n,zx,incx,zy,incy)
 c
 c     forms the dot product of a vector.
 c     jack dongarra, 3/11/78.
 c
-      complex(kind=8) zx(1),zy(1),ztemp
+      double complex zx(1),zy(1),ztemp
       ztemp = (0.0d0,0.0d0)
       zdotc = (0.0d0,0.0d0)
       if(n.le.0)return
@@ -2578,7 +2286,7 @@ c     scales a vector by a constant.
 c     jack dongarra, 3/11/78.
 c     modified 3/93 to return if incx .le. 0.
 c
-      complex(kind=8) zx(1)
+      double complex zx(1)
       double precision da
       integer i,incx,ix,n
 c
@@ -2607,10 +2315,8 @@ c     interchanges two vectors.
 c     uses unrolled loops for increments equal one.
 c     jack dongarra, linpack, 3/11/78.
 c
+      double precision dx(1),dy(1),dtemp
       integer i,incx,incy,ix,iy,m,mp1,n
-c      double precision dx(1),dy(1),dtemp
-      double precision dx(n),dy(n),dtemp
-
 c
       if(n.le.0)return
       if(incx.eq.1.and.incy.eq.1)go to 20
@@ -2664,7 +2370,7 @@ c     finds the index of element having max. absolute value.
 c     jack dongarra, 1/15/85.
 c     modified 3/93 to return if incx .le. 0.
 c
-      complex(kind=8) zx(1)
+      double complex zx(1)
       double precision smax
       integer i,incx,ix,n
       double precision dcabs1
@@ -2704,7 +2410,7 @@ c     scales a vector by a constant.
 c     jack dongarra, 3/11/78.
 c     modified 3/93 to return if incx .le. 0.
 c
-      complex(kind=8) za,zx(1)
+      double complex za,zx(1)
       integer i,incx,ix,n
 c
       if( n.le.0 .or. incx.le.0 )return
@@ -2726,12 +2432,12 @@ c
    30 continue
       return
       end
-      complex(kind=8) function zdotu(n,zx,incx,zy,incy)
+      double complex function zdotu(n,zx,incx,zy,incy)
 c
 c     forms the dot product of a vector.
 c     jack dongarra, 3/11/78.
 c
-      complex(kind=8) zx(1),zy(1),ztemp
+      double complex zx(1),zy(1),ztemp
       ztemp = (0.0d0,0.0d0)
       zdotu = (0.0d0,0.0d0)
       if(n.le.0)return

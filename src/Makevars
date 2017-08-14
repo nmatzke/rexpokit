@@ -1,4 +1,4 @@
-PKG_FFLAGS = -w
+#PKG_FFLAGS = -w  # "Non-portable flags in variable 'PKG_FFLAGS': -w"
 PKG_LIBS = $(LAPACK_LIBS) $(BLAS_LIBS) $(FLIBS)
 
 
@@ -8,6 +8,7 @@ R_OBJS = \
     mataid.o \
     my_expokit.o \
     my_matexp.o \
+    itscale5.o \
     coo.o \
     wrappers.o
 

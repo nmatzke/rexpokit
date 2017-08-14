@@ -5,9 +5,9 @@
 
       integer,intent(inout) :: m, lwsp, liwsp, itrace, iflag
       integer,intent(inout) :: iwsp(liwsp)
-      integer,intent(in) :: nz,n,ia(nz),ja(nz)
       double precision,intent(inout) :: t, tol, anorm, v(n), w(n)
       double precision,intent(inout) :: wsp(lwsp)
+      integer,intent(in) :: nz,n,ia(nz),ja(nz)
       double precision,intent(in) :: a(nz)
       double precision, intent(out) :: res(n*n)
       
@@ -46,9 +46,9 @@
 
       integer,intent(inout) :: m, lwsp, liwsp, itrace, iflag
       integer,intent(inout) :: iwsp(liwsp)
-      integer,intent(in) :: nz,n,ia(nz),ja(nz)
       double precision,intent(inout) :: t, tol, anorm, v(n), w(n)
       double precision,intent(inout) :: wsp(lwsp)
+      integer,intent(in) :: nz,n,ia(nz),ja(nz)
       double precision,intent(in) :: a(nz)
       double precision, intent(out) :: res(n)
       
@@ -81,9 +81,9 @@
 
       integer,intent(inout) :: m, lwsp, liwsp, itrace, iflag
       integer,intent(inout) :: iwsp(liwsp)
-      integer,intent(in) :: nz,n,ia(nz),ja(nz)
       double precision,intent(inout) :: t, tol, anorm, v(n), w(n)
       double precision,intent(inout) :: wsp(lwsp)
+      integer,intent(in) :: nz,n,ia(nz),ja(nz)
       double precision,intent(in) :: a(nz)
       double precision, intent(out) :: res(n*n)
       
@@ -126,9 +126,9 @@
 
       integer,intent(inout) :: m, lwsp, liwsp, itrace, iflag
       integer,intent(inout) :: iwsp(liwsp)
-      integer,intent(in) :: nz,n,ia(nz),ja(nz)
       double precision,intent(inout) :: t, tol, anorm, v(n), w(n)
       double precision,intent(inout) :: wsp(lwsp)
+      integer,intent(in) :: nz,n,ia(nz),ja(nz)
       double precision,intent(in) :: a(nz)
       double precision, intent(out) :: res(n)
       

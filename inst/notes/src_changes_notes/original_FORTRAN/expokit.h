@@ -68,20 +68,4 @@ void mydgexpv_(int *n, int *m, double *t, double *v, double *w,
   int *liwsp, int *itrace, int *iflag, int *ia, int *ja, double *a, 
   int *nz);
 
-
-
-}
-
-
-/* 
- * itscale5.f:
- */
-
-extern "C"
-{
-
-// Adding itscale5 from FD::maxent function
-void itscale5_(double *SXT, int *ngroups, int *ntraits, double *const, 
-  double *prior, double *prob, double *entropy, int *niter, double *tol, double *denom);
-
 }

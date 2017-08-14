@@ -8,8 +8,8 @@
 }
 \details{
   \tabular{ll}{ Package: \tab rexpokit\cr Type: \tab
-  Package\cr Version: \tab 0.24.1\cr Date: \tab
-  2013-07-08\cr License: \tab GPL (>= 2)\cr LazyLoad: \tab
+  Package\cr Version: \tab 0.26\cr Date: \tab
+  2017-08-13\cr License: \tab GPL (>= 2)\cr LazyLoad: \tab
   yes\cr }
 
   This package wraps some of the matrix exponentiation
@@ -35,6 +35,18 @@
   geographic ranges of a species), but is probably useful
   in other ways as well.
 
+  \bold{Help}
+  
+  For help with rexpokit or BioGeoBEARS, see (1) the 
+  PhyloWiki websites for rexpokit and BioGeoBEARS 
+  (\url{http://phylo.wikidot.com/rexpokit}, 
+  \url{http://phylo.wikidot.com/biogeobears}) and 
+  (2) the BioGeoBEARS Google Group 
+  (\url{https://groups.google.com/forum/#!forum/biogeobears}). 
+  Minor updates may get posted first to the rexpokit 
+  GitHub repository (\url{https://github.com/nmatzke/rexpokit})
+
+
   \bold{Background}
 
   Various messages on discussion boards have asked whether
@@ -50,7 +62,8 @@
   also working on an implementation of certain EXPOKIT
   functions.
 
-  (See the additional notes file
+  (See the additional notes file in the package "inst"
+  directory, 
   EXPOKIT_For_Dummies_notes_v1.txt for additional notes on
   wrappers for EXPOKIT in Python etc.)
 
@@ -70,13 +83,29 @@
   compiler to convert the FORTRAN code files in /src (*.f)
   to object files (*.o), and g++ to compile and link the
   C++ wrapper. \code{rexpokit} was developed on an Intel
-  Mac running OS X 10.7.  I (NJM) successfully compiled it
-  using g++ and gfortran from (gcc version 4.2.1).\cr
+  Mac running OS X 10.7.  I (NJM, 2013) successfully compiled it
+  using g++ and gfortran from (gcc version 4.2.1). (Update
+  2017-08-13: repeated with gccgfortran version 7.1.0.) \cr
 
   \bold{Citation}
 
-  This code was developed for the following publication.
-  Please cite if used: Matzke, Nicholas J. (2012).
+  This code was developed for the following publications.
+  Please cite if used: 
+  
+  Matzke, Nicholas J. (2014). "Model Selection in 
+  Historical Biogeography Reveals that Founder-event 
+  Speciation is a Crucial Process in Island Clades." 
+  \emph{Systematic Biology}, 63(6), 951-970. 
+  \url{http://dx.doi.org/10.1093/sysbio/syu056}
+
+  Matzke, Nicholas J. (2013). "Probabilistic historical 
+  biogeography: new models for founder-event speciation, 
+  imperfect detection, and fossils allow improved 
+  accuracy and model-testing." \emph{Frontiers of 
+  Biogeography}, 5(4), 242-248. 
+  \url{http://escholarship.org/uc/item/44j7n141}
+
+  Matzke, Nicholas J. (2012).
   "Founder-event speciation in BioGeoBEARS package
   dramatically improves likelihoods and alters parameter
   inference in Dispersal-Extinction-Cladogenesis (DEC)
@@ -103,13 +132,26 @@
   under the usual GPL license for CRAN R packages. For the
   full EXPOKIT copyright and license, see
   \code{expokit_copyright.txt} under
-  \code{rexpokit/notes/}. \cr
+  \code{inst/notes}. \cr \cr \bold{3.} Revisions
+  for version 0.26, which fixed many issues with 
+  warnings about obsolescence in F77 code, were
+  aided by email help/discussions with: Kurt Hornik, 
+  Doug Nychka, Marcello Chiodi, Meabh McCurdy.  Also,
+  thanks to these incredibly helpful websites: 
+  "On-Line Fortran F77 - F90 Converter" 
+  (\url{https://www.fortran.uk/plusfortonline.php}), 
+  "Building and checking R source packages for Windows" 
+  (\url{https://win-builder.r-project.org/}), 
+  "Modernizing Old Fortran" 
+  (\url{http://fortranwiki.org/fortran/show/Modernizing+Old+Fortran}), 
+  "Registering the C++ and FORTRAN calls" 
+  (\url{https://stat.ethz.ch/pipermail/r-devel/2017-February/073755.html})
 
   EXPOKIT was published by Sidje in: Sidje RB (1998).
   "Expokit. A Software Package for Computing Matrix
   Exponentials." \emph{ACM-Transactions on Mathematical
   Software}, 24(1):130-156.
-  \url{http://tinyurl.com/bwa87rq}\cr \cr \bold{3.} A small
+  \url{http://tinyurl.com/bwa87rq}\cr \cr \bold{4.} A small
   amount of C++ code wrapping EXPOKIT was modified from a
   file in LAGRANGE, C++ version by Stephen Smith:\cr
   \url{http://code.google.com/p/lagrange/}\cr
@@ -117,19 +159,20 @@
   Specifically:\cr \cr \code{ * RateMatrix.cpp}\cr \code{ *
   }\cr \code{ * Created on: Aug 14, 2009}\cr \code{ *
   Author: smitty}\cr \code{ *}\cr \cr ...and the my_*.f
-  wrappers for the EXPOKIT *.f code files.\cr \cr \bold{4.}
+  wrappers for the EXPOKIT *.f code files.\cr \cr \bold{5.}
   Also copied in part (to get the .h file) from:\cr \cr
   Python package "Pyprop":\cr
   \url{http://code.google.com/p/pyprop/}\cr
-  \url{http://pyprop.googlecode.com/svn/trunk/core/krylov/expokit/expokitpropagator.cpp}\cr
-  \url{http://www.koders.com/python/fidCA95B5A4B2FB77455A72B8A361CF684FFE48F4DC.aspx?s=fourier+transform}\cr
+  (old URL) pyprop.googlecode.com/svn/trunk/core/krylov/expokit/expokitpropagator.cpp\cr
+  (old URL) www.koders.com/python/fidCA95B5A4B2FB77455A72B8A361CF684FFE48F4DC.aspx?s=fourier+transform\cr
   \cr Specifically:\cr
   pyprop/core/krylov/expokit/f2c/expokit.h \cr \cr
-  \bold{5.} The EXPOKIT FORTRAN package is available at:\cr
+  \bold{6.} The EXPOKIT FORTRAN package is available at:\cr
   \url{http://www.maths.uq.edu.au/expokit/}\cr \cr
   Copyright:\cr
   \url{http://www.maths.uq.edu.au/expokit/copyright}\cr
-  ...or...\cr expokit_copyright.txt in this install\cr
+  ...or...\cr expokit_copyright.txt in this install 
+  (see package "inst" directory)\cr
 }
 \examples{
 # Example code
@@ -203,13 +246,26 @@ for (i in 1:length(list_of_P_matrices_dmexpv))
 	}
 }
 \author{
-  Nicholas J. Matzke \email{matzke@berkeley.edu}, Roger B.
+  Nicholas J. Matzke \email{nickmatzke.ncse@gmail.com}, Roger B.
   Sidje \email{roger.b.sidje@ua.edu}, Drew Schmidt
   \email{schmidt@math.utk.edu}
 }
 \references{
   \url{http://www.maths.uq.edu.au/expokit/} \cr
   \url{http://www.maths.uq.edu.au/expokit/copyright}
+
+  Matzke, Nicholas J. (2014). "Model Selection in 
+  Historical Biogeography Reveals that Founder-event 
+  Speciation is a Crucial Process in Island Clades." 
+  \emph{Systematic Biology}, 63(6), 951-970. 
+  \url{http://dx.doi.org/10.1093/sysbio/syu056}
+
+  Matzke, Nicholas J. (2013). "Probabilistic historical 
+  biogeography: new models for founder-event speciation, 
+  imperfect detection, and fossils allow improved 
+  accuracy and model-testing." \emph{Frontiers of 
+  Biogeography}, 5(4), 242-248. 
+  \url{http://escholarship.org/uc/item/44j7n141}
 
   Matzke N (2012). "Founder-event speciation in BioGeoBEARS
   package dramatically improves likelihoods and alters

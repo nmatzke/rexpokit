@@ -53,7 +53,7 @@
 #' obtained by a direct call of wrapalldmexpv_.
 #' @seealso \code{\link{mat2coo}}
 #' @export
-#' @author Nicholas J. Matzke \email{matzke@@berkeley.edu}
+#' @author Nicholas J. Matzke \email{nickmatzke.ncse@@gmail.com} and Drew Schmidt \email{schmidt@@math.utk.edu}
 #' @examples	# Example:
 #' # Make a square instantaneous rate matrix (Q matrix)
 #' # This matrix is taken from Peter Foster's (2001) "The Idiot's Guide
@@ -200,7 +200,7 @@ expokit_dgpadm_Qmat <- function(Qmat=NULL, t=2.1, transpose_needed=TRUE)
 #' @seealso \code{\link{expokit_dmexpv_wrapper}}
 #' @seealso \code{\link{expokit_wrapalldmexpv_tvals}}
 #' @export
-#' @author Nicholas J. Matzke \email{matzke@@berkeley.edu}
+#' @author Nicholas J. Matzke \email{nickmatzke.ncse@@gmail.com} and Drew Schmidt \email{schmidt@@math.utk.edu}
 #' @examples	# Example:
 #' # Make a square instantaneous rate matrix (Q matrix)
 #' # This matrix is taken from Peter Foster's (2001) "The Idiot's Guide
@@ -503,7 +503,7 @@ expokit_dmexpv_Qmat <- function(Qmat=NULL, t=2.1, inputprobs_for_fast=NULL, tran
 #' @seealso \code{\link{expokit_dgexpv_wrapper}}
 #' @seealso \code{\link{expokit_wrapalldgexpv_tvals}}
 #' @export
-#' @author Nicholas J. Matzke \email{matzke@@berkeley.edu}
+#' @author Nicholas J. Matzke \email{nickmatzke.ncse@@gmail.com} and Drew Schmidt \email{schmidt@@math.utk.edu}
 #' @examples 	# Example:
 #' # Make a square instantaneous rate matrix (Q matrix)
 #' # This matrix is taken from Peter Foster's (2001) "The Idiot's Guide
