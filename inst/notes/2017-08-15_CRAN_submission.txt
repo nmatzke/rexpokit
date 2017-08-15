@@ -1,13 +1,16 @@
 Dear CRAN maintainers,
 
-I am resubmitting rexpokit 0.26 after fixing the issues in the DESCRIPTION file noted by Uwe.  
+I am submitting rexpokit 0.26.1, after fixing the issues in the DESCRIPTION file noted by Uwe upon submission of version 0.26.
 
 Discussion pasted below, and new R CMD check --as-cran.
 
-Cheers, Nick
+Thanks again for your valuable time!!
+
+Cheers, Nick Matzke
 
 
-R CMD check --as-cran rexpokit_0.26.tar.gz
+R CMD check --as-cran rexpokit_0.26.1.tar.gz
+===========================
 * using log directory ‘/drives/Dropbox/_njm/__packages/rexpokit.Rcheck’
 * using R version 3.4.1 (2017-06-30)
 * using platform: x86_64-apple-darwin15.6.0 (64-bit)
@@ -15,7 +18,7 @@ R CMD check --as-cran rexpokit_0.26.tar.gz
 * using option ‘--as-cran’
 * checking for file ‘rexpokit/DESCRIPTION’ ... OK
 * checking extension type ... Package
-* this is package ‘rexpokit’ version ‘0.26’
+* this is package ‘rexpokit’ version ‘0.26.1’
 * checking CRAN incoming feasibility ... NOTE
 Maintainer: ‘Nicholas J. Matzke <nickmatzke.ncse@gmail.com>’
 
@@ -80,10 +83,13 @@ Status: 1 NOTE
 See
   ‘/drives/Dropbox/_njm/__packages/rexpokit.Rcheck/00check.log’
 for details.
+===========================
 
 
 
 
+Previous email:
+===========================
 On Tue, Aug 15, 2017 at 12:48 PM, Nick Matzke <nickmatzke.ncse@gmail.com> wrote:
 Hi Uwe,
 

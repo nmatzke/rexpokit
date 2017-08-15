@@ -1,6 +1,6 @@
 # rexpokit
 
-This R package wraps some of the matrix exponentiation utilities from
+Wraps some of the matrix exponentiation utilities from
 [EXPOKIT](http://www.maths.uq.edu.au/expokit/), 
 a Fortran 77 library that is widely recommended for matrix exponentiation 
 (Sidje RB, 1998. "Expokit: A Software Package for Computing Matrix 
