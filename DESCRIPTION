@@ -1,12 +1,12 @@
 Package: rexpokit
 Type: Package
 Title: R Wrappers for EXPOKIT; Other Matrix Functions
-Version: 0.26
-Date: 2017-08-13
-Authors@R: c(person("Nicholas J.", "Matzke", email = "nickmatzke.ncse@gmail.com", role =
+Version: 0.26.1
+Date: 2017-08-15
+Authors@R: c(person("Nicholas J.", "Matzke", email="nickmatzke.ncse@gmail.com", role=
         c("aut", "cre", "cph")), person("Roger B.", "Sidje", email =
         "roger.b.sidje@ua.edu", role = c("aut", "cph")),
-        c(person("Drew", "Schmidt", email="schmidt@math.utk.edu", role="aut")))
+        person("Drew", "Schmidt", email="schmidt@math.utk.edu", role="aut"))
 Author: Nicholas J. Matzke [aut, cre, cph],
   Roger B. Sidje [aut, cph],
   Drew Schmidt [aut]
@@ -16,7 +16,7 @@ Imports: stats, Rcpp (>= 0.11.0)
 LinkingTo: Rcpp (>= 0.11.0)
 Copyright: See rexpokit/inst/LAPACK_LICENSE.txt for src/lapack.f.
 Description: Wraps some of the matrix exponentiation 
-        utilities from EXPOKIT (http://www.maths.uq.edu.au/expokit/), 
+        utilities from EXPOKIT (<http://www.maths.uq.edu.au/expokit/>), 
         a FORTRAN library that is widely recommended for matrix 
         exponentiation (Sidje RB, 1998. "Expokit: A Software Package
         for Computing Matrix Exponentials." ACM Trans. Math. Softw.
@@ -32,6 +32,6 @@ URL: http://phylo.wikidot.com/rexpokit
 License: GPL (>= 2)
 LazyLoad: yes
 ByteCompile: yes
-Packaged: 2017-08-13; iao
+Packaged: 2017-08-15; iao
 NeedsCompilation: yes
 Repository: CRAN
