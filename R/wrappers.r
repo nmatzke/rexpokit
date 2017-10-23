@@ -150,7 +150,9 @@ expokit_mydmexpv_wrapper <- function(n, m, t, v, tol, anorm, wsp, lwsp, iwsp, li
 		           as.integer(ia), as.integer(ja), 
 		           as.double(a), as.integer(nz))
 	
-	w_output_probs = matrix(ret$w, ncol=n, byrow=TRUE)
+	# 2017-10-23_fix
+	#w_output_probs = matrix(ret$w, ncol=n, byrow=TRUE)
+	w_output_probs = matrix(ret, ncol=n, byrow=TRUE)
 	
 	return(w_output_probs)
 }
@@ -234,7 +236,9 @@ expokit_mydgexpv_wrapper <- function(n, m, t, v, tol, anorm, wsp, lwsp, iwsp, li
 		           as.integer(ia), as.integer(ja), 
 		           as.double(a), as.integer(nz))
 		
-	w_output_probs = matrix(ret$w, ncol=n, byrow=TRUE)
+	# 2017-10-23_fix
+	#w_output_probs = matrix(ret$w, ncol=n, byrow=TRUE)
+	w_output_probs = matrix(ret, ncol=n, byrow=TRUE)
 	
 	return(w_output_probs)
 }

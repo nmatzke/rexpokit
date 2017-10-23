@@ -768,7 +768,10 @@ expokit_dgexpv_Qmat <- function(Qmat=NULL, t=2.1, inputprobs_for_fast=NULL, tran
 		           as.double(a), as.integer(nz))
 		
 		# w, list item #5, contains the output probabilities
-		w_output_probs = ret$w
+
+		# 2017-10-23_fix
+		#w_output_probs = matrix(ret$w, ncol=n, byrow=TRUE)
+		w_output_probs = ret
 		
 		return(w_output_probs)
 	}
