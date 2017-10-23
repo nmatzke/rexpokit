@@ -352,7 +352,15 @@ expokit_dmexpv_Qmat <- function(Qmat=NULL, t=2.1, inputprobs_for_fast=NULL, tran
 	# wsp = workspace to hold various variables, cells of the matrix, etc.
 	#lwsp = as.integer(n*(m+1)+n+(m+2)^2 + 4*(m+2)^2+ideg+1)
 	#lwsp = as.integer(n*(m+1)+n+(m+2)^2 + 5*(m+2)^2+ideg+1)
-	lwsp = as.integer(n*(m+2)+5*(m+2)^2+ideg+1)
+
+	# 2017-10-23_NJM_edit -- produces NAs when result is
+	# n=21700
+	# m=21699
+	# ideg=6
+	# n*(m+2)+5*(m+2)^2+ideg+1
+	# [1] 2825578712
+	#lwsp = as.integer(n*(m+2)+5*(m+2)^2+ideg+1)
+	lwsp = as.double(n*(m+2)+5*(m+2)^2+ideg+1)
 	
 	#lwsp = 100
 	wsp = double(length=lwsp)
