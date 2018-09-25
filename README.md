@@ -12,3 +12,7 @@ Rapid matrix exponentiation is useful in phylogenetics when we have a large
 number of states (as we do when we are inferring the history of transitions 
 between the possible geographic ranges of a species), but is probably 
 useful in other ways as well.
+
+Build status on Travis-CI:
+
+[![Build Status](https://travis-ci.org/nmatzke/rexpokit.svg?branch=master)](https://travis-ci.org/nmatzke/rexpokit)
