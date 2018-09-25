@@ -1,3 +1,36 @@
+CHANGES in rexpokit VERSION 0.26.4
+
+NEW FEATURES
+    
+    o None
+
+BUG FIXES
+
+   	o Changing integer to double for length of workspace (lwsp in EXPOKIT source); works
+   	  for very large problems...
+
+
+OTHER CHANGES
+    
+    o None; returning CRAN maintainer to Nick Matzke nickmatzke.ncse@gmail.com
+
+
+
+CHANGES in rexpokit VERSION 0.26.3
+
+NEW FEATURES
+    
+    o None
+
+BUG FIXES
+
+   	o None
+
+OTHER CHANGES
+    
+    o None; CRAN kept author, but updated Maintainer to "Orphaned" for some reason
+
+
 CHANGES in rexpokit VERSION 0.26.1
 
 NEW FEATURES
