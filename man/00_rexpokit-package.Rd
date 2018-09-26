@@ -295,7 +295,7 @@ for (i in 1:length(list_of_P_matrices_dmexpv))
   Moler C and Loan CV (2003). "Nineteen dubious ways to
   compute the exponential of a matrix, twenty-five years
   later." _SIAM review_, *45*(1), pp. 3-49. <URL:
-  \url{http://www.jstor.org/stable/25054364}>.
+  \url{http://epubs.siam.org/doi/10.1137/S00361445024180}>.
 
   Foster PG (2001). "The Idiot's Guide to the Zen of
   Likelihood in a Nutshell in Seven Days for Dummies,

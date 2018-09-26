@@ -1,3 +1,14 @@
+
+*     2018-09-26 NJM edits: 
+*          changed REALPART to REAL
+*          changed IMAGPART to AIMAG
+*          changed DCONJG to CONJG
+*          ...throughout
+*          (I guess these are gfortran GNU extensions; cause 
+*           problems on flang compiler, according to
+*           email from Brian Ripley)
+*
+
 *     This is a lightweight substitute to the external LAPACK routines 
 *     used by EXPOKIT. It is supplied to ensure that EXPOKIT is 
 *     self-contained and can still run if LAPACK is not yet installed
@@ -32,7 +43,7 @@ c     FIX for Warning: Unused dummy argument 'uplo'
       end if
 
 c     FIX for Warning: Unused dummy argument 'wrk'
-      if (REALPART(WRK(LWRK)) > 0) then
+      if (REAL(WRK(LWRK)) > 0) then
         continue
       end if
 
@@ -57,7 +68,7 @@ c     FIX for Warning: Unused dummy argument 'uplo'
       end if
 
 c     FIX for Warning: Unused dummy argument 'wrk'
-      if (REALPART(WRK(LWRK)) > 0) then
+      if (REAL(WRK(LWRK)) > 0) then
         continue
       end if
 
@@ -156,8 +167,8 @@ c        zero pivot implies this column already triangularized
 c
 
 c        FIX:
-         pta = REALPART(a(l,k))
-         ptb = IMAGPART(a(l,k))
+         pta = REAL(a(l,k))
+         ptb = AIMAG(a(l,k))
          cabs1 = dabs(pta)+dabs(ptb)
 c         if (cabs1(a(l,k)) .eq. 0.0d0) go to 40
          if (cabs1 .eq. 0.0d0) go to 40
@@ -194,8 +205,8 @@ c
       ipvt(n) = n
 
 c     FIX:
-      pta = REALPART(a(n,n))
-      ptb = IMAGPART(a(n,n))
+      pta = REAL(a(n,n))
+      ptb = AIMAG(a(n,n))
       cabs1 = dabs(pta)+dabs(ptb)
 
 c     if (cabs1(a(n,n)) .eq. 0.0d0) info = n
@@ -308,7 +319,7 @@ c        first solve  ctrans(u)*y = b
 c
          do 60 k = 1, n
             t = zdotc(k-1,a(1,k),1,b(1),1)
-            b(k) = (b(k) - t)/dconjg(a(k,k))
+            b(k) = (b(k) - t)/conjg(a(k,k))
    60    continue
 c
 c        now solve ctrans(l)*x = y
@@ -383,7 +394,7 @@ c
 c     subroutines and functions
 c
 c     blas zaxpy,zswap,izamax
-c     fortran dabs,dmax1,dcmplx,dconjg,dsqrt
+c     fortran dabs,dmax1,dcmplx,conjg,dsqrt
 c
 c     internal variables
 c
@@ -424,8 +435,8 @@ c     ...exit
             kpvt(1) = 1
             
 c           FIX:
-            pta = REALPART(a(1,1))
-            ptb = IMAGPART(a(1,1))
+            pta = REAL(a(1,1))
+            ptb = AIMAG(a(1,1))
             cabs1 = dabs(pta)+dabs(ptb)
            
 c           if (cabs1(a(1,1)) .eq. 0.0d0) info = 1
@@ -443,8 +454,8 @@ c
          km1 = k - 1
 
 c        FIX:
-         pta = REALPART(a(k,k))
-         ptb = IMAGPART(a(k,k))
+         pta = REAL(a(k,k))
+         ptb = AIMAG(a(k,k))
          cabs1 = dabs(pta)+dabs(ptb)
 
 c        absakk = cabs1(a(k,k))
@@ -459,8 +470,8 @@ c
          imax = izamax(k-1,a(1,k),1)
 
 c        FIX:
-         pta = REALPART(a(imax,k))
-         ptb = IMAGPART(a(imax,k))
+         pta = REAL(a(imax,k))
+         ptb = AIMAG(a(imax,k))
          cabs1 = dabs(pta)+dabs(ptb)
 
 c        colmax = cabs1(a(imax,k))
@@ -479,8 +490,8 @@ c
             do 40 j = imaxp1, k
 
 c              FIX:
-               pta = REALPART(a(imax,j))
-               ptb = IMAGPART(a(imax,j))
+               pta = REAL(a(imax,j))
+               ptb = AIMAG(a(imax,j))
                cabs1 = dabs(pta)+dabs(ptb)
 
 c              rowmax = dmax1(rowmax,cabs1(a(imax,j)))
@@ -490,8 +501,8 @@ c              rowmax = dmax1(rowmax,cabs1(a(imax,j)))
                jmax = izamax(imax-1,a(1,imax),1)
 
 c              FIX:
-               pta = REALPART(a(jmax,imax))
-               ptb = IMAGPART(a(jmax,imax))
+               pta = REAL(a(jmax,imax))
+               ptb = AIMAG(a(jmax,imax))
                cabs1 = dabs(pta)+dabs(ptb)
 
 c              rowmax = dmax1(rowmax,cabs1(a(jmax,imax)))
@@ -499,8 +510,8 @@ c              rowmax = dmax1(rowmax,cabs1(a(jmax,imax)))
    50       continue
 
 c           FIX:
-            pta = REALPART(a(imax,imax))
-            ptb = IMAGPART(a(imax,imax))
+            pta = REAL(a(imax,imax))
+            ptb = AIMAG(a(imax,imax))
             cabs1 = dabs(pta)+dabs(ptb)
 
 c           if (cabs1(a(imax,imax)) .lt. alpha*rowmax) go to 60
@@ -537,8 +548,8 @@ c
                call zswap(imax,a(1,imax),1,a(1,k),1)
                do 110 jj = imax, k
                   j = k + imax - jj
-                  t = dconjg(a(j,k))
-                  a(j,k) = dconjg(a(imax,j))
+                  t = conjg(a(j,k))
+                  a(j,k) = conjg(a(imax,j))
                   a(imax,j) = t
   110          continue
   120       continue
@@ -548,9 +559,9 @@ c
             do 130 jj = 1, km1
                j = k - jj
                mulk = -a(j,k)/a(k,k)
-               t = dconjg(mulk)
+               t = conjg(mulk)
                call zaxpy(j,t,a(1,k),1,a(1,j),1)
-               a(j,j) = dcmplx(REALPART(a(j,j)),0.0d0)
+               a(j,j) = dcmplx(REAL(a(j,j)),0.0d0)
                a(j,k) = mulk
   130       continue
 c
@@ -570,8 +581,8 @@ c
                call zswap(imax,a(1,imax),1,a(1,k-1),1)
                do 150 jj = imax, km1
                   j = km1 + imax - jj
-                  t = dconjg(a(j,k-1))
-                  a(j,k-1) = dconjg(a(imax,j))
+                  t = conjg(a(j,k-1))
+                  a(j,k-1) = conjg(a(imax,j))
                   a(imax,j) = t
   150          continue
                t = a(k-1,k)
@@ -584,21 +595,21 @@ c
             km2 = k - 2
             if (km2 .eq. 0) go to 180
                ak = a(k,k)/a(k-1,k)
-               akm1 = a(k-1,k-1)/dconjg(a(k-1,k))
+               akm1 = a(k-1,k-1)/conjg(a(k-1,k))
                denom = 1.0d0 - ak*akm1
                do 170 jj = 1, km2
                   j = km1 - jj
                   bk = a(j,k)/a(k-1,k)
-                  bkm1 = a(j,k-1)/dconjg(a(k-1,k))
+                  bkm1 = a(j,k-1)/conjg(a(k-1,k))
                   mulk = (akm1*bk - bkm1)/denom
                   mulkm1 = (ak*bkm1 - bk)/denom
-                  t = dconjg(mulk)
+                  t = conjg(mulk)
                   call zaxpy(j,t,a(1,k),1,a(1,j),1)
-                  t = dconjg(mulkm1)
+                  t = conjg(mulkm1)
                   call zaxpy(j,t,a(1,k-1),1,a(1,j),1)
                   a(j,k) = mulk
                   a(j,k-1) = mulkm1
-                  a(j,j) = dcmplx(REALPART(a(j,j)),0.0d0)
+                  a(j,j) = dcmplx(REAL(a(j,j)),0.0d0)
   170          continue
   180       continue
 c
@@ -725,9 +736,9 @@ c
 c
 c           apply d inverse.
 c
-            ak = a(k,k)/dconjg(a(k-1,k))
+            ak = a(k,k)/conjg(a(k-1,k))
             akm1 = a(k-1,k-1)/a(k-1,k)
-            bk = b(k)/dconjg(a(k-1,k))
+            bk = b(k)/conjg(a(k-1,k))
             bkm1 = b(k-1)/a(k-1,k)
             denom = ak*akm1 - 1.0d0
             b(k) = (akm1*bk - bkm1)/denom
@@ -884,8 +895,8 @@ c     ...exit
 
 c           FIX:
 c           if (cabs1(a(1,1)) .eq. 0.0d0) info = 1
-      pta = REALPART(a(1,1))
-      ptb = IMAGPART(a(1,1))
+      pta = REAL(a(1,1))
+      ptb = AIMAG(a(1,1))
       cabs1 = dabs(pta)+dabs(ptb)
       if (cabs1 .eq. 0.0d0) info=1
 
@@ -903,8 +914,8 @@ c
          km1 = k - 1
 
 c        FIX:
-         pta = REALPART(a(k,k))
-         ptb = IMAGPART(a(k,k))
+         pta = REAL(a(k,k))
+         ptb = AIMAG(a(k,k))
          cabs1 = dabs(pta)+dabs(ptb)
 
 c        absakk = cabs1(a(k,k))
@@ -917,8 +928,8 @@ c
 
 
 c        FIX:
-         pta = REALPART(a(imax,k))
-         ptb = IMAGPART(a(imax,k))
+         pta = REAL(a(imax,k))
+         ptb = AIMAG(a(imax,k))
          cabs1 = dabs(pta)+dabs(ptb)
 
 c        colmax = cabs1(a(imax,k))
@@ -936,8 +947,8 @@ c
             imaxp1 = imax + 1
             do 40 j = imaxp1, k
 c              FIX:
-               pta = REALPART(a(imax,j))
-               ptb = IMAGPART(a(imax,j))
+               pta = REAL(a(imax,j))
+               ptb = AIMAG(a(imax,j))
                cabs1 = dabs(pta)+dabs(ptb)
 c              rowmax = dmax1(rowmax,cabs1(a(imax,j)))
                rowmax = dmax1(rowmax,cabs1)
@@ -945,15 +956,15 @@ c              rowmax = dmax1(rowmax,cabs1(a(imax,j)))
             if (imax .eq. 1) go to 50
                jmax = izamax(imax-1,a(1,imax),1)
 c              FIX:
-               pta = REALPART(a(jmax,imax))
-               ptb = IMAGPART(a(jmax,imax))
+               pta = REAL(a(jmax,imax))
+               ptb = AIMAG(a(jmax,imax))
                cabs1 = dabs(pta)+dabs(ptb)
 c              rowmax = dmax1(rowmax,cabs1(a(jmax,imax)))
                rowmax = dmax1(rowmax,cabs1)
    50       continue
 c              FIX:
-            pta = REALPART(a(imax,imax))
-            ptb = IMAGPART(a(imax,imax))
+            pta = REAL(a(imax,imax))
+            ptb = AIMAG(a(imax,imax))
             cabs1 = dabs(pta)+dabs(ptb)
 c           if (cabs1(a(imax,imax)) .lt. alpha*rowmax) go to 60
             if (cabs1 .lt. alpha*rowmax) go to 60

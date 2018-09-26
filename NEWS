@@ -6,13 +6,18 @@ NEW FEATURES
 
 BUG FIXES
 
-   	o Changing integer to double for length of workspace (lwsp in EXPOKIT source); works
-   	  for very large problems...
-
-
+    o None
+    
 OTHER CHANGES
     
-    o None; returning CRAN maintainer to Nick Matzke nickmatzke.ncse@gmail.com
+    o In FORTRAN code, changed REALPART->REAL, IMAGPART->AIMAG, DCONJG->CONJG
+      to comply with flang compiler
+    o Changed jstor link to journal website, to avoid a note due to redirect:
+      Cleve Moler and Charles Van Loan (2003)
+      Nineteen Dubious Ways to Compute the Exponential of a Matrix, Twenty-Five Years Later
+      SIAM Rev., 45(1), 3-49.
+      https://epubs.siam.org/doi/10.1137/S00361445024180
+    o Returning CRAN maintainer to Nick Matzke nickmatzke.ncse@gmail.com
 
 
 
@@ -28,7 +33,27 @@ BUG FIXES
 
 OTHER CHANGES
     
-    o None; CRAN kept author, but updated Maintainer to "Orphaned" for some reason
+    o None; CRAN kept author, but updated Maintainer to "Orphaned" due to flang 
+      compiler issue.
+
+
+
+CHANGES in rexpokit VERSION 0.26.3
+
+NEW FEATURES
+    
+    o None
+
+BUG FIXES
+
+   	o None
+
+OTHER CHANGES
+    
+    o Changing integer to double for length of workspace (lwsp in EXPOKIT source); works
+   	  for very large problems...
+
+
 
 
 CHANGES in rexpokit VERSION 0.26.1

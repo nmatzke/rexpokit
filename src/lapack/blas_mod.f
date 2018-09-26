@@ -1,6 +1,18 @@
 
-COMMON ERRORS THAT HAVE STUPID REASONS
+*     2018-09-26 NJM edits: 
+*          changed REALPART to REAL
+*          changed IMAGPART to AIMAG
+*          changed DCONJG to CONJG
+*          ...throughout
+*          (I guess these are gfortran GNU extensions; cause 
+*           problems on flang compiler, according to
+*           email from Brian Ripley)
+*
 
+
+* 2017-08:
+* COMMON ERRORS THAT HAVE STUPID REASONS
+* 
 * pta = REALPART(a)
 * 1
 * Error: Non-numeric character in statement label at (1)
@@ -366,7 +378,7 @@ c      complex(kind=8) z,zz
 c      double precision t(2)
 c      equivalence (zz,t(1))
 c      zz = z
-      dcabs1 = dabs(REALPART(z)) + dabs(IMAGPART(z))
+      dcabs1 = dabs(REAL(z)) + dabs(AIMAG(z))
       return
       end
 *----------------------------------------------------------------------|
@@ -1777,7 +1789,7 @@ c       code for both increments equal to 1
    90             CONTINUE
                ELSE
                   DO 100, I = 1, M
-                     TEMP = TEMP + DCONJG( A( I, J ) )*X( I )
+                     TEMP = TEMP + CONJG( A( I, J ) )*X( I )
   100             CONTINUE
                END IF
                Y( JY ) = Y( JY ) + ALPHA*TEMP
@@ -1794,7 +1806,7 @@ c       code for both increments equal to 1
   120             CONTINUE
                ELSE
                   DO 130, I = 1, M
-                     TEMP = TEMP + DCONJG( A( I, J ) )*X( IX )
+                     TEMP = TEMP + CONJG( A( I, J ) )*X( IX )
                      IX   = IX   + INCX
   130             CONTINUE
                END IF
@@ -1865,9 +1877,15 @@ c
       DOUBLE PRECISION FUNCTION DZNRM2(N,Zx,Incx)
       IMPLICIT NONE
 !*--DZNRM24
+
 !*** Start of declarations inserted by SPAG
-      INTEGER IMAGPART
-      REAL REALPART
+
+!***  2018-09-26_NJM comment out
+!***  INTEGER IMAGPART
+!***  REAL REALPART
+
+!***  (part of attempt to remove REALPART, IMAGPART)
+
 !*** End of declarations inserted by SPAG
  
       LOGICAL imag , scale
@@ -1961,7 +1979,7 @@ c
 !                                                 begin main loop
          DO ix = 1 , N
 !         absx = dabs(dreal(zx(i)))
-            absx = DABS(REALPART(Zx(i)))
+            absx = DABS(REAL(Zx(i)))
  
  
             imag = .FALSE.
@@ -2047,7 +2065,7 @@ c
 !     NO:   absx = dabs((0.0d0,-1.0d0)*zx(i))
 !     YES:  Comment out dimag "statement function",
 !           Just use IMAGPART
-               absx = DABS(IMAGPART(Zx(i)))
+               absx = DABS(AIMAG(Zx(i)))
  
                imag = .TRUE.
                IF ( next.EQ.1 ) GOTO 20
@@ -2383,7 +2401,7 @@ c
                DO 110, I = 1, M
                   TEMP = ZERO
                   DO 100, L = 1, K
-                     TEMP = TEMP + DCONJG( A( L, I ) )*B( L, J )
+                     TEMP = TEMP + CONJG( A( L, I ) )*B( L, J )
   100             CONTINUE
                   IF( BETA.EQ.ZERO )THEN
                      C( I, J ) = ALPHA*TEMP
@@ -2427,7 +2445,7 @@ c
                END IF
                DO 190, L = 1, K
                   IF( B( J, L ).NE.ZERO )THEN
-                     TEMP = ALPHA*DCONJG( B( J, L ) )
+                     TEMP = ALPHA*CONJG( B( J, L ) )
                      DO 180, I = 1, M
                         C( I, J ) = C( I, J ) + TEMP*A( I, L )
   180                CONTINUE
@@ -2468,7 +2486,7 @@ c
                   TEMP = ZERO
                   DO 260, L = 1, K
                      TEMP = TEMP +
-     $                      DCONJG( A( L, I ) )*DCONJG( B( J, L ) )
+     $                      CONJG( A( L, I ) )*CONJG( B( J, L ) )
   260             CONTINUE
                   IF( BETA.EQ.ZERO )THEN
                      C( I, J ) = ALPHA*TEMP
@@ -2485,7 +2503,7 @@ c
                DO 300, I = 1, M
                   TEMP = ZERO
                   DO 290, L = 1, K
-                     TEMP = TEMP + DCONJG( A( L, I ) )*B( J, L )
+                     TEMP = TEMP + CONJG( A( L, I ) )*B( J, L )
   290             CONTINUE
                   IF( BETA.EQ.ZERO )THEN
                      C( I, J ) = ALPHA*TEMP
@@ -2504,7 +2522,7 @@ c
                DO 330, I = 1, M
                   TEMP = ZERO
                   DO 320, L = 1, K
-                     TEMP = TEMP + A( L, I )*DCONJG( B( J, L ) )
+                     TEMP = TEMP + A( L, I )*CONJG( B( J, L ) )
   320             CONTINUE
                   IF( BETA.EQ.ZERO )THEN
                      C( I, J ) = ALPHA*TEMP
@@ -2557,7 +2575,7 @@ c
       if(incx.lt.0)ix = (-n+1)*incx + 1
       if(incy.lt.0)iy = (-n+1)*incy + 1
       do 10 i = 1,n
-        ztemp = ztemp + dconjg(zx(ix))*zy(iy)
+        ztemp = ztemp + conjg(zx(ix))*zy(iy)
         ix = ix + incx
         iy = iy + incy
    10 continue
@@ -2567,7 +2585,7 @@ c
 c        code for both increments equal to 1
 c
    20 do 30 i = 1,n
-        ztemp = ztemp + dconjg(zx(i))*zy(i)
+        ztemp = ztemp + conjg(zx(i))*zy(i)
    30 continue
       zdotc = ztemp
       return
