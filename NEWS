@@ -1,3 +1,25 @@
+CHANGES in rexpokit VERSION 0.26.5
+
+NEW FEATURES
+    
+    o None
+
+BUG FIXES
+
+    o None
+    
+OTHER CHANGES
+    
+    o In FORTRAN code, edits to comply with on CRAN precheck Windows/Debian compiler
+      with "-fpic  -g -O2 -Wall -pedantic -mtune=native -c" flags
+    o All changes involved explicitly specifying KIND, or commenting out
+      unused code/variables (due to print statements previously commented
+      out for previous CRAN compliance)
+    o Returning CRAN maintainer to Nick Matzke nickmatzke.ncse@gmail.com
+
+
+
+
 CHANGES in rexpokit VERSION 0.26.4
 
 NEW FEATURES

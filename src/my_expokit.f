@@ -278,6 +278,13 @@
 *---  loop while ireject<mxreject until the tolerance is reached ...
 *
       ireject = 0
+
+c     2018-09-30_NJM: This will never happen, as ireject=0
+c     But, satifies need to use 402
+      if ( ireject.eq.1 ) then
+         goto 402
+      endif
+      
  401  continue
 
 *
@@ -895,7 +902,7 @@
       hnorm = ABS( t*hnorm )
 *      if ( hnorm.eq.0.0d0 ) stop 'Error - null H in input of ZGPADM.'
       ns = MAX( 0,INT(LOG(hnorm)/LOG(2.0d0))+2 )
-      scale =  CMPLX( t/DBLE(2**ns),0.0d0 )
+      scale =  CMPLX( t/DBLE(2**ns),0.0d0 , KIND=8)
       scale2 = scale*scale
 *
 *---  compute Pade coefficients ...
@@ -1067,7 +1074,7 @@
       hnorm = ABS( t*hnorm )
 *      if ( hnorm.eq.0.0d0 ) stop 'Error - null H in input of ZHPADM.'
       ns = MAX( 0,INT(LOG(hnorm)/LOG(2.0d0))+2 )
-      scale =  CMPLX( t/DBLE(2**ns),0.0d0 )
+      scale =  CMPLX( t/DBLE(2**ns),0.0d0 , KIND=8)
       scale2 = scale*scale
 *
 *---  compute Pade coefficients ...
@@ -1522,7 +1529,9 @@
             do i = 1,MIN( j+1,m )
                wsp(ih+(j-1)*m+i-1) = -t*H(i,j)
             enddo
-            wsp(ih+(j-1)*m+j-1) = wsp(ih+(j-1)*m+j-1)-theta(ip)
+c            2018-09-30_NJM:
+c            wsp(ih+(j-1)*m+j-1) = wsp(ih+(j-1)*m+j-1)-theta(ip)
+       wsp(ih+(j-1)*m+j-1)=REAL(wsp(ih+(j-1)*m+j-1)-theta(ip),KIND=8)
             do k = i,m
                wsp(ih+(j-1)*m+k-1) = ZERO
             enddo
@@ -1537,7 +1546,9 @@
 *---        Forward eliminiation ... 
             tmpc = wsp(ih+(i-1)*m+i) / wsp(ih+(i-1)*m+i-1)
             call ZAXPY( m-i, -tmpc, wsp(ih+i*m+i-1),m, wsp(ih+i*m+i),m )
-            wsp(iy+i) = wsp(iy+i) - tmpc*wsp(iy+i-1)
+c            2018-09-30_NJM:
+c            wsp(iy+i) = wsp(iy+i) - tmpc*wsp(iy+i-1)
+            wsp(iy+i) = REAL( wsp(iy+i) - tmpc*wsp(iy+i-1), KIND=8 )
          enddo
 *---     Backward substitution ...    
          do i = m,1,-1
@@ -1545,7 +1556,9 @@
             do j = i+1,m
                tmpc = tmpc - wsp(ih+(j-1)*m+i-1)*wsp(iy+j-1)
             enddo
-            wsp(iy+i-1) = tmpc / wsp(ih+(i-1)*m+i-1)
+c           2018-09-30_NJM:
+c            wsp(iy+i-1) = tmpc / wsp(ih+(i-1)*m+i-1)
+            wsp(iy+i-1) = REAL( tmpc / wsp(ih+(i-1)*m+i-1), KIND=8 )
          enddo
 *---     Accumulate the partial result in y ...     
          do j = 1,m
@@ -1954,6 +1967,12 @@
 *---  loop while ireject<mxreject until the tolerance is reached ...
 *
       ireject = 0
+c     2018-09-30_NJM: This will never happen, as ireject=0
+c     But, satifies need to use 402
+      if ( ireject.eq.1 ) then
+         goto 402
+      endif
+
  401  continue
 
 *
@@ -2328,6 +2347,13 @@
 *---  loop while ireject<mxreject until the tolerance is reached ...
 *
       ireject = 0
+c     2018-09-30_NJM: This will never happen, as ireject=0
+c     But, satifies need to use 402
+      if ( ireject.eq.1 ) then
+         goto 402
+      endif
+
+      
  401  continue
 *
 *---  compute w = beta*V*exp(t_step*H)*e1 ...
@@ -2689,7 +2715,7 @@
             t_step = t_out-t_now
             goto 300
          endif
-         wsp(ih+(j-1)*mh+j) = CMPLX( hj1j )
+         wsp(ih+(j-1)*mh+j) = CMPLX( hj1j , KIND=8)
          call ZDSCAL( n, 1.0d0/hj1j, wsp(j1v),1 )
          j1v = j1v + n
  200  continue
@@ -2705,6 +2731,12 @@
 *---  loop while ireject<mxreject until the tolerance is reached ...
 *
       ireject = 0
+c     2018-09-30_NJM: This will never happen, as ireject=0
+c     But, satifies need to use 402
+      if ( ireject.eq.1 ) then
+         goto 402
+      endif
+
  401  continue
 *
 *---  compute w = beta*V*exp(t_step*H)*e1 ...
@@ -2771,7 +2803,7 @@
 *---  now update w = beta*V*exp(t_step*H)*e1 and the hump ...
 *
       mx = mbrkdwn + MAX( 0,k1-1 )
-      hij = CMPLX( beta )
+      hij = CMPLX( beta , KIND=8)
       call ZGEMV( 'n', n,mx,hij,wsp(iv),n,wsp(iexph),1,ZERO,w,1 )
       beta = DZNRM2( n, w,1 )
       hump = MAX( hump, beta )
@@ -2812,16 +2844,16 @@
       iwsp(6) = ibrkflag
       iwsp(7) = mbrkdwn
 
-      wsp(1)  = CMPLX( step_min )
-      wsp(2)  = CMPLX( step_max )
-      wsp(3)  = CMPLX( 0.0d0 )
-      wsp(4)  = CMPLX( 0.0d0 )
-      wsp(5)  = CMPLX( x_error )
-      wsp(6)  = CMPLX( s_error )
-      wsp(7)  = CMPLX( tbrkdwn )
-      wsp(8)  = CMPLX( sgn*t_now )
-      wsp(9)  = CMPLX( hump/vnorm )
-      wsp(10) = CMPLX( beta/vnorm )
+      wsp(1)  = CMPLX( step_min , KIND=8 )
+      wsp(2)  = CMPLX( step_max , KIND=8 )
+      wsp(3)  = CMPLX( 0.0d0 , KIND=8 )
+      wsp(4)  = CMPLX( 0.0d0 , KIND=8 )
+      wsp(5)  = CMPLX( x_error , KIND=8 )
+      wsp(6)  = CMPLX( s_error , KIND=8 )
+      wsp(7)  = CMPLX( tbrkdwn , KIND=8 )
+      wsp(8)  = CMPLX( sgn*t_now , KIND=8 )
+      wsp(9)  = CMPLX( hump/vnorm , KIND=8 )
+      wsp(10) = CMPLX( beta/vnorm , KIND=8 )
       END
 *----------------------------------------------------------------------|
 *----------------------------------------------------------------------|
@@ -3066,8 +3098,8 @@
             t_step = t_out-t_now
             goto 300
          endif
-         wsp(ih+(j-1)*mh+j) = CMPLX( hj1j )
-         wsp(ih+j*mh+j-1) = CMPLX( hj1j )
+         wsp(ih+(j-1)*mh+j) = CMPLX( hj1j , KIND=8)
+         hjj = CMPLX( beta , KIND=8 )
          call ZDSCAL( n, 1.0d0/hj1j, wsp(j1v),1 )
          j1v = j1v + n
  200  continue
@@ -3084,6 +3116,12 @@
 *---  loop while ireject<mxreject until the tolerance is reached ...
 *
       ireject = 0
+c     2018-09-30_NJM: This will never happen, as ireject=0
+c     But, satifies need to use 402
+      if ( ireject.eq.1 ) then
+         goto 402
+      endif
+
  401  continue
 *
 *---  compute w = beta*V*exp(t_step*H)*e1 ...
@@ -3151,7 +3189,7 @@
 *---  now update w = beta*V*exp(t_step*H)*e1 and the hump ...
 *
       mx = mbrkdwn + MAX( 0,k1-1 )
-      hjj = CMPLX( beta )
+      hjj = CMPLX( beta , KIND=8 )
       call ZGEMV( 'n', n,mx,hjj,wsp(iv),n,wsp(iexph),1,ZERO,w,1 )
       beta = DZNRM2( n, w,1 )
       hump = MAX( hump, beta )
@@ -3192,16 +3230,16 @@
       iwsp(6) = ibrkflag
       iwsp(7) = mbrkdwn
 
-      wsp(1)  = CMPLX( step_min )
-      wsp(2)  = CMPLX( step_max )
-      wsp(3)  = CMPLX( 0.0d0 )
-      wsp(4)  = CMPLX( 0.0d0 )
-      wsp(5)  = CMPLX( x_error )
-      wsp(6)  = CMPLX( s_error )
-      wsp(7)  = CMPLX( tbrkdwn )
-      wsp(8)  = CMPLX( sgn*t_now )
-      wsp(9)  = CMPLX( hump/vnorm )
-      wsp(10) = CMPLX( beta/vnorm )
+      wsp(1)  = CMPLX( step_min , KIND=8 )
+      wsp(2)  = CMPLX( step_max , KIND=8 )
+      wsp(3)  = CMPLX( 0.0d0 , KIND=8 )
+      wsp(4)  = CMPLX( 0.0d0 , KIND=8 )
+      wsp(5)  = CMPLX( x_error , KIND=8 )
+      wsp(6)  = CMPLX( s_error , KIND=8 )
+      wsp(7)  = CMPLX( tbrkdwn , KIND=8 )
+      wsp(8)  = CMPLX( sgn*t_now , KIND=8 )
+      wsp(9)  = CMPLX( hump/vnorm , KIND=8 )
+      wsp(10) = CMPLX( beta/vnorm , KIND=8 )
       END
 *----------------------------------------------------------------------|
 *----------------------------------------------------------------------|
@@ -3450,6 +3488,12 @@
 *---  loop while ireject<mxreject until the tolerance is reached ...
 *
       ireject = 0
+c     2018-09-30_NJM: This will never happen, as ireject=0
+c     But, satifies need to use 402
+      if ( ireject.eq.1 ) then
+         goto 402
+      endif
+
  401  continue
 *
 *---  compute w = beta*t_step*V*phi(t_step*H)*e1 + w
@@ -3462,6 +3506,10 @@
       iexph = ifree + iexph - 1
       iphih = iexph + mbrkdwn*mx
       nscale = nscale + ns
+      
+c     2018-09-30_NJM: This will never happen, as ireject=0
+c     But, satifies need to use 402 (which uses 401)
+      hj1j = 0.0d0
       wsp(iphih+mbrkdwn)   = hj1j*wsp(iphih+mx+mbrkdwn-1)
       wsp(iphih+mbrkdwn+1) = hj1j*wsp(iphih+2*mx+mbrkdwn-1)
  
@@ -3801,6 +3849,12 @@
 *---  loop while ireject<mxreject until the tolerance is reached ...
 *
       ireject = 0
+c     2018-09-30_NJM: This will never happen, as ireject=0
+c     But, satifies need to use 402
+      if ( ireject.eq.1 ) then
+         goto 402
+      endif
+
  401  continue
 *
 *---  compute w = beta*t_step*V*phi(t_step*H)*e1 + w
@@ -3814,6 +3868,11 @@
       iexph = ifree + iexph - 1
       iphih = iexph + mbrkdwn*mx
       nscale = nscale + ns
+
+c     2018-09-30_NJM: This will never happen, as ireject=0
+c     But, satifies need to use 402 (which uses 401)
+      hj1j = 0.0d0
+
       wsp(iphih+mbrkdwn)   = hj1j*wsp(iphih+mx+mbrkdwn-1)
       wsp(iphih+mbrkdwn+1) = hj1j*wsp(iphih+2*mx+mbrkdwn-1)
  
@@ -4140,7 +4199,7 @@
             t_step = t_out-t_now
             goto 300
          endif
-         wsp(ih+(j-1)*mh+j) = CMPLX( hj1j )
+         wsp(ih+(j-1)*mh+j) = CMPLX( hj1j , KIND=8)
          call ZDSCAL( n, 1.0d0/hj1j, wsp(j1v),1 )
          j1v = j1v + n
  200  continue
@@ -4160,6 +4219,12 @@
 *---  loop while ireject<mxreject until the tolerance is reached ...
 *
       ireject = 0
+c     2018-09-30_NJM: This will never happen, as ireject=0
+c     But, satifies need to use 402
+      if ( ireject.eq.1 ) then
+         goto 402
+      endif
+
  401  continue
 *
 *---  compute w = beta*t_step*V*phi(t_step*H)*e1 + w
@@ -4172,6 +4237,11 @@
      .             wsp(ifree),lfree, iwsp, iexph, ns, iflag )
       iexph = ifree + iexph - 1
       iphih = iexph + mbrkdwn*mx
+
+c     2018-09-30_NJM: This will never happen, as ireject=0
+c     But, satifies need to use 402 (which uses 401)
+      hj1j = 0.0d0
+
       nscale = nscale + ns
       wsp(iphih+mbrkdwn)   = hj1j*wsp(iphih+mx+mbrkdwn-1)
       wsp(iphih+mbrkdwn+1) = hj1j*wsp(iphih+2*mx+mbrkdwn-1)
@@ -4219,7 +4289,7 @@
       endif
 *
       mx = mbrkdwn + MAX( 0,k1-2 )
-      hij = CMPLX( beta )
+      hij = CMPLX( beta , KIND=8)
       call ZGEMV( 'n', n,mx,hij,wsp(iv),n,wsp(iphih),1,ONE,w,1 )
 *
 *---  suggested value for the next stepsize ...
@@ -4258,14 +4328,14 @@
       iwsp(6) = ibrkflag
       iwsp(7) = mbrkdwn
 
-      wsp(1)  = CMPLX( step_min )
-      wsp(2)  = CMPLX( step_max )
-      wsp(3)  = CMPLX( 0.0d0 )
-      wsp(4)  = CMPLX( 0.0d0 )
-      wsp(5)  = CMPLX( x_error )
-      wsp(6)  = CMPLX( s_error )
-      wsp(7)  = CMPLX( tbrkdwn )
-      wsp(8)  = CMPLX( sgn*t_now )
+      wsp(1)  = CMPLX( step_min , KIND=8 )
+      wsp(2)  = CMPLX( step_max , KIND=8 )
+      wsp(3)  = CMPLX( 0.0d0 , KIND=8 )
+      wsp(4)  = CMPLX( 0.0d0 , KIND=8 )
+      wsp(5)  = CMPLX( x_error , KIND=8 )
+      wsp(6)  = CMPLX( s_error , KIND=8 )
+      wsp(7)  = CMPLX( tbrkdwn , KIND=8 )
+      wsp(8)  = CMPLX( sgn*t_now , KIND=8 )
       END
 *----------------------------------------------------------------------|
 *----------------------------------------------------------------------|
@@ -4498,8 +4568,8 @@
             t_step = t_out-t_now
             goto 300
          endif
-         wsp(ih+(j-1)*mh+j) = CMPLX( hj1j )
-         wsp(ih+j*mh+j-1) = CMPLX( hj1j )
+         wsp(ih+(j-1)*mh+j) = CMPLX( hj1j , KIND=8)
+         wsp(ih+j*mh+j-1) = CMPLX( hj1j , KIND=8)
          call ZDSCAL( n, 1.0d0/hj1j, wsp(j1v),1 )
          j1v = j1v + n
  200  continue
@@ -4520,6 +4590,12 @@
 *---  loop while ireject<mxreject until the tolerance is reached ...
 *
       ireject = 0
+c     2018-09-30_NJM: This will never happen, as ireject=0
+c     But, satifies need to use 402
+      if ( ireject.eq.1 ) then
+         goto 402
+      endif
+      
  401  continue
 *
 *---  compute w = beta*t_step*V*phi(t_step*H)*e1 + w
@@ -4533,6 +4609,11 @@
       iexph = ifree + iexph - 1
       iphih = iexph + mbrkdwn*mx
       nscale = nscale + ns
+
+c     2018-09-30_NJM: This will never happen, as ireject=0
+c     But, satifies need to use 402 (which uses 401)
+      hj1j = 0.0d0
+
       wsp(iphih+mbrkdwn)   = hj1j*wsp(iphih+mx+mbrkdwn-1)
       wsp(iphih+mbrkdwn+1) = hj1j*wsp(iphih+2*mx+mbrkdwn-1)
 
@@ -4579,7 +4660,7 @@
       endif
 *
       mx = mbrkdwn + MAX( 0,k1-2 )
-      hjj = CMPLX( beta )
+      hjj = CMPLX( beta , KIND=8 )
       call ZGEMV( 'n', n,mx,hjj,wsp(iv),n,wsp(iphih),1,ONE,w,1 )
 *
 *---  suggested value for the next stepsize ...
@@ -4618,13 +4699,13 @@
       iwsp(6) = ibrkflag
       iwsp(7) = mbrkdwn
 
-      wsp(1)  = CMPLX( step_min )
-      wsp(2)  = CMPLX( step_max )
-      wsp(3)  = CMPLX( 0.0d0 )
-      wsp(4)  = CMPLX( 0.0d0 )
-      wsp(5)  = CMPLX( x_error )
-      wsp(6)  = CMPLX( s_error )
-      wsp(7)  = CMPLX( tbrkdwn )
-      wsp(8)  = CMPLX( sgn*t_now )
+      wsp(1)  = CMPLX( step_min , KIND=8 )
+      wsp(2)  = CMPLX( step_max , KIND=8 )
+      wsp(3)  = CMPLX( 0.0d0 , KIND=8 )
+      wsp(4)  = CMPLX( 0.0d0 , KIND=8 )
+      wsp(5)  = CMPLX( x_error , KIND=8 )
+      wsp(6)  = CMPLX( s_error , KIND=8 )
+      wsp(7)  = CMPLX( tbrkdwn , KIND=8 )
+      wsp(8)  = CMPLX( sgn*t_now , KIND=8 )
       END
 *----------------------------------------------------------------------|

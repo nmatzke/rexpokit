@@ -68,7 +68,10 @@ C loop begins...
        test1=0.
        do i=1,ngroups
         prob2(i)=unstand(i)/total
-        diff=abs(prob2(i)-prob(i))
+c        2018-09-30_NJM:
+c        diff=abs(prob2(i)-prob(i))
+        diff=REAL( abs(prob2(i)-prob(i)), KIND=4 )
+
 C test1 is used to determine convergence.  If the greatest
 C absolute difference between prob estimates in any state
 C across iterations is less that the tolerance, then stop

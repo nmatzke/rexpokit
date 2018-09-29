@@ -206,9 +206,16 @@
 *     environment.
 *----------------------------------------------------------------------|
       SUBROUTINE XERBLA ( SRNAME, INFO )
+c      SUBROUTINE XERBLA ( SRNAME )
 *     ..    Scalar Arguments ..
       INTEGER            INFO
       CHARACTER(LEN=6)   SRNAME
+
+c     Because some combination of FORTRAN and CRAN updates means that
+c     print commands are not allowed without throwing warnings, errors
+c     I am commenting out the print statements, and setting
+c     INFO = 0 to make sure the variable is used.
+      INFO = 0
 
 c     Putting some if statements, so that these are not dummy variables 
       if (SRNAME .EQ. 'DGEMV ') then
@@ -556,8 +563,9 @@ c
       integer i,incx,incy,ix,iy,m,mp1,n
 c     FIX:
 c     double precision dx(1),dy(1),da
-      double precision dx(n),dy(n),da
-
+c      double precision dx(n),dy(n),da
+      double precision dx(n),dy(n)
+      
 c
       if(n.le.0)return
       if(incx.eq.1.and.incy.eq.1)go to 20

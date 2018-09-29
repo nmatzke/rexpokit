@@ -165,10 +165,16 @@
 
       integer,intent(inout) :: ideg,m,ldh,lwsp,iexph,ns,iflag,ipiv(m)
       double precision,intent(inout) :: t,H(ldh,m),wsp(lwsp)
-      integer i,j
+
+*     2018-09-30_NJM:
+*     integer i,j
+
 *      print 9001,( (H(i,j), j=1,ldh), i=1,m )
- 9001 format( 4(1X,D11.2) )
- 9000 format( 4(1X,I2.1) )
+*      2018-09-30_NJM:
+*      9001 format( 4(1X,D11.2) )
+
+*      2018-09-30_NJM:
+* 9000 format( 4(1X,I2.1) )
       call DGPADM( ideg,m,t,H,ldh,wsp,lwsp,ipiv,iexph,ns,iflag)
 *      print 9001,( (wsp(iexph+(j-1)*m+i-1), j=1,m), i=1,m )
 *      print 9000,( ((iexph+(j-1)*m+i-1), j=1,m), i=1,m )
