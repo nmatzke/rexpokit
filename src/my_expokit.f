@@ -1608,7 +1608,8 @@ c            wsp(iy+i-1) = tmpc / wsp(ih+(i-1)*m+i-1)
       integer ndeg, i, j, k, ip, ih, iy, iz
       parameter ( ndeg=7, ZERO=(0.0d0,0.0d0) )
       double precision alpha0
-      complex(kind=8) alpha(ndeg), theta(ndeg), tmpc
+c      complex(kind=8) alpha(ndeg), theta(ndeg), tmpc
+      complex(kind=8) alpha(2*ndeg), theta(2*ndeg), tmpc
 
       intrinsic ABS,DBLE,CONJG,MIN
       
@@ -1637,6 +1638,10 @@ c            wsp(iy+i-1) = tmpc / wsp(ih+(i-1)*m+i-1)
       theta(6)=( 0.370327340957595652D+01, 0.136563731924991884D+02)
       theta(7)=( 0.889777151877331107D+01, 0.166309842834712071D+02)
 *
+c     2018-10-02_NJM: making these arrays of length 14, as implied
+c     by the do ip=1,ndeg statement below
+c     Actually: skip this, changing alpha(ndeg) to alpha(2*ndeg)
+
       do ip = 1,ndeg
          theta(ndeg+ip) = CONJG( theta(ip) )
          alpha(ndeg+ip) = CONJG( alpha(ip) )
