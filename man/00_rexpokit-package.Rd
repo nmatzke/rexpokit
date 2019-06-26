@@ -10,6 +10,7 @@
   \tabular{ll}{ Package: \tab rexpokit\cr Type: \tab
   Package\cr Version: \tab 0.26.6.2\cr Date: \tab
   2019-06-27
+  }
 
   This package wraps some of the matrix exponentiation
   utilities from EXPOKIT
@@ -199,7 +200,6 @@
   and other tools for functional ecology. R package 
   version 1.0-12. \url{https://CRAN.R-project.org/package=FD}\cr
   \cr
-}
 }
 \examples{
 # Example code
