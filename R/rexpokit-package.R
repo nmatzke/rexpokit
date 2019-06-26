@@ -159,7 +159,7 @@
 #'\cr
 #' Laliberte, E., and P. Legendre (2010) A distance-based 
 #' framework for measuring functional diversity from 
-#' multiple traits. \em{Ecology} 91:299-305.\cr
+#' multiple traits. \emph{Ecology} 91:299-305.\cr
 #'\cr
 #' Laliberte, E., Legendre, P., and B. Shipley. (2014). 
 #' FD: measuring functional diversity from multiple traits, 
