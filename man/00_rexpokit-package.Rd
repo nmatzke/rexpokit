@@ -8,9 +8,8 @@
 }
 \details{
   \tabular{ll}{ Package: \tab rexpokit\cr Type: \tab
-  Package\cr Version: \tab 0.26.5\cr Date: \tab
-  2018-09-30\cr License: \tab GPL (>= 2)\cr LazyLoad: \tab
-  yes\cr }
+  Package\cr Version: \tab 0.26.6.2\cr Date: \tab
+  2019-06-27
 
   This package wraps some of the matrix exponentiation
   utilities from EXPOKIT
@@ -132,7 +131,14 @@
   under the usual GPL license for CRAN R packages. For the
   full EXPOKIT copyright and license, see
   \code{expokit_copyright.txt} under
-  \code{inst/notes}. \cr \cr \bold{3.} Revisions
+  \code{inst/notes}. \cr \cr 
+  EXPOKIT was published by Sidje in: Sidje RB (1998).
+  "Expokit. A Software Package for Computing Matrix
+  Exponentials." \emph{ACM-Transactions on Mathematical
+  Software}, 24(1):130-156.
+  \url{http://tinyurl.com/bwa87rq}\cr \cr 
+  
+  \bold{3.} Revisions
   for version 0.26, which fixed many issues with 
   warnings about obsolescence in F77 code, were
   aided by email help/discussions with: Kurt Hornik, 
@@ -146,12 +152,9 @@
   (\url{http://fortranwiki.org/fortran/show/Modernizing+Old+Fortran}), 
   "Registering the C++ and FORTRAN calls" 
   (\url{https://stat.ethz.ch/pipermail/r-devel/2017-February/073755.html})
-
-  EXPOKIT was published by Sidje in: Sidje RB (1998).
-  "Expokit. A Software Package for Computing Matrix
-  Exponentials." \emph{ACM-Transactions on Mathematical
-  Software}, 24(1):130-156.
-  \url{http://tinyurl.com/bwa87rq}\cr \cr \bold{4.} A small
+  \cr \cr
+  
+  \bold{4.} A small
   amount of C++ code wrapping EXPOKIT was modified from a
   file in LAGRANGE, C++ version by Stephen Smith:\cr
   \url{http://code.google.com/p/lagrange/}\cr
@@ -159,8 +162,9 @@
   Specifically:\cr \cr \code{ * RateMatrix.cpp}\cr \code{ *
   }\cr \code{ * Created on: Aug 14, 2009}\cr \code{ *
   Author: smitty}\cr \code{ *}\cr \cr ...and the my_*.f
-  wrappers for the EXPOKIT *.f code files.\cr \cr \bold{5.}
-  Also copied in part (to get the .h file) from:\cr \cr
+  wrappers for the EXPOKIT *.f code files.\cr \cr 
+  
+  \bold{5.} Also copied in part (to get the .h file) from:\cr \cr
   Python package "Pyprop":\cr
   \url{http://code.google.com/p/pyprop/}\cr
   (old URL) pyprop.googlecode.com/svn/trunk/core/krylov/expokit/expokitpropagator.cpp\cr
@@ -173,6 +177,28 @@
   \url{http://www.maths.uq.edu.au/expokit/copyright}\cr
   ...or...\cr expokit_copyright.txt in this install 
   (see package "inst" directory)\cr
+
+  \bold{7.} EXPOKIT included some LAPACK and BLAS code for 
+  portability. This has been slightly modified to pass 
+  new CRAN checks and compilers. The original copyright is
+  at: /inst/LAPACK_LICENSE.txt\cr
+  \cr
+
+  \bold{8.} itscale.f was copied from the R package "FD" in
+  order to avoid an unnecessary dependency
+  (and associated issues with compilation, 
+  updates, etc.). See R function "maxent" for more details,
+  citations for package "FD":\cr
+  \cr
+  Laliberte, E., and P. Legendre (2010) A distance-based 
+  framework for measuring functional diversity from 
+  multiple traits. \em{Ecology} 91:299-305.\cr
+  \cr
+  Laliberte, E., Legendre, P., and B. Shipley. (2014). 
+  FD: measuring functional diversity from multiple traits, 
+  and other tools for functional ecology. R package 
+  version 1.0-12. \url{https://CRAN.R-project.org/package=FD}\cr
+  \cr
 }
 \examples{
 # Example code

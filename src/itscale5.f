@@ -1,3 +1,23 @@
+C
+C This code was copied from the R package "FD" in
+C order to avoid an unnecessary dependency
+C (and associated issues with compilation, 
+C  updates, etc.)
+C
+C See R function "maxent" for more details.
+C
+C Laliberte, E., and P. Legendre (2010) A distance-based 
+C framework for measuring functional diversity from 
+C multiple traits. Ecology 91:299-305.
+C
+C Laliberte, E., Legendre, P., and B. Shipley. (2014). 
+C FD: measuring functional diversity from multiple traits, 
+C and other tools for functional ecology. R package 
+C version 1.0-12.
+C 
+C https://CRAN.R-project.org/package=FD
+C 
+
       subroutine itscale5(SXT,ngroups,ntraits,const,
      & prior,prob,entropy,niter,tol,denom) 
 C Implements the Improved Iterative Scaling algorithm of

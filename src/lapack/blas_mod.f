@@ -1,4 +1,52 @@
 
+* Copyright: See /inst/LAPACK_LICENSE.txt for 
+* original FORTRAN code in /src.
+*
+* The FORTRAN lapack/blas code in rexpokit was 
+* originally copied from the EXPOKIT package
+* with permission of Roger Sidje (who is
+* thus listed as coauthor on rexpokit).
+*
+* The FORTRAN has since had various minor 
+* modifications to satisfy new checks as
+* CRAN updates their FORTRAN, OSs, and
+* R CMD check function.
+* 
+
+* 2019-06-26 NJM edits:
+* 
+* fixing by changing 
+*  LSAME to LSAMEX
+*  dasum to dasumx
+*  daxpy  to daxpx
+*  dcopy  to dcopyx
+*  ddot   to ddotx
+*  DGEMM  to DGEXX  (due to line nlength)
+*  DGEMV  to DGEMX
+*  DNRM2  to DNRM2X
+*  dscal  to dscalx
+*  dswap  to dswapx
+*  idamax to idamxx
+*  zswap  to zswapx
+*  zaxpy  to zaxpx
+*  
+*  Fixed these errors:
+* 
+* rexpokit.out:(.text+0x0): multiple definition of `lsame_'
+* rexpokit.out:(.text+0x0): multiple definition of `dasum_'
+* rexpokit.out:(.text+0x0): multiple definition of `daxpy_'
+* rexpokit.out:(.text+0x0): multiple definition of `dcopy_'
+* rexpokit.out:(.text+0x0): multiple definition of `ddot_'
+* rexpokit.out:(.text+0x0): multiple definition of `dgemm_'
+* rexpokit.out:(.text+0x0): multiple definition of `dgemv_'
+* rexpokit.out:(.text+0x0): multiple definition of `dnrm2_'
+* rexpokit.out:(.text+0x0): multiple definition of `dscal_'
+* rexpokit.out:(.text+0x0): multiple definition of `dswap_'
+* rexpokit.out:(.text+0x0): multiple definition of `idamax_'
+* 
+
+
+
 *     2018-09-26 NJM edits: 
 *          changed REALPART to REAL
 *          changed IMAGPART to AIMAG
@@ -218,16 +266,16 @@ c     INFO = 0 to make sure the variable is used.
       INFO = 0
 
 c     Putting some if statements, so that these are not dummy variables 
-      if (SRNAME .EQ. 'DGEMV ') then
+      if (SRNAME .EQ. 'DGEMX ') then
          continue
-c        print*,"DGEMV problem: no INFO, see XERBLA in blas_mod.f"
+c        print*,"DGEMX problem: no INFO, see XERBLA in blas_mod.f"
 c        print*,"Attempting to print INFO below:"
 c        print*,INFO
       end if
 
-      if (SRNAME .EQ. 'DGEMM ') then
+      if (SRNAME .EQ. 'DGEXX ') then
         continue
-c        print*,"DGEMM problem: no INFO, see XERBLA in blas_mod.f"
+c        print*,"DGEXX problem: no INFO, see XERBLA in blas_mod.f"
 c        print*,"Attempting to print INFO below:"
 c        print*,INFO
       end if
@@ -289,7 +337,7 @@ c        print*,INFO
 *
       END
 *----------------------------------------------------------------------|
-      LOGICAL          FUNCTION LSAME( CA, CB )
+      LOGICAL          FUNCTION LSAMEX( CA, CB )
 *
 *  -- LAPACK auxiliary routine (version 1.1) --
 *     Univ. of Tennessee, Univ. of California Berkeley, NAG Ltd.,
@@ -303,7 +351,7 @@ c        print*,INFO
 *  Purpose
 *  =======
 *
-*  LSAME returns .TRUE. if CA is the same letter as CB regardless of
+*  LSAMEX returns .TRUE. if CA is the same letter as CB regardless of
 *  case.
 *
 *  Arguments
@@ -323,8 +371,8 @@ c        print*,INFO
 *
 *     Test if the characters are equal
 *
-      LSAME = CA.EQ.CB
-      IF( LSAME )
+      LSAMEX = CA.EQ.CB
+      IF( LSAMEX )
      $   RETURN
 *
 *     Now test for equivalence if both characters are alphabetic.
@@ -367,11 +415,11 @@ c        print*,INFO
          IF( INTA.GE.225 .AND. INTA.LE.250 ) INTA = INTA - 32
          IF( INTB.GE.225 .AND. INTB.LE.250 ) INTB = INTB - 32
       END IF
-      LSAME = INTA.EQ.INTB
+      LSAMEX = INTA.EQ.INTB
 *
 *     RETURN
 *
-*     End of LSAME
+*     End of LSAMEX
 *
       END
 
@@ -392,7 +440,7 @@ c      zz = z
 
 
 
-      subroutine zaxpy(n,za,zx,incx,zy,incy)
+      subroutine zaxpx(n,za,zx,incx,zy,incy)
 c
 c     constant times a vector plus a vector.
 c     jack dongarra, 3/11/78.
@@ -425,7 +473,7 @@ c
       return
       end
 *----------------------------------------------------------------------|
-      integer function idamax(n,dx,incx)
+      integer function idamxx(n,dx,incx)
 c
 c     finds the index of element having max. absolute value.
 c     jack dongarra, linpack, 3/11/78.
@@ -435,9 +483,9 @@ c
 c      double precision dx(1),dmax
       double precision dx(n),dmax
 c
-      idamax = 0
+      idamxx = 0
       if( n.lt.1 .or. incx.le.0 ) return
-      idamax = 1
+      idamxx = 1
       if(n.eq.1)return
       if(incx.eq.1)go to 20
 c
@@ -448,7 +496,7 @@ c
       ix = ix + incx
       do 10 i = 2,n
          if(dabs(dx(ix)).le.dmax) go to 5
-         idamax = i
+         idamxx = i
          dmax = dabs(dx(ix))
     5    ix = ix + incx
    10 continue
@@ -459,13 +507,13 @@ c
    20 dmax = dabs(dx(1))
       do 30 i = 2,n
          if(dabs(dx(i)).le.dmax) go to 30
-         idamax = i
+         idamxx = i
          dmax = dabs(dx(i))
    30 continue
       return
       end
 *----------------------------------------------------------------------|
-      double precision function dasum(n,dx,incx)
+      double precision function dasumx(n,dx,incx)
 c
 c     takes the sum of the absolute values.
 c     jack dongarra, linpack, 3/11/78.
@@ -475,7 +523,7 @@ c      double precision dx(1),dtemp
       integer i,incx,m,mp1,n,nincx
       double precision dx(n),dtemp
 c
-      dasum = 0.0d0
+      dasumx = 0.0d0
       dtemp = 0.0d0
       if( n.le.0 .or. incx.le.0 )return
       if(incx.eq.1)go to 20
@@ -486,7 +534,7 @@ c
       do 10 i = 1,nincx,incx
         dtemp = dtemp + dabs(dx(i))
    10 continue
-      dasum = dtemp
+      dasumx = dtemp
       return
 c
 c        code for increment equal to 1
@@ -505,11 +553,11 @@ c
         dtemp = dtemp + dabs(dx(i)) + dabs(dx(i + 1)) + dabs(dx(i + 2))
      *  + dabs(dx(i + 3)) + dabs(dx(i + 4)) + dabs(dx(i + 5))
    50 continue
-   60 dasum = dtemp
+   60 dasumx = dtemp
       return
       end
 *----------------------------------------------------------------------|
-      subroutine  dscal(n,da,dx,incx)
+      subroutine  dscalx(n,da,dx,incx)
 c
 c     scales a vector by a constant.
 c     uses unrolled loops for increment equal to one.
@@ -554,7 +602,7 @@ c
       return
       end
 *----------------------------------------------------------------------|
-      subroutine  dcopy(n,dx,incx,dy,incy)
+      subroutine  dcopyx(n,dx,incx,dy,incy)
 c
 c     copies a vector, x, to a vector, y.
 c     uses unrolled loops for increments equal to one.
@@ -622,7 +670,7 @@ c
 * And I removed "&" symbols for line-wrapping
 *----------------------------------------------------------------------|
 !*==DNRM2.spg  processed by SPAG 6.72Dc at 05:54 on 12 Aug 2017
-      DOUBLE PRECISION FUNCTION DNRM2(N,Dx,Incx)
+      DOUBLE PRECISION FUNCTION DNRM2X(N,Dx,Incx)
       IMPLICIT NONE
 !*--DNRM24
       INTEGER i, Incx, ix, j, N, next
@@ -678,7 +726,7 @@ c     DOUBLE PRECISION Dx(1), cutlo, cuthi, hitest, sum, xmax, zero, one
          i = 1
          ix = 1
       ELSE
-         DNRM2 = zero
+         DNRM2X = zero
          GOTO 99999
       ENDIF
 !                                                 begin main loop
@@ -746,7 +794,7 @@ c     DOUBLE PRECISION Dx(1), cutlo, cuthi, hitest, sum, xmax, zero, one
          sum = sum + Dx(i)**2
          i = i + Incx
       ENDDO
-      DNRM2 = DSQRT(sum)
+      DNRM2X = DSQRT(sum)
       GOTO 99999
 !
  600  ix = ix + 1
@@ -757,7 +805,7 @@ c     DOUBLE PRECISION Dx(1), cutlo, cuthi, hitest, sum, xmax, zero, one
 !
 !              compute square root and adjust for scaling.
 !
-      DNRM2 = xmax*DSQRT(sum)
+      DNRM2X = xmax*DSQRT(sum)
 99999 END
 !----------------------------------------------------------------------|
 * END OF REFACTORED CODE
@@ -770,7 +818,7 @@ c     DOUBLE PRECISION Dx(1), cutlo, cuthi, hitest, sum, xmax, zero, one
 
 
 !----------------------------------------------------------------------|
-      double precision function ddot(n,dx,incx,dy,incy)
+      double precision function ddotx(n,dx,incx,dy,incy)
 c
 c     forms the dot product of two vectors.
 c     uses unrolled loops for increments equal to one.
@@ -782,7 +830,7 @@ c      double precision dx(1),dy(1),dtemp
 
 
 c
-      ddot = 0.0d0
+      ddotx = 0.0d0
       dtemp = 0.0d0
       if(n.le.0)return
       if(incx.eq.1.and.incy.eq.1)go to 20
@@ -799,7 +847,7 @@ c
         ix = ix + incx
         iy = iy + incy
    10 continue
-      ddot = dtemp
+      ddotx = dtemp
       return
 c
 c        code for both increments equal to 1
@@ -818,11 +866,11 @@ c
         dtemp = dtemp + dx(i)*dy(i) + dx(i + 1)*dy(i + 1) +
      *   dx(i + 2)*dy(i + 2) + dx(i + 3)*dy(i + 3) + dx(i + 4)*dy(i + 4)
    50 continue
-   60 ddot = dtemp
+   60 ddotx = dtemp
       return
       end
 *----------------------------------------------------------------------|
-      subroutine daxpy(n,da,dx,incx,dy,incy)
+      subroutine daxpx(n,da,dx,incx,dy,incy)
 c
 c     constant times a vector plus a vector.
 c     uses unrolled loops for increments equal to one.
@@ -875,7 +923,7 @@ c loop from mp1 to n, by increment 4
       return
       end
 *----------------------------------------------------------------------|
-      subroutine  zswap (n,zx,incx,zy,incy)
+      subroutine  zswapx (n,zx,incx,zy,incy)
 c
 c     interchanges two vectors.
 c     jack dongarra, 3/11/78.
@@ -910,7 +958,7 @@ c       code for both increments equal to 1
       return
       end
 *----------------------------------------------------------------------|
-      SUBROUTINE DGEMV ( TRANS, M, N, ALPHA, A, LDA, X, INCX,
+      SUBROUTINE DGEMX ( TRANS, M, N, ALPHA, A, LDA, X, INCX,
      $                   BETA, Y, INCY )
 *     .. Scalar Arguments ..
       DOUBLE PRECISION   ALPHA, BETA
@@ -923,7 +971,7 @@ c       code for both increments equal to 1
 *  Purpose
 *  =======
 *
-*  DGEMV  performs one of the matrix-vector operations
+*  DGEMX  performs one of the matrix-vector operations
 *
 *     y := alpha*A*x + beta*y,   or   y := alpha*A'*x + beta*y,
 *
@@ -1018,8 +1066,8 @@ c       code for both increments equal to 1
       DOUBLE PRECISION   TEMP
       INTEGER            I, INFO, IX, IY, J, JX, JY, KX, KY, LENX, LENY
 *     .. External Functions ..
-      LOGICAL            LSAME
-      EXTERNAL           LSAME
+      LOGICAL            LSAMEX
+      EXTERNAL           LSAMEX
 *     .. External Subroutines ..
       EXTERNAL           XERBLA
 *     .. Intrinsic Functions ..
@@ -1030,9 +1078,9 @@ c       code for both increments equal to 1
 *     Test the input parameters.
 *
       INFO = 0
-      IF     ( .NOT.LSAME( TRANS, 'N' ).AND.
-     $         .NOT.LSAME( TRANS, 'T' ).AND.
-     $         .NOT.LSAME( TRANS, 'C' )      )THEN
+      IF     ( .NOT.LSAMEX( TRANS, 'N' ).AND.
+     $         .NOT.LSAMEX( TRANS, 'T' ).AND.
+     $         .NOT.LSAMEX( TRANS, 'C' )      )THEN
          INFO = 1
       ELSE IF( M.LT.0 )THEN
          INFO = 2
@@ -1046,7 +1094,7 @@ c       code for both increments equal to 1
          INFO = 11
       END IF
       IF( INFO.NE.0 )THEN
-         CALL XERBLA( 'DGEMV ', INFO )
+         CALL XERBLA( 'DGEMX ', INFO )
          RETURN
       END IF
 *
@@ -1059,7 +1107,7 @@ c       code for both increments equal to 1
 *     Set  LENX  and  LENY, the lengths of the vectors x and y, and set
 *     up the start points in  X  and  Y.
 *
-      IF( LSAME( TRANS, 'N' ) )THEN
+      IF( LSAMEX( TRANS, 'N' ) )THEN
          LENX = N
          LENY = M
       ELSE
@@ -1110,7 +1158,7 @@ c       code for both increments equal to 1
       END IF
       IF( ALPHA.EQ.ZERO )
      $   RETURN
-      IF( LSAME( TRANS, 'N' ) )THEN
+      IF( LSAMEX( TRANS, 'N' ) )THEN
 *
 *        Form  y := alpha*A*x + y.
 *
@@ -1168,24 +1216,31 @@ c       code for both increments equal to 1
 *
       RETURN
 *
-*     End of DGEMV .
+*     End of DGEMX .
 *
       END
 *----------------------------------------------------------------------|
-      SUBROUTINE DGEMM ( TRANSA, TRANSB, M, N, K, ALPHA, A, LDA, B, LDB,
+      SUBROUTINE DGEXX ( TRANSA, TRANSB, M, N, K, ALPHA, A, LDA, B, LDB,
      $                   BETA, C, LDC )
 *     .. Scalar Arguments ..
       CHARACTER(LEN=1)   TRANSA, TRANSB
       INTEGER            M, N, K, LDA, LDB, LDC
       DOUBLE PRECISION   ALPHA, BETA
 *     .. Array Arguments ..
+*     2019-06-26_NJM: fix 
+* 
+* Error: Variable 'ldb' cannot appear in the expression at (1)
+* 
       DOUBLE PRECISION   A( LDA, * ), B( LDB, * ), C( LDC, * )
+*      complex(kind=8)   A( LDA, * ), B( LDB, * ), C( LDC, * )
+      
+*      
 *     ..
 *
 *  Purpose
 *  =======
 *
-*  DGEMM  performs one of the matrix-matrix operations
+*  DGEXX  performs one of the matrix-matrix operations
 *
 *     C := alpha*op( A )*op( B ) + beta*C,
 *
@@ -1303,8 +1358,8 @@ c       code for both increments equal to 1
 *
 *
 *     .. External Functions ..
-      LOGICAL            LSAME
-      EXTERNAL           LSAME
+      LOGICAL            LSAMEX
+      EXTERNAL           LSAMEX
 *     .. External Subroutines ..
       EXTERNAL           XERBLA
 *     .. Intrinsic Functions ..
@@ -1323,8 +1378,8 @@ c       code for both increments equal to 1
 *     transposed and set  NROWA, NCOLA and  NROWB  as the number of rows
 *     and  columns of  A  and the  number of  rows  of  B  respectively.
 *
-      NOTA  = LSAME( TRANSA, 'N' )
-      NOTB  = LSAME( TRANSB, 'N' )
+      NOTA  = LSAMEX( TRANSA, 'N' )
+      NOTB  = LSAMEX( TRANSB, 'N' )
       IF( NOTA )THEN
          NROWA = M
          NCOLA = K
@@ -1342,12 +1397,12 @@ c       code for both increments equal to 1
 *
       INFO = 0
       IF(      ( .NOT.NOTA                 ).AND.
-     $         ( .NOT.LSAME( TRANSA, 'C' ) ).AND.
-     $         ( .NOT.LSAME( TRANSA, 'T' ) )      )THEN
+     $         ( .NOT.LSAMEX( TRANSA, 'C' ) ).AND.
+     $         ( .NOT.LSAMEX( TRANSA, 'T' ) )      )THEN
          INFO = 1
       ELSE IF( ( .NOT.NOTB                 ).AND.
-     $         ( .NOT.LSAME( TRANSB, 'C' ) ).AND.
-     $         ( .NOT.LSAME( TRANSB, 'T' ) )      )THEN
+     $         ( .NOT.LSAMEX( TRANSB, 'C' ) ).AND.
+     $         ( .NOT.LSAMEX( TRANSB, 'T' ) )      )THEN
          INFO = 2
       ELSE IF( M  .LT.0               )THEN
          INFO = 3
@@ -1363,7 +1418,7 @@ c       code for both increments equal to 1
          INFO = 13
       END IF
       IF( INFO.NE.0 )THEN
-         CALL XERBLA( 'DGEMM ', INFO )
+         CALL XERBLA( 'DGEXX ', INFO )
          RETURN
       END IF
 *
@@ -1482,7 +1537,7 @@ c       code for both increments equal to 1
 *
       RETURN
 *
-*     End of DGEMM .
+*     End of DGEXX .
 *
       END
 *----------------------------------------------------------------------|
@@ -1661,8 +1716,8 @@ c       code for both increments equal to 1
       INTEGER            I, INFO, IX, IY, J, JX, JY, KX, KY, LENX, LENY
       LOGICAL            NOCONJ
 *     .. External Functions ..
-      LOGICAL            LSAME
-      EXTERNAL           LSAME
+      LOGICAL            LSAMEX
+      EXTERNAL           LSAMEX
 *     .. External Subroutines ..
       EXTERNAL           XERBLA
 *     .. Intrinsic Functions ..
@@ -1673,9 +1728,9 @@ c       code for both increments equal to 1
 *     Test the input parameters.
 *
       INFO = 0
-      IF     ( .NOT.LSAME( TRANS, 'N' ).AND.
-     $         .NOT.LSAME( TRANS, 'T' ).AND.
-     $         .NOT.LSAME( TRANS, 'C' )      )THEN
+      IF     ( .NOT.LSAMEX( TRANS, 'N' ).AND.
+     $         .NOT.LSAMEX( TRANS, 'T' ).AND.
+     $         .NOT.LSAMEX( TRANS, 'C' )      )THEN
          INFO = 1
       ELSE IF( M.LT.0 )THEN
          INFO = 2
@@ -1699,12 +1754,12 @@ c       code for both increments equal to 1
      $    ( ( ALPHA.EQ.ZERO ).AND.( BETA.EQ.ONE ) ) )
      $   RETURN
 *
-      NOCONJ = LSAME( TRANS, 'T' )
+      NOCONJ = LSAMEX( TRANS, 'T' )
 *
 *     Set  LENX  and  LENY, the lengths of the vectors x and y, and set
 *     up the start points in  X  and  Y.
 *
-      IF( LSAME( TRANS, 'N' ) )THEN
+      IF( LSAMEX( TRANS, 'N' ) )THEN
          LENX = N
          LENY = M
       ELSE
@@ -1755,7 +1810,7 @@ c       code for both increments equal to 1
       END IF
       IF( ALPHA.EQ.ZERO )
      $   RETURN
-      IF( LSAME( TRANS, 'N' ) )THEN
+      IF( LSAMEX( TRANS, 'N' ) )THEN
 *
 *        Form  y := alpha*A*x + y.
 *
@@ -2280,8 +2335,8 @@ c
 *
 *
 *     .. External Functions ..
-      LOGICAL            LSAME
-      EXTERNAL           LSAME
+      LOGICAL            LSAMEX
+      EXTERNAL           LSAMEX
 *     .. External Subroutines ..
       EXTERNAL           XERBLA
 *     .. Intrinsic Functions ..
@@ -2304,10 +2359,10 @@ c
 *     NROWA, NCOLA and  NROWB  as the number of rows and  columns  of  A
 *     and the number of rows of  B  respectively.
 *
-      NOTA  = LSAME( TRANSA, 'N' )
-      NOTB  = LSAME( TRANSB, 'N' )
-      CONJA = LSAME( TRANSA, 'C' )
-      CONJB = LSAME( TRANSB, 'C' )
+      NOTA  = LSAMEX( TRANSA, 'N' )
+      NOTB  = LSAMEX( TRANSB, 'N' )
+      CONJA = LSAMEX( TRANSA, 'C' )
+      CONJB = LSAMEX( TRANSB, 'C' )
       IF( NOTA )THEN
          NROWA = M
          NCOLA = K
@@ -2326,11 +2381,11 @@ c
       INFO = 0
       IF(      ( .NOT.NOTA                 ).AND.
      $         ( .NOT.CONJA                ).AND.
-     $         ( .NOT.LSAME( TRANSA, 'T' ) )      )THEN
+     $         ( .NOT.LSAMEX( TRANSA, 'T' ) )      )THEN
          INFO = 1
       ELSE IF( ( .NOT.NOTB                 ).AND.
      $         ( .NOT.CONJB                ).AND.
-     $         ( .NOT.LSAME( TRANSB, 'T' ) )      )THEN
+     $         ( .NOT.LSAMEX( TRANSB, 'T' ) )      )THEN
          INFO = 2
       ELSE IF( M  .LT.0               )THEN
          INFO = 3
@@ -2627,7 +2682,7 @@ c
    30 continue
       return
       end
-      subroutine  dswap (n,dx,incx,dy,incy)
+      subroutine  dswapx (n,dx,incx,dy,incy)
 c
 c     interchanges two vectors.
 c     uses unrolled loops for increments equal one.

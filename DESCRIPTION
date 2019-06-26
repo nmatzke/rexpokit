@@ -1,8 +1,8 @@
 Package: rexpokit
 Type: Package
 Title: R Wrappers for EXPOKIT; Other Matrix Functions
-Version: 0.26.6.0.9001
-Date: 2018-10-02
+Version: 0.26.6.2
+Date: 2019-06-27
 Authors@R: c(person("Nicholas J.", "Matzke", email="nickmatzke.ncse@gmail.com", role=
         c("aut", "cre", "cph")), person("Roger B.", "Sidje", email =
         "roger.b.sidje@ua.edu", role = c("aut", "cph")),
@@ -14,7 +14,7 @@ Maintainer: Nicholas J. Matzke <nickmatzke.ncse@gmail.com>
 Depends: R (>= 3.0.2)
 Imports: stats, Rcpp (>= 0.11.0)
 LinkingTo: Rcpp (>= 0.11.0)
-Copyright: See rexpokit/inst/LAPACK_LICENSE.txt for src/lapack.f.
+Copyright: See /inst/LAPACK_LICENSE.txt for code in /src.
 Description: Wraps some of the matrix exponentiation 
         utilities from EXPOKIT (<http://www.maths.uq.edu.au/expokit/>), 
         a FORTRAN library that is widely recommended for matrix 
@@ -32,6 +32,6 @@ URL: http://phylo.wikidot.com/rexpokit
 License: GPL (>= 2)
 LazyLoad: yes
 ByteCompile: yes
-Packaged: 2018-10-02; iao
+Packaged: 2019-06-27; iao
 NeedsCompilation: yes
 Repository: CRAN

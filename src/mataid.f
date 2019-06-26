@@ -1,3 +1,18 @@
+* Copyright: See /inst/LAPACK_LICENSE.txt for 
+* original FORTRAN code in /src.
+*
+* The FORTRAN lapack/blas code in rexpokit was 
+* originally copied from the EXPOKIT package
+* with permission of Roger Sidje (who is
+* thus listed as coauthor on rexpokit).
+*
+* The FORTRAN has since had various minor 
+* modifications to satisfy new checks as
+* CRAN updates their FORTRAN, OSs, and
+* R CMD check function.
+* 
+
+
 *-------------------------------NOTE-----------------------------------*
 *     This is an accessory to Expokit and it is not intended to be     *
 *     complete. It is supplied primarily to ensure an unconstrained    *

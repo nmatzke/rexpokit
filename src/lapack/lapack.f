@@ -1,3 +1,24 @@
+* Copyright: See /inst/LAPACK_LICENSE.txt for 
+* original FORTRAN code in /src.
+*
+* The FORTRAN lapack/blas code in rexpokit was 
+* originally copied from the EXPOKIT package
+* with permission of Roger Sidje (who is
+* thus listed as coauthor on rexpokit).
+*
+* The FORTRAN has since had various minor 
+* modifications to satisfy new checks as
+* CRAN updates their FORTRAN, OSs, and
+* R CMD check function.
+* 
+
+
+* 2019-06-26
+* 
+* zswap  to zswapx
+* zswapx to zswapxx
+* 
+* 
 
 *     2018-09-26 NJM edits: 
 *          changed REALPART to REAL
@@ -122,7 +143,7 @@ c     cleve moler, university of new mexico, argonne national lab.
 c
 c     subroutines and functions
 c
-c     blas zaxpy,zscal,izamax
+c     blas zswapx,zscal,izamax
 c     fortran dabs
 c
 c     internal variables
@@ -194,7 +215,7 @@ c
                   a(l,j) = a(k,j)
                   a(k,j) = t
    20          continue
-               call zaxpy(n-k,t,a(k+1,k),1,a(k+1,j),1)
+               call zswapx(n-k,t,a(k+1,k),1,a(k+1,j),1)
    30       continue
          go to 50
    40    continue
@@ -273,7 +294,7 @@ c     cleve moler, university of new mexico, argonne national lab.
 c
 c     subroutines and functions
 c
-c     blas zaxpy,zdotc
+c     blas zswapx,zdotc
 c     fortran dconjg
 c
 c     internal variables
@@ -299,7 +320,7 @@ c
                b(l) = b(k)
                b(k) = t
    10       continue
-            call zaxpy(n-k,t,a(k+1,k),1,b(k+1),1)
+            call zswapx(n-k,t,a(k+1,k),1,b(k+1),1)
    20    continue
    30    continue
 c
@@ -309,7 +330,7 @@ c
             k = n + 1 - kb
             b(k) = b(k)/a(k,k)
             t = -b(k)
-            call zaxpy(k-1,t,a(1,k),1,b(1),1)
+            call zswapx(k-1,t,a(1,k),1,b(1),1)
    40    continue
       go to 100
    50 continue
@@ -393,7 +414,7 @@ c     james bunch, univ. calif. san diego, argonne nat. lab.
 c
 c     subroutines and functions
 c
-c     blas zaxpy,zswap,izamax
+c     blas zswapx,zswapx,izamax
 c     fortran dabs,dmax1,dcmplx,conjg,dsqrt
 c
 c     internal variables
@@ -545,7 +566,7 @@ c
 c
 c              perform an interchange.
 c
-               call zswap(imax,a(1,imax),1,a(1,k),1)
+               call zswapx(imax,a(1,imax),1,a(1,k),1)
                do 110 jj = imax, k
                   j = k + imax - jj
                   t = conjg(a(j,k))
@@ -560,7 +581,7 @@ c
                j = k - jj
                mulk = -a(j,k)/a(k,k)
                t = conjg(mulk)
-               call zaxpy(j,t,a(1,k),1,a(1,j),1)
+               call zswapx(j,t,a(1,k),1,a(1,j),1)
                a(j,j) = dcmplx(REAL(a(j,j)),0.0d0)
                a(j,k) = mulk
   130       continue
@@ -578,7 +599,7 @@ c
 c
 c              perform an interchange.
 c
-               call zswap(imax,a(1,imax),1,a(1,k-1),1)
+               call zswapx(imax,a(1,imax),1,a(1,k-1),1)
                do 150 jj = imax, km1
                   j = km1 + imax - jj
                   t = conjg(a(j,k-1))
@@ -604,9 +625,9 @@ c
                   mulk = (akm1*bk - bkm1)/denom
                   mulkm1 = (ak*bkm1 - bk)/denom
                   t = conjg(mulk)
-                  call zaxpy(j,t,a(1,k),1,a(1,j),1)
+                  call zswapx(j,t,a(1,k),1,a(1,j),1)
                   t = conjg(mulkm1)
-                  call zaxpy(j,t,a(1,k-1),1,a(1,j),1)
+                  call zswapx(j,t,a(1,k-1),1,a(1,j),1)
                   a(j,k) = mulk
                   a(j,k-1) = mulkm1
                   a(j,j) = dcmplx(REAL(a(j,j)),0.0d0)
@@ -675,7 +696,7 @@ c     james bunch, univ. calif. san diego, argonne nat. lab.
 c
 c     subroutines and functions
 c
-c     blas zaxpy,zdotc
+c     blas zswapx,zdotc
 c     fortran dconjg,iabs
 c
 c     internal variables.
@@ -705,7 +726,7 @@ c
 c
 c              apply the transformation.
 c
-               call zaxpy(k-1,b(k),a(1,k),1,b(1),1)
+               call zswapx(k-1,b(k),a(1,k),1,b(1),1)
    30       continue
 c
 c           apply d inverse.
@@ -730,8 +751,8 @@ c
 c
 c              apply the transformation.
 c
-               call zaxpy(k-2,b(k),a(1,k),1,b(1),1)
-               call zaxpy(k-2,b(k-1),a(1,k-1),1,b(1),1)
+               call zswapx(k-2,b(k),a(1,k),1,b(1),1)
+               call zswapx(k-2,b(k-1),a(1,k-1),1,b(1),1)
    60       continue
 c
 c           apply d inverse.
@@ -852,7 +873,7 @@ c     james bunch, univ. calif. san diego, argonne nat. lab.
 c
 c     subroutines and functions
 c
-c     blas zaxpy,zswap,izamax
+c     blas zswapx,zswapx,izamax
 c     fortran dabs,dmax1,dsqrt
 c
 c     internal variables
@@ -997,7 +1018,7 @@ c
 c
 c              perform an interchange.
 c
-               call zswap(imax,a(1,imax),1,a(1,k),1)
+               call zswapx(imax,a(1,imax),1,a(1,k),1)
                do 110 jj = imax, k
                   j = k + imax - jj
                   t = a(j,k)
@@ -1012,7 +1033,7 @@ c
                j = k - jj
                mulk = -a(j,k)/a(k,k)
                t = mulk
-               call zaxpy(j,t,a(1,k),1,a(1,j),1)
+               call zswapx(j,t,a(1,k),1,a(1,j),1)
                a(j,k) = mulk
   130       continue
 c
@@ -1029,7 +1050,7 @@ c
 c
 c              perform an interchange.
 c
-               call zswap(imax,a(1,imax),1,a(1,k-1),1)
+               call zswapx(imax,a(1,imax),1,a(1,k-1),1)
                do 150 jj = imax, km1
                   j = km1 + imax - jj
                   t = a(j,k-1)
@@ -1055,9 +1076,9 @@ c
                   mulk = (akm1*bk - bkm1)/denom
                   mulkm1 = (ak*bkm1 - bk)/denom
                   t = mulk
-                  call zaxpy(j,t,a(1,k),1,a(1,j),1)
+                  call zswapx(j,t,a(1,k),1,a(1,j),1)
                   t = mulkm1
-                  call zaxpy(j,t,a(1,k-1),1,a(1,j),1)
+                  call zswapx(j,t,a(1,k-1),1,a(1,j),1)
                   a(j,k) = mulk
                   a(j,k-1) = mulkm1
   170          continue
@@ -1125,7 +1146,7 @@ c     james bunch, univ. calif. san diego, argonne nat. lab.
 c
 c     subroutines and functions
 c
-c     blas zaxpy,zdotu
+c     blas zswapx,zdotu
 c     fortran iabs
 c
 c     internal variables.
@@ -1155,7 +1176,7 @@ c
 c
 c              apply the transformation.
 c
-               call zaxpy(k-1,b(k),a(1,k),1,b(1),1)
+               call zswapx(k-1,b(k),a(1,k),1,b(1),1)
    30       continue
 c
 c           apply d inverse.
@@ -1180,8 +1201,8 @@ c
 c
 c              apply the transformation.
 c
-               call zaxpy(k-2,b(k),a(1,k),1,b(1),1)
-               call zaxpy(k-2,b(k-1),a(1,k-1),1,b(1),1)
+               call zswapx(k-2,b(k),a(1,k),1,b(1),1)
+               call zswapx(k-2,b(k-1),a(1,k-1),1,b(1),1)
    60       continue
 c
 c           apply d inverse.

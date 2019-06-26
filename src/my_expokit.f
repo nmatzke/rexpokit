@@ -1,3 +1,50 @@
+* Copyright: See /inst/LAPACK_LICENSE.txt for 
+* original FORTRAN code in /src.
+*
+* The FORTRAN lapack/blas code in rexpokit was 
+* originally copied from the EXPOKIT package
+* with permission of Roger Sidje (who is
+* thus listed as coauthor on rexpokit).
+*
+* The FORTRAN has since had various minor 
+* modifications to satisfy new checks as
+* CRAN updates their FORTRAN, OSs, and
+* R CMD check function.
+* 
+
+
+* 2019-06-26 NJM edits:
+* 
+* fixing by changing 
+
+*  DASUM  to DASUMX
+*  DAXPY  to DAXPX (for reasons of lines too long)
+*  DCOPY  to DCOPYX
+*  DDOT   to DDOTX
+*  DGEMM  to DGEXX
+*  DGEMX  to DGEMX
+*  DNRM2  to DNRM2X
+*  DSCAL  to DSCALX
+*  ZSWAP  to ZSWAPX
+*  ZAXPY  to ZAXPX  (for reasons of lines too long)
+*  
+* Fixed these errors:
+* 
+* rexpokit.out:(.text+0x0): multiple definition of `lsame_'
+* rexpokit.out:(.text+0x0): multiple definition of `dasum_'
+* rexpokit.out:(.text+0x0): multiple definition of `DAXPX_'
+* rexpokit.out:(.text+0x0): multiple definition of `DCOPYX_'
+* rexpokit.out:(.text+0x0): multiple definition of `DDOTX_'
+* rexpokit.out:(.text+0x0): multiple definition of `DGEXX_'
+* rexpokit.out:(.text+0x0): multiple definition of `DGEMX_'
+* rexpokit.out:(.text+0x0): multiple definition of `DNRM2X_'
+* rexpokit.out:(.text+0x0): multiple definition of `DSCALX_'
+* rexpokit.out:(.text+0x0): multiple definition of `dswap_'
+* rexpokit.out:(.text+0x0): multiple definition of `idamax_'
+*
+
+
+
 *----------------------------------------------------------------------|
 * myDMEXPV:
       subroutine myDMEXPV( n, m, t, v, w, tol, anorm,
@@ -154,7 +201,7 @@
      .                 roundoff, s_round, x_round
 
       intrinsic AINT,ABS,DBLE,LOG10,MAX,MIN,NINT,SIGN,SQRT
-      double precision DDOT, DNRM2, DASUM
+      double precision DDOTX, DNRM2X, DASUMX
 
 *---  check restrictions on input parameters ...
       iflag = 0
@@ -211,8 +258,8 @@
 *>>>  break_tol = tol
 *>>>  break_tol = anorm*tol
 
-      call DCOPY( n, v,1, w,1 )
-      beta = DNRM2( n, w,1 )
+      call DCOPYX( n, v,1, w,1 )
+      beta = DNRM2X( n, w,1 )
       vnorm = beta
       hump = beta
 *
@@ -247,11 +294,11 @@
          nmult = nmult + 1
          call mydgcoov( wsp(j1v-n), wsp(j1v) , n , nz, ia, ja, a)
          do i = 1,j
-            hij = DDOT( n, wsp(iv+(i-1)*n),1, wsp(j1v),1 )
-            call DAXPY( n, -hij, wsp(iv+(i-1)*n),1, wsp(j1v),1 )
+            hij = DDOTX( n, wsp(iv+(i-1)*n),1, wsp(j1v),1 )
+            call DAXPX( n, -hij, wsp(iv+(i-1)*n),1, wsp(j1v),1 )
             wsp(ih+(j-1)*mh+i-1) = hij
          enddo
-         hj1j = DNRM2( n, wsp(j1v),1 )
+         hj1j = DNRM2X( n, wsp(j1v),1 )
 *---     if `happy breakdown' go straightforward at the end ... 
          if ( hj1j.le.break_tol ) then
             ireject = ireject + 0
@@ -263,12 +310,12 @@
             goto 300
          endif
          wsp(ih+(j-1)*mh+j) = hj1j
-         call DSCAL( n, 1.0d0/hj1j, wsp(j1v),1 )
+         call DSCALX( n, 1.0d0/hj1j, wsp(j1v),1 )
          j1v = j1v + n
  200  continue
       nmult = nmult + 1
       call mydgcoov( wsp(j1v-n), wsp(j1v) , n , nz, ia, ja, a)
-      avnorm = DNRM2( n, wsp(j1v),1 )
+      avnorm = DNRM2X( n, wsp(j1v),1 )
 *
 *---  set 1 for the 2-corrected scheme ...
 *
@@ -355,10 +402,10 @@ c     But, satifies need to use 402
       mx = mbrkdwn + MAX( 0,k1-1 )
 *	Original:
 
-      call DGEMV( 'n', n,mx,beta,wsp(iv),n,wsp(iexph),1,0.0d0,w,1 )
+      call DGEMX( 'n', n,mx,beta,wsp(iv),n,wsp(iexph),1,0.0d0,w,1 )
 
 *******************
-*  DGEMV  performs one of the matrix-vector operations
+*  DGEMX  performs one of the matrix-vector operations
 *
 *     y := alpha*A*x + beta*y,   or   y := alpha*A'*x + beta*y,
 *
@@ -380,24 +427,24 @@ c     But, satifies need to use 402
 *		or something...nah, none of this works...
 *
 *	Nope:
-*      call DGEMV( 'T', n,mx,beta,wsp(iexph),n,wsp(iv),1,0.0d0,w,1 )
-*      call DGEMV( 'T', 1,n,beta,wsp(iexph),n,wsp(iv),1,0.0d0,w,1 )
-*      call DGEMV( 'T', 1,n,beta,wsp(iexph),n,wsp(iv),n,0.0d0,w,1 )
-*      call DGEMV( 'T', n,1,beta,wsp(iexph),n,wsp(iv),n,0.0d0,w,1 )
-*      call DGEMV( 'T', n,1,beta,wsp(iexph),n,wsp(iv),1,0.0d0,w,1 )
-*            call DGEMV( 'n', n,1,beta,wsp(iexph),n,wsp(iv),n,0.0d0,w,1 )
-*            call DGEMV( 'n', n,1,beta,wsp(iexph),n,wsp(iv),1,0.0d0,w,1 )
-*           call DGEMV( 'T', 1,n,beta,wsp(iexph),1,wsp(iv),1,0.0d0,w,1 )
-*           call DGEMV( 'T', 1,n,beta,wsp(iexph),1,wsp(iv),n,0.0d0,w,1 )
+*      call DGEMX( 'T', n,mx,beta,wsp(iexph),n,wsp(iv),1,0.0d0,w,1 )
+*      call DGEMX( 'T', 1,n,beta,wsp(iexph),n,wsp(iv),1,0.0d0,w,1 )
+*      call DGEMX( 'T', 1,n,beta,wsp(iexph),n,wsp(iv),n,0.0d0,w,1 )
+*      call DGEMX( 'T', n,1,beta,wsp(iexph),n,wsp(iv),n,0.0d0,w,1 )
+*      call DGEMX( 'T', n,1,beta,wsp(iexph),n,wsp(iv),1,0.0d0,w,1 )
+*            call DGEMX( 'n', n,1,beta,wsp(iexph),n,wsp(iv),n,0.0d0,w,1 )
+*            call DGEMX( 'n', n,1,beta,wsp(iexph),n,wsp(iv),1,0.0d0,w,1 )
+*           call DGEMX( 'T', 1,n,beta,wsp(iexph),1,wsp(iv),1,0.0d0,w,1 )
+*           call DGEMX( 'T', 1,n,beta,wsp(iexph),1,wsp(iv),n,0.0d0,w,1 )
 
 *	Nope:
-*      call DGEMV( 'T', n,mx,beta,wsp(iv),n,wsp(iexph),1,0.0d0,w,1 )
-*      call DGEMV( 'c', n,mx,beta,wsp(iv),n,wsp(iexph),1,0.0d0,w,1 )
+*      call DGEMX( 'T', n,mx,beta,wsp(iv),n,wsp(iexph),1,0.0d0,w,1 )
+*      call DGEMX( 'c', n,mx,beta,wsp(iv),n,wsp(iexph),1,0.0d0,w,1 )
 
-*      call DGEMV( 'n', n,mx,wsp(iexph),wsp(iv),n,beta,1,0.0d0,w,1 )
-*      call DGEMV( 'T', n,mx,wsp(iexph),wsp(iv),n,beta,1,0.0d0,w,1 )
+*      call DGEMX( 'n', n,mx,wsp(iexph),wsp(iv),n,beta,1,0.0d0,w,1 )
+*      call DGEMX( 'T', n,mx,wsp(iexph),wsp(iv),n,beta,1,0.0d0,w,1 )
 *		...and others...
-      beta = DNRM2( n, w,1 )
+      beta = DNRM2X( n, w,1 )
       hump = MAX( hump, beta )
 *
 *---  Markov model constraints ...
@@ -409,8 +456,8 @@ c     But, satifies need to use 402
             j = j + 1
          endif
       enddo
-      p1 = DASUM( n, w,1 )
-      if ( j.gt.0 ) call DSCAL( n, 1.0d0/p1, w,1 )
+      p1 = DASUMX( n, w,1 )
+      if ( j.gt.0 ) call DSCALX( n, 1.0d0/p1, w,1 )
       roundoff = DABS( 1.0d0-p1 ) / DBLE( n )
 *
 *---  suggested value for the next stepsize ...
@@ -573,7 +620,7 @@ c     But, satifies need to use 402
 *
 *---  H2 = scale2*H*H ...
 *
-      call DGEMM( 'n','n',m,m,m,scale2,H,ldh,H,ldh,0.0d0,wsp(ih2),m )
+      call DGEXX( 'n','n',m,m,m,scale2,H,ldh,H,ldh,0.0d0,wsp(ih2),m )
 *
 *---  initialize p (numerator) and q (denominator) ...
 *
@@ -594,7 +641,7 @@ c     But, satifies need to use 402
       k = ideg - 1
  100  continue
       iused = iodd*iq + (1-iodd)*ip
-      call DGEMM( 'n','n',m,m,m, 1.0d0,wsp(iused),m,
+      call DGEXX( 'n','n',m,m,m, 1.0d0,wsp(iused),m,
      .             wsp(ih2),m, 0.0d0,wsp(ifree),m )
       do j = 1,m
          wsp(ifree+(j-1)*(m+1)) = wsp(ifree+(j-1)*(m+1))+wsp(icoef+k-1)
@@ -609,24 +656,24 @@ c     But, satifies need to use 402
 *---  Obtain (+/-)(I + 2*(p\q)) ...
 *
       if ( iodd .eq. 1 ) then
-         call DGEMM( 'n','n',m,m,m, scale,wsp(iq),m,
+         call DGEXX( 'n','n',m,m,m, scale,wsp(iq),m,
      .                H,ldh, 0.0d0,wsp(ifree),m )
          iq = ifree
       else
-         call DGEMM( 'n','n',m,m,m, scale,wsp(ip),m,
+         call DGEXX( 'n','n',m,m,m, scale,wsp(ip),m,
      .                H,ldh, 0.0d0,wsp(ifree),m )
          ip = ifree
       endif
-      call DAXPY( mm, -1.0d0,wsp(ip),1, wsp(iq),1 )
+      call DAXPX( mm, -1.0d0,wsp(ip),1, wsp(iq),1 )
       call DGESV( m,m, wsp(iq),m, ipiv, wsp(ip),m, iflag )
 *      if ( iflag.ne.0 ) stop 'Problem in DGESV (within DGPADM)'
-      call DSCAL( mm, 2.0d0, wsp(ip), 1 )
+      call DSCALX( mm, 2.0d0, wsp(ip), 1 )
       do j = 1,m
          wsp(ip+(j-1)*(m+1)) = wsp(ip+(j-1)*(m+1)) + 1.0d0
       enddo
       iput = ip
       if ( ns.eq.0 .and. iodd.eq.1 ) then
-         call DSCAL( mm, -1.0d0, wsp(ip), 1 )
+         call DSCALX( mm, -1.0d0, wsp(ip), 1 )
          goto 200
       endif
 *
@@ -636,7 +683,7 @@ c     But, satifies need to use 402
       do k = 1,ns
          iget = iodd*ip + (1-iodd)*iq
          iput = (1-iodd)*ip + iodd*iq
-         call DGEMM( 'n','n',m,m,m, 1.0d0,wsp(iget),m, wsp(iget),m,
+         call DGEXX( 'n','n',m,m,m, 1.0d0,wsp(iget),m, wsp(iget),m,
      .                0.0d0,wsp(iput),m )
          iodd = 1-iodd
       enddo
@@ -743,7 +790,7 @@ c     But, satifies need to use 402
 *
 *---  H2 = scale2*H*H ...
 *
-      call DGEMM( 'n','n',m,m,m,scale2,H,ldh,H,ldh,0.0d0,wsp(ih2),m )
+      call DGEXX( 'n','n',m,m,m,scale2,H,ldh,H,ldh,0.0d0,wsp(ih2),m )
 *
 *---  initialize p (numerator) and q (denominator) ...
 *
@@ -764,7 +811,7 @@ c     But, satifies need to use 402
       k = ideg - 1
  100  continue
       iused = iodd*iq + (1-iodd)*ip
-      call DGEMM( 'n','n',m,m,m, 1.0d0,wsp(iused),m,
+      call DGEXX( 'n','n',m,m,m, 1.0d0,wsp(iused),m,
      .             wsp(ih2),m, 0.0d0,wsp(ifree),m )
       do j = 1,m
          wsp(ifree+(j-1)*(m+1)) = wsp(ifree+(j-1)*(m+1))+wsp(icoef+k-1)
@@ -779,24 +826,24 @@ c     But, satifies need to use 402
 *---  Obtain (+/-)(I + 2*(p\q)) ...
 *
       if ( iodd .eq. 1 ) then
-         call DGEMM( 'n','n',m,m,m, scale,wsp(iq),m,
+         call DGEXX( 'n','n',m,m,m, scale,wsp(iq),m,
      .                H,ldh, 0.0d0,wsp(ifree),m )
          iq = ifree
       else
-         call DGEMM( 'n','n',m,m,m, scale,wsp(ip),m,
+         call DGEXX( 'n','n',m,m,m, scale,wsp(ip),m,
      .                H,ldh, 0.0d0,wsp(ifree),m )
          ip = ifree
       endif
-      call DAXPY( mm, -1.0d0,wsp(ip),1, wsp(iq),1 )
+      call DAXPX( mm, -1.0d0,wsp(ip),1, wsp(iq),1 )
       call DSYSV( 'U',m,m,wsp(iq),m,ipiv,wsp(ip),m,wsp(ih2),mm,iflag )
 *      if ( iflag.ne.0 ) stop 'Problem in DSYSV (within DSPADM)'
-      call DSCAL( mm, 2.0d0, wsp(ip), 1 )
+      call DSCALX( mm, 2.0d0, wsp(ip), 1 )
       do j = 1,m
          wsp(ip+(j-1)*(m+1)) = wsp(ip+(j-1)*(m+1)) + 1.0d0
       enddo
       iput = ip
       if ( ns.eq.0 .and. iodd.eq.1 ) then
-         call DSCAL( mm, -1.0d0, wsp(ip), 1 )
+         call DSCALX( mm, -1.0d0, wsp(ip), 1 )
          goto 200
       endif
 *
@@ -806,7 +853,7 @@ c     But, satifies need to use 402
       do k = 1,ns
          iget = iodd*ip + (1-iodd)*iq
          iput = (1-iodd)*ip + iodd*iq
-         call DGEMM( 'n','n',m,m,m, 1.0d0,wsp(iget),m, wsp(iget),m,
+         call DGEXX( 'n','n',m,m,m, 1.0d0,wsp(iget),m, wsp(iget),m,
      .                0.0d0,wsp(iput),m )
          iodd = 1-iodd
       enddo
@@ -960,7 +1007,7 @@ c     But, satifies need to use 402
      .                H,ldh, ZERO,wsp(ifree),m )
          ip = ifree
       endif
-      call ZAXPY( mm, -ONE,wsp(ip),1, wsp(iq),1 )
+      call ZAXPX( mm, -ONE,wsp(ip),1, wsp(iq),1 )
       call ZGESV( m,m, wsp(iq),m, ipiv, wsp(ip),m, iflag )
 *      if ( iflag.ne.0 ) stop 'Problem in ZGESV (within ZGPADM)'
       call ZDSCAL( mm, 2.0d0, wsp(ip), 1 )
@@ -1132,7 +1179,7 @@ c     But, satifies need to use 402
      .                H,ldh, ZERO,wsp(ifree),m )
          ip = ifree
       endif
-      call ZAXPY( mm, -ONE,wsp(ip),1, wsp(iq),1 )
+      call ZAXPX( mm, -ONE,wsp(ip),1, wsp(iq),1 )
       call ZHESV( 'U',m,m,wsp(iq),m,ipiv,wsp(ip),m,wsp(ih2),mm,iflag )
 *      if ( iflag.ne.0 ) stop 'Problem in ZHESV (within ZHPADM)'
       call ZDSCAL( mm, 2.0d0, wsp(ip), 1 )
@@ -1539,13 +1586,13 @@ c            wsp(ih+(j-1)*m+j-1) = wsp(ih+(j-1)*m+j-1)-theta(ip)
          do i = 1,m-1
 *---        Get pivot and exchange rows ...
             if (ABS(wsp(ih+(i-1)*m+i-1)).lt.ABS(wsp(ih+(i-1)*m+i))) then
-               call ZSWAP( m-i+1, wsp(ih+(i-1)*m+i-1),m, 
+               call ZSWAPX( m-i+1, wsp(ih+(i-1)*m+i-1),m, 
      .                     wsp(ih+(i-1)*m+i),m )
-               call ZSWAP( 1, wsp(iy+i-1),1, wsp(iy+i),1 )
+               call ZSWAPX( 1, wsp(iy+i-1),1, wsp(iy+i),1 )
             endif
 *---        Forward eliminiation ... 
             tmpc = wsp(ih+(i-1)*m+i) / wsp(ih+(i-1)*m+i-1)
-            call ZAXPY( m-i, -tmpc, wsp(ih+i*m+i-1),m, wsp(ih+i*m+i),m )
+            call ZAXPX( m-i, -tmpc, wsp(ih+i*m+i-1),m, wsp(ih+i*m+i),m )
 c            2018-09-30_NJM:
 c            wsp(iy+i) = wsp(iy+i) - tmpc*wsp(iy+i-1)
             wsp(iy+i) = REAL( wsp(iy+i) - tmpc*wsp(iy+i-1), KIND=8 )
@@ -1670,13 +1717,13 @@ c     Actually: skip this, changing alpha(ndeg) to alpha(2*ndeg)
          do i = 1,m-1
 *---        Get pivot and exchange rows ...
             if (ABS(wsp(ih+(i-1)*m+i-1)).lt.ABS(wsp(ih+(i-1)*m+i))) then
-               call ZSWAP( m-i+1, wsp(ih+(i-1)*m+i-1),m, 
+               call ZSWAPX( m-i+1, wsp(ih+(i-1)*m+i-1),m, 
      .                     wsp(ih+(i-1)*m+i),m )
-               call ZSWAP( 1, wsp(iy+i-1),1, wsp(iy+i),1 )
+               call ZSWAPX( 1, wsp(iy+i-1),1, wsp(iy+i),1 )
             endif
 *---        Forward eliminiation ... 
             tmpc = wsp(ih+(i-1)*m+i) / wsp(ih+(i-1)*m+i-1)
-            call ZAXPY( m-i, -tmpc, wsp(ih+i*m+i-1),m, wsp(ih+i*m+i),m )
+            call ZAXPX( m-i, -tmpc, wsp(ih+i*m+i-1),m, wsp(ih+i*m+i),m )
             wsp(iy+i) = wsp(iy+i) - tmpc*wsp(iy+i-1)
          enddo
 *---     Backward substitution ...    
@@ -1859,7 +1906,7 @@ c     Actually: skip this, changing alpha(ndeg) to alpha(2*ndeg)
      .                 vnorm, avnorm, hj1j, hij, hump, SQR1
 
       intrinsic AINT,ABS,DBLE,LOG10,MAX,MIN,NINT,SIGN,SQRT
-      double precision DDOT, DNRM2
+      double precision DDOTX, DNRM2X
 
 *---  check restrictions on input parameters ...
       iflag = 0
@@ -1907,8 +1954,8 @@ c     Actually: skip this, changing alpha(ndeg) to alpha(2*ndeg)
 *>>>  break_tol = anorm*tol
 
       sgn = SIGN( 1.0d0,t )
-      call DCOPY( n, v,1, w,1 )
-      beta = DNRM2( n, w,1 )
+      call DCOPYX( n, v,1, w,1 )
+      beta = DNRM2X( n, w,1 )
       vnorm = beta
       hump = beta 
 *
@@ -1943,11 +1990,11 @@ c     Actually: skip this, changing alpha(ndeg) to alpha(2*ndeg)
          nmult = nmult + 1
          call mydgcoov( wsp(j1v-n), wsp(j1v), n , nz, ia, ja, a)
          do i = 1,j
-            hij = DDOT( n, wsp(iv+(i-1)*n),1, wsp(j1v),1 )
-            call DAXPY( n, -hij, wsp(iv+(i-1)*n),1, wsp(j1v),1 )
+            hij = DDOTX( n, wsp(iv+(i-1)*n),1, wsp(j1v),1 )
+            call DAXPX( n, -hij, wsp(iv+(i-1)*n),1, wsp(j1v),1 )
             wsp(ih+(j-1)*mh+i-1) = hij
          enddo
-         hj1j = DNRM2( n, wsp(j1v),1 )
+         hj1j = DNRM2X( n, wsp(j1v),1 )
 *---     if `happy breakdown' go straightforward at the end ... 
          if ( hj1j.le.break_tol ) then
             k1 = 0
@@ -1958,12 +2005,12 @@ c     Actually: skip this, changing alpha(ndeg) to alpha(2*ndeg)
             goto 300
          endif
          wsp(ih+(j-1)*mh+j) = hj1j
-         call DSCAL( n, 1.0d0/hj1j, wsp(j1v),1 )
+         call DSCALX( n, 1.0d0/hj1j, wsp(j1v),1 )
          j1v = j1v + n
  200  continue
       nmult = nmult + 1
       call mydgcoov( wsp(j1v-n), wsp(j1v), n , nz, ia, ja, a )
-      avnorm = DNRM2( n, wsp(j1v),1 )
+      avnorm = DNRM2X( n, wsp(j1v),1 )
 *
 *---  set 1 for the 2-corrected scheme ...
 *
@@ -2047,8 +2094,8 @@ c     But, satifies need to use 402
 *---  now update w = beta*V*exp(t_step*H)*e1 and the hump ...
 *
       mx = mbrkdwn + MAX( 0,k1-1 )
-      call DGEMV( 'n', n,mx,beta,wsp(iv),n,wsp(iexph),1,0.0d0,w,1 )
-      beta = DNRM2( n, w,1 )
+      call DGEMX( 'n', n,mx,beta,wsp(iv),n,wsp(iexph),1,0.0d0,w,1 )
+      beta = DNRM2X( n, w,1 )
       hump = MAX( hump, beta )
 *
 *---  suggested value for the next stepsize ...
@@ -2236,7 +2283,7 @@ c     But, satifies need to use 402
      .                 vnorm, avnorm, hj1j, hjj, hump, SQR1
 
       intrinsic AINT,ABS,DBLE,LOG10,MAX,MIN,NINT,SIGN,SQRT
-      double precision DDOT, DNRM2
+      double precision DDOTX, DNRM2X
 
 *---  check restrictions on input parameters ...
       iflag = 0
@@ -2284,8 +2331,8 @@ c     But, satifies need to use 402
 *>>>  break_tol = anorm*tol
 
       sgn = SIGN( 1.0d0,t )
-      call DCOPY( n, v,1, w,1 )
-      beta = DNRM2( n, w,1 )
+      call DCOPYX( n, v,1, w,1 )
+      beta = DNRM2X( n, w,1 )
       vnorm = beta
       hump = beta 
 *
@@ -2320,10 +2367,10 @@ c     But, satifies need to use 402
          nmult = nmult + 1
          call matvec( wsp(j1v-n), wsp(j1v) )
          if ( j.gt.1 )
-     .     call DAXPY(n,-wsp(ih+(j-1)*mh+j-2),wsp(j1v-2*n),1,wsp(j1v),1)
-         hjj = DDOT( n, wsp(j1v-n),1, wsp(j1v),1 )
-         call DAXPY( n, -hjj, wsp(j1v-n),1, wsp(j1v),1 )
-         hj1j = DNRM2( n, wsp(j1v),1 )
+     .     call DAXPX(n,-wsp(ih+(j-1)*mh+j-2),wsp(j1v-2*n),1,wsp(j1v),1)
+         hjj = DDOTX( n, wsp(j1v-n),1, wsp(j1v),1 )
+         call DAXPX( n, -hjj, wsp(j1v-n),1, wsp(j1v),1 )
+         hj1j = DNRM2X( n, wsp(j1v),1 )
          wsp(ih+(j-1)*(mh+1)) = hjj
 *---     if `happy breakdown' go straightforward at the end ... 
          if ( hj1j.le.break_tol ) then
@@ -2337,12 +2384,12 @@ c     But, satifies need to use 402
          endif
          wsp(ih+(j-1)*mh+j) = hj1j
          wsp(ih+j*mh+j-1) = hj1j
-         call DSCAL( n, 1.0d0/hj1j, wsp(j1v),1 )
+         call DSCALX( n, 1.0d0/hj1j, wsp(j1v),1 )
          j1v = j1v + n
  200  continue
       nmult = nmult + 1
       call matvec( wsp(j1v-n), wsp(j1v) )
-      avnorm = DNRM2( n, wsp(j1v),1 )
+      avnorm = DNRM2X( n, wsp(j1v),1 )
 *
 *---  set 1 for the 2-corrected scheme ...
 *
@@ -2426,8 +2473,8 @@ c     But, satifies need to use 402
 *---  now update w = beta*V*exp(t_step*H)*e1 and the hump ...
 *
       mx = mbrkdwn + MAX( 0,k1-1 )
-      call DGEMV( 'n', n,mx,beta,wsp(iv),n,wsp(iexph),1,0.0d0,w,1 )
-      beta = DNRM2( n, w,1 )
+      call DGEMX( 'n', n,mx,beta,wsp(iv),n,wsp(iexph),1,0.0d0,w,1 )
+      beta = DNRM2X( n, w,1 )
       hump = MAX( hump, beta )
 *
 *---  suggested value for the next stepsize ...
@@ -2707,7 +2754,7 @@ c     But, satifies need to use 402
          call matvec( wsp(j1v-n), wsp(j1v) )
          do i = 1,j
             hij = ZDOTC( n, wsp(iv+(i-1)*n),1, wsp(j1v),1 )
-            call ZAXPY( n, -hij, wsp(iv+(i-1)*n),1, wsp(j1v),1 )
+            call ZAXPX( n, -hij, wsp(iv+(i-1)*n),1, wsp(j1v),1 )
             wsp(ih+(j-1)*mh+i-1) = hij
          enddo
          hj1j = DZNRM2( n, wsp(j1v),1 )
@@ -3089,9 +3136,9 @@ c     But, satifies need to use 402
          nmult = nmult + 1
          call matvec( wsp(j1v-n), wsp(j1v) )
          if ( j.gt.1 )
-     .     call ZAXPY(n,-wsp(ih+(j-1)*mh+j-2),wsp(j1v-2*n),1,wsp(j1v),1)
+     .     call ZAXPX(n,-wsp(ih+(j-1)*mh+j-2),wsp(j1v-2*n),1,wsp(j1v),1)
          hjj = ZDOTC( n, wsp(j1v-n),1, wsp(j1v),1 )
-         call ZAXPY( n, -hjj, wsp(j1v-n),1, wsp(j1v),1 )
+         call ZAXPX( n, -hjj, wsp(j1v-n),1, wsp(j1v),1 )
          hj1j = DZNRM2( n, wsp(j1v),1 )
          wsp(ih+(j-1)*(mh+1)) = hjj
 *---     if `happy breakdown' go straightforward at the end ...
@@ -3375,7 +3422,7 @@ c     But, satifies need to use 402
      .                 avnorm, hj1j, hij, SQR1
 
       intrinsic AINT,ABS,DBLE,LOG10,MAX,MIN,NINT,SIGN,SQRT
-      double precision DDOT, DNRM2
+      double precision DDOTX, DNRM2X
 
 *---  check restrictions on input parameters ...
       iflag = 0
@@ -3427,16 +3474,16 @@ c     But, satifies need to use 402
 *
       sgn = SIGN( 1.0d0,t )
       SQR1 = SQRT( 0.1d0 )
-      call DCOPY( n, v,1, w,1 )
+      call DCOPYX( n, v,1, w,1 )
 
  100  if ( t_now.ge.t_out ) goto 500
 
       nmult =  nmult + 1
       call matvec( w, wsp(iv) )
-      call DAXPY( n, 1.0d0, u,1, wsp(iv),1 )
-      beta = DNRM2( n, wsp(iv),1 )
+      call DAXPX( n, 1.0d0, u,1, wsp(iv),1 )
+      beta = DNRM2X( n, wsp(iv),1 )
       if ( beta.eq.0.0d0 ) goto 500
-      call DSCAL( n, 1.0d0/beta, wsp(iv),1 )
+      call DSCALX( n, 1.0d0/beta, wsp(iv),1 )
       do i = 1,mh*mh
          wsp(ih+i-1) = 0.0d0
       enddo
@@ -3459,11 +3506,11 @@ c     But, satifies need to use 402
          nmult = nmult + 1
          call matvec( wsp(j1v-n), wsp(j1v) )
          do i = 1,j
-            hij = DDOT( n, wsp(iv+(i-1)*n),1, wsp(j1v),1 )
-            call DAXPY( n, -hij, wsp(iv+(i-1)*n),1, wsp(j1v),1 )
+            hij = DDOTX( n, wsp(iv+(i-1)*n),1, wsp(j1v),1 )
+            call DAXPX( n, -hij, wsp(iv+(i-1)*n),1, wsp(j1v),1 )
             wsp(ih+(j-1)*mh+i-1) = hij
          enddo
-         hj1j = DNRM2( n, wsp(j1v),1 )
+         hj1j = DNRM2X( n, wsp(j1v),1 )
 *---     if `happy breakdown' go straightforward at the end ... 
          if ( hj1j.le.break_tol ) then
             ireject = ireject + 0
@@ -3475,12 +3522,12 @@ c     But, satifies need to use 402
             goto 300
          endif
          wsp(ih+(j-1)*mh+j) = hj1j
-         call DSCAL( n, 1.0d0/hj1j, wsp(j1v),1 )
+         call DSCALX( n, 1.0d0/hj1j, wsp(j1v),1 )
          j1v = j1v + n
  200  continue
       nmult = nmult + 1
       call matvec( wsp(j1v-n), wsp(j1v) )
-      avnorm = DNRM2( n, wsp(j1v),1 )
+      avnorm = DNRM2X( n, wsp(j1v),1 )
 *
 *---  set 1's for the 3-extended scheme ...
 *
@@ -3559,7 +3606,7 @@ c     But, satifies need to use 402 (which uses 401)
       endif
 *
       mx = mbrkdwn + MAX( 0,k1-2 )
-      call DGEMV( 'n', n,mx,beta,wsp(iv),n,wsp(iphih),1,1.0d0,w,1 )
+      call DGEMX( 'n', n,mx,beta,wsp(iv),n,wsp(iphih),1,1.0d0,w,1 )
 *
 *---  suggested value for the next stepsize ...
 *
@@ -3734,7 +3781,7 @@ c     But, satifies need to use 402 (which uses 401)
      .                 avnorm, hj1j, hjj, SQR1
 
       intrinsic AINT,ABS,DBLE,LOG10,MAX,MIN,NINT,SIGN,SQRT
-      double precision DDOT, DNRM2
+      double precision DDOTX, DNRM2X
 
 *---  check restrictions on input parameters ...
       iflag = 0
@@ -3786,16 +3833,16 @@ c     But, satifies need to use 402 (which uses 401)
 *
       sgn = SIGN( 1.0d0,t )
       SQR1 = SQRT( 0.1d0 )
-      call DCOPY( n, v,1, w,1 )
+      call DCOPYX( n, v,1, w,1 )
 
  100  if ( t_now.ge.t_out ) goto 500
 
       nmult =  nmult + 1
       call matvec( w, wsp(iv) )
-      call DAXPY( n, 1.0d0, u,1, wsp(iv),1 )
-      beta = DNRM2( n, wsp(iv),1 )
+      call DAXPX( n, 1.0d0, u,1, wsp(iv),1 )
+      beta = DNRM2X( n, wsp(iv),1 )
       if ( beta.eq.0.0d0 ) goto 500
-      call DSCAL( n, 1.0d0/beta, wsp(iv),1 )
+      call DSCALX( n, 1.0d0/beta, wsp(iv),1 )
       do i = 1,mh*mh
          wsp(ih+i-1) = 0.0d0
       enddo
@@ -3818,10 +3865,10 @@ c     But, satifies need to use 402 (which uses 401)
          nmult = nmult + 1
          call matvec( wsp(j1v-n), wsp(j1v) )
          if ( j.gt.1 )
-     .     call DAXPY(n,-wsp(ih+(j-1)*mh+j-2),wsp(j1v-2*n),1,wsp(j1v),1)
-         hjj = DDOT( n, wsp(j1v-n),1, wsp(j1v),1 )
-         call DAXPY( n, -hjj, wsp(j1v-n),1, wsp(j1v),1 )
-         hj1j = DNRM2( n, wsp(j1v),1 )
+     .     call DAXPX(n,-wsp(ih+(j-1)*mh+j-2),wsp(j1v-2*n),1,wsp(j1v),1)
+         hjj = DDOTX( n, wsp(j1v-n),1, wsp(j1v),1 )
+         call DAXPX( n, -hjj, wsp(j1v-n),1, wsp(j1v),1 )
+         hj1j = DNRM2X( n, wsp(j1v),1 )
          wsp(ih+(j-1)*(mh+1)) = hjj
 *---     if `happy breakdown' go straightforward at the end ... 
          if ( hj1j.le.break_tol ) then
@@ -3835,12 +3882,12 @@ c     But, satifies need to use 402 (which uses 401)
          endif
          wsp(ih+(j-1)*mh+j) = hj1j
          wsp(ih+j*mh+j-1) = hj1j
-         call DSCAL( n, 1.0d0/hj1j, wsp(j1v),1 )
+         call DSCALX( n, 1.0d0/hj1j, wsp(j1v),1 )
          j1v = j1v + n
  200  continue
       nmult = nmult + 1
       call matvec( wsp(j1v-n), wsp(j1v) )
-      avnorm = DNRM2( n, wsp(j1v),1 )
+      avnorm = DNRM2X( n, wsp(j1v),1 )
 *
 *---  set 1's for the 3-extended scheme ...
 *
@@ -3925,7 +3972,7 @@ c     But, satifies need to use 402 (which uses 401)
       endif
 *
       mx = mbrkdwn + MAX( 0,k1-2 )
-      call DGEMV( 'n', n,mx,beta,wsp(iv),n,wsp(iphih),1,1.0d0,w,1 )
+      call DGEMX( 'n', n,mx,beta,wsp(iv),n,wsp(iphih),1,1.0d0,w,1 )
 *
 *---  suggested value for the next stepsize ...
 *
@@ -4164,7 +4211,7 @@ c     But, satifies need to use 402 (which uses 401)
 
       nmult =  nmult + 1
       call matvec( w, wsp(iv) )
-      call ZAXPY( n, ONE, u,1, wsp(iv),1 )
+      call ZAXPX( n, ONE, u,1, wsp(iv),1 )
       beta = DZNRM2( n, wsp(iv),1 )
       if ( beta.eq.0.0d0 ) goto 500
       call ZDSCAL( n, 1.0d0/beta, wsp(iv),1 )
@@ -4191,7 +4238,7 @@ c     But, satifies need to use 402 (which uses 401)
          call matvec( wsp(j1v-n), wsp(j1v) )
          do i = 1,j
             hij = ZDOTC( n, wsp(iv+(i-1)*n),1, wsp(j1v),1 )
-            call ZAXPY( n, -hij, wsp(iv+(i-1)*n),1, wsp(j1v),1 )
+            call ZAXPX( n, -hij, wsp(iv+(i-1)*n),1, wsp(j1v),1 )
             wsp(ih+(j-1)*mh+i-1) = hij
          enddo
          hj1j = DZNRM2( n, wsp(j1v),1 )
@@ -4534,7 +4581,7 @@ c     But, satifies need to use 402 (which uses 401)
 
       nmult =  nmult + 1
       call matvec( w, wsp(iv) )
-      call ZAXPY( n, ONE, u,1, wsp(iv),1 )
+      call ZAXPX( n, ONE, u,1, wsp(iv),1 )
       beta = DZNRM2( n, wsp(iv),1 )
       if ( beta.eq.0.0d0 ) goto 500
       call ZDSCAL( n, 1.0d0/beta, wsp(iv),1 )
@@ -4560,9 +4607,9 @@ c     But, satifies need to use 402 (which uses 401)
          nmult = nmult + 1
          call matvec( wsp(j1v-n), wsp(j1v) )
          if ( j.gt.1 )
-     .     call ZAXPY(n,-wsp(ih+(j-1)*mh+j-2),wsp(j1v-2*n),1,wsp(j1v),1)
+     .     call ZAXPX(n,-wsp(ih+(j-1)*mh+j-2),wsp(j1v-2*n),1,wsp(j1v),1)
          hjj = ZDOTC( n, wsp(j1v-n),1, wsp(j1v),1 )
-         call ZAXPY( n, -hjj, wsp(j1v-n),1, wsp(j1v),1 )
+         call ZAXPX( n, -hjj, wsp(j1v-n),1, wsp(j1v),1 )
          hj1j = DZNRM2( n, wsp(j1v),1 )
          wsp(ih+(j-1)*(mh+1)) = hjj
          if ( hj1j.le.break_tol ) then

@@ -1,3 +1,36 @@
+CHANGES in rexpokit VERSION 0.26.6.2
+
+NEW FEATURES
+    
+    o None
+
+BUG FIXES
+
+    o None
+    
+OTHER CHANGES
+    
+    o Fixed old .Rd documentation file mistakenly not updated previously
+
+
+
+
+CHANGES in rexpokit VERSION 0.26.6.1
+
+NEW FEATURES
+    
+    o None
+
+BUG FIXES
+
+    o None
+    
+OTHER CHANGES
+    
+    o In tests/expm.R, expm changed to rexpokit::expm to avoid ambiguous defn
+    o Passes check with R-3.6.0 with "--enable-lto=check"
+
+
 CHANGES in rexpokit VERSION 0.26.6
 
 NEW FEATURES
