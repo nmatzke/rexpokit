@@ -333,11 +333,8 @@ for (i in 1:length(list_of_P_matrices_dmexpv))
   \code{expoRkit}
   \code{\link{expokit_wrapalldmexpv_tvals}}
 }
-\keyword{expokit}
-\keyword{exponentiation,}
-\keyword{matrix}
-\keyword{matrix,}
-\keyword{package,}
-\keyword{phylogenetics,}
-\keyword{transition}
+\concept{exponentiation}
+\concept{matrix}
+\concept{phylogenetics}
+\concept{transition}
 

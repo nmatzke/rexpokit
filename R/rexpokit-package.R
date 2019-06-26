@@ -182,7 +182,7 @@
 #'   @cite Eddelbuettel_Francois_2011
 #'   @cite moler2003nineteen
 #'   @cite FosterIdiots
-#' @keywords matrix exponentiation, phylogenetics, transition matrix, expokit
+#' @keywords expokit
 #' @seealso \code{expoRkit} \code{\link{expokit_wrapalldmexpv_tvals}}
 #' @examples # Example code
 #' # For background and basic principles, see rexpokit/notes/EXPOKIT_For_Dummies_notes_v1.txt
