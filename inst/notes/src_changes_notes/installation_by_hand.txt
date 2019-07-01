@@ -33,6 +33,7 @@ R CMD check --as-cran rexpokit
 
 rm rexpokit/src/*.o; rm rexpokit/src/*.so; rm rexpokit/src/lapack/*.o
 R CMD build rexpokit
+R CMD check --as-cran rexpokit_0.26.6.0.9002.tar.gz
 
 
 
