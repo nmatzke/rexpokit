@@ -13,10 +13,10 @@
 * 
 
 
-* 2019-06-26
+* 2019-07-01
 * 
-* zswap  to zswapx
-* zswapx to zswapxx
+* zswap  to zswapx  when there are 5 arguments
+* zswapx to zswapxy when there are 6 arguments
 * 
 * 
 
@@ -215,7 +215,7 @@ c
                   a(l,j) = a(k,j)
                   a(k,j) = t
    20          continue
-               call zswapx(n-k,t,a(k+1,k),1,a(k+1,j),1)
+               call zswapy(n-k,t,a(k+1,k),1,a(k+1,j),1)
    30       continue
          go to 50
    40    continue
@@ -320,7 +320,7 @@ c
                b(l) = b(k)
                b(k) = t
    10       continue
-            call zswapx(n-k,t,a(k+1,k),1,b(k+1),1)
+            call zswapy(n-k,t,a(k+1,k),1,b(k+1),1)
    20    continue
    30    continue
 c
@@ -330,7 +330,7 @@ c
             k = n + 1 - kb
             b(k) = b(k)/a(k,k)
             t = -b(k)
-            call zswapx(k-1,t,a(1,k),1,b(1),1)
+            call zswapy(k-1,t,a(1,k),1,b(1),1)
    40    continue
       go to 100
    50 continue
@@ -581,7 +581,7 @@ c
                j = k - jj
                mulk = -a(j,k)/a(k,k)
                t = conjg(mulk)
-               call zswapx(j,t,a(1,k),1,a(1,j),1)
+               call zswapy(j,t,a(1,k),1,a(1,j),1)
                a(j,j) = dcmplx(REAL(a(j,j)),0.0d0)
                a(j,k) = mulk
   130       continue
@@ -625,9 +625,9 @@ c
                   mulk = (akm1*bk - bkm1)/denom
                   mulkm1 = (ak*bkm1 - bk)/denom
                   t = conjg(mulk)
-                  call zswapx(j,t,a(1,k),1,a(1,j),1)
+                  call zswapy(j,t,a(1,k),1,a(1,j),1)
                   t = conjg(mulkm1)
-                  call zswapx(j,t,a(1,k-1),1,a(1,j),1)
+                  call zswapy(j,t,a(1,k-1),1,a(1,j),1)
                   a(j,k) = mulk
                   a(j,k-1) = mulkm1
                   a(j,j) = dcmplx(REAL(a(j,j)),0.0d0)
@@ -726,7 +726,7 @@ c
 c
 c              apply the transformation.
 c
-               call zswapx(k-1,b(k),a(1,k),1,b(1),1)
+               call zswapy(k-1,b(k),a(1,k),1,b(1),1)
    30       continue
 c
 c           apply d inverse.
@@ -751,8 +751,8 @@ c
 c
 c              apply the transformation.
 c
-               call zswapx(k-2,b(k),a(1,k),1,b(1),1)
-               call zswapx(k-2,b(k-1),a(1,k-1),1,b(1),1)
+               call zswapy(k-2,b(k),a(1,k),1,b(1),1)
+               call zswapy(k-2,b(k-1),a(1,k-1),1,b(1),1)
    60       continue
 c
 c           apply d inverse.
@@ -1033,7 +1033,7 @@ c
                j = k - jj
                mulk = -a(j,k)/a(k,k)
                t = mulk
-               call zswapx(j,t,a(1,k),1,a(1,j),1)
+               call zswapy(j,t,a(1,k),1,a(1,j),1)
                a(j,k) = mulk
   130       continue
 c
@@ -1076,9 +1076,9 @@ c
                   mulk = (akm1*bk - bkm1)/denom
                   mulkm1 = (ak*bkm1 - bk)/denom
                   t = mulk
-                  call zswapx(j,t,a(1,k),1,a(1,j),1)
+                  call zswapy(j,t,a(1,k),1,a(1,j),1)
                   t = mulkm1
-                  call zswapx(j,t,a(1,k-1),1,a(1,j),1)
+                  call zswapy(j,t,a(1,k-1),1,a(1,j),1)
                   a(j,k) = mulk
                   a(j,k-1) = mulkm1
   170          continue
@@ -1176,7 +1176,7 @@ c
 c
 c              apply the transformation.
 c
-               call zswapx(k-1,b(k),a(1,k),1,b(1),1)
+               call zswapy(k-1,b(k),a(1,k),1,b(1),1)
    30       continue
 c
 c           apply d inverse.
@@ -1201,8 +1201,8 @@ c
 c
 c              apply the transformation.
 c
-               call zswapx(k-2,b(k),a(1,k),1,b(1),1)
-               call zswapx(k-2,b(k-1),a(1,k-1),1,b(1),1)
+               call zswapy(k-2,b(k),a(1,k),1,b(1),1)
+               call zswapy(k-2,b(k-1),a(1,k-1),1,b(1),1)
    60       continue
 c
 c           apply d inverse.

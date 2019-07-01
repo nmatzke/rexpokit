@@ -1148,8 +1148,10 @@ c        2019-07-01_NJM: putting 1st ZSWAP on 1 row
           call ZSWAPX( 1, wsp(iy+i-1),1, wsp(iy+i),1 )
          endif
 *---     Forward eliminiation ... 
-         tmpc = wsp(ih+(i-1)*m+i) / wsp(ih+(i-1)*m+i-1)
-         call ZAXPX(m-i,-tmpc,wsp(ih+i*m+i-1),m,wsp(ih+i*m+i),m )
+c        tmpc = wsp(ih+(i-1)*m+i) / wsp(ih+(i-1)*m+i-1)
+         tmpc = -1*(wsp(ih+(i-1)*m+i) / wsp(ih+(i-1)*m+i-1))
+c        call ZAXPX(m-i,-tmpc,wsp(ih+i*m+i-1),m,wsp(ih+i*m+i),m )
+         call ZAXPX(m-i,tmpc,wsp(ih+i*m+i-1),m,wsp(ih+i*m+i),m )
 c         2018-09-30_NJM:
 c         wsp(iy+i) = wsp(iy+i) - tmpc*wsp(iy+i-1)
           wsp(iy+i) = REAL( wsp(iy+i) - tmpc*wsp(iy+i-1), KIND=8 )
