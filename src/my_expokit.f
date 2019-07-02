@@ -1056,8 +1056,10 @@ c     But, satifies need to use 402
 
       implicit none
       integer          m, ldh
+c     2019-07-02_NJM:
+c     double precision t, H(ldh,m), y(m), wsp(m*(m+2))
       double precision t, H(ldh,m), y(m), wsp(m*(m+2))
-
+      complex(kind=8) wspc,wspd,wspe,wspf
 *-----Purpose----------------------------------------------------------|
 *
 *---  DNCHBV computes y = exp(t*H)*y using the partial fraction
@@ -1088,7 +1090,9 @@ c     But, satifies need to use 402
 *----------------------------------------------------------------------|
 *
       complex(kind=8) ZERO
-      integer ndeg, i, j, k, ip, ih, iy, iz
+c     2019-07-02_NJM:
+c     integer ndeg, i, j, k, ip, ih, iy, iz, tempn
+      integer ndeg, i, j, k, ip, ih, iy, iz, tempn
       parameter ( ndeg=7, ZERO=(0.0d0,0.0d0) )
       double precision alpha0
       complex(kind=8) alpha(ndeg), theta(ndeg), tmpc
@@ -1144,14 +1148,23 @@ c            wsp(ih+(j-1)*m+j-1) = wsp(ih+(j-1)*m+j-1)-theta(ip)
 *---     Get pivot and exchange rows ...
 c        2019-07-01_NJM: putting 1st ZSWAP on 1 row
          if (ABS(wsp(ih+(i-1)*m+i-1)).lt.ABS(wsp(ih+(i-1)*m+i))) then
-          call ZSWAPX(m-i+1,wsp(ih+(i-1)*m+i-1),m,wsp(ih+(i-1)*m+i),m)
+c         2019-07-02_NJM:
+c         call ZSWAPX(m-i+1,wsp(ih+(i-1)*m+i-1),m,wsp(ih+(i-1)*m+i),m)
+          tempn = m-i+1
+          wspc = complex(wsp(ih+(i-1)*m+i-1),0)
+          wspd = complex(wsp(ih+(i-1)*m+i),0)
+          call ZSWAPX(tempn,wspc,m,wspd,m)
           call ZSWAPX( 1, wsp(iy+i-1),1, wsp(iy+i),1 )
          endif
 *---     Forward eliminiation ... 
+c        2019-07-02_NJM:
 c        tmpc = wsp(ih+(i-1)*m+i) / wsp(ih+(i-1)*m+i-1)
          tmpc = -1*(wsp(ih+(i-1)*m+i) / wsp(ih+(i-1)*m+i-1))
 c        call ZAXPX(m-i,-tmpc,wsp(ih+i*m+i-1),m,wsp(ih+i*m+i),m )
-         call ZAXPX(m-i,tmpc,wsp(ih+i*m+i-1),m,wsp(ih+i*m+i),m )
+c        2019-07-02_NJM:
+         wspe = complex(wsp(ih+i*m+i-1),0)
+         wspf = complex(wsp(ih+i*m+i),0)
+         call ZAXPX(m-i,tmpc,wspe,m,wspf,m )
 c         2018-09-30_NJM:
 c         wsp(iy+i) = wsp(iy+i) - tmpc*wsp(iy+i-1)
           wsp(iy+i) = REAL( wsp(iy+i) - tmpc*wsp(iy+i-1), KIND=8 )

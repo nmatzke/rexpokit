@@ -1,3 +1,50 @@
+CHANGES in rexpokit VERSION 0.26.6.4
+
+NEW FEATURES
+    
+    o None
+
+BUG FIXES
+
+    o None
+    
+OTHER CHANGES
+    
+    o In .f files, reproduced and fixed these errors:
+      
+      "type of "zswapy" does not match 
+        original declaration [-Wlto-type-mismatch]"
+    
+    o The details took some doing to figure out, see 
+      rexpokit/inst/notes/2019-07-02_fix_LTO_errors_rexpokit.txt
+
+
+
+
+CHANGES in rexpokit VERSION 0.26.6.3
+
+NEW FEATURES
+    
+    o None
+
+BUG FIXES
+
+    o None
+    
+OTHER CHANGES
+    
+    o In lapack.f, converted ZSWAP to ZSWAPX (for 5-argument inputs)
+      and ZSWAPY (for 6-argument inputs), in attempt to fix LTO
+      warnings about not matching original declaration, e.g.:
+        type of "zswapy" does not match 
+        original declaration [-Wlto-type-mismatch]
+        call zswapy(k-1,b(k),a(1,k),1,b(1),1)
+        lapack/blas_mod.f:961: note: "zswapy" was previously declared here
+        subroutine  zswapy (n,m,zx,incx,zy,incy)
+
+
+
+
 CHANGES in rexpokit VERSION 0.26.6.2
 
 NEW FEATURES

@@ -99,7 +99,9 @@ c     FIX for Warning: Unused dummy argument 'wrk'
 
 *----------------------------------------------------------------------|
       subroutine zgefa(a,lda,n,ipvt,info)
-      integer lda,n,ipvt(1),info
+c     2019-07-02_NJM:
+c     integer lda,n,ipvt(1),info
+      integer lda,n,ipvt(1),info,tempn
       complex(kind=8) a(lda,1)
 c
 c     zgefa factors a complex(kind=8) matrix by gaussian elimination.
@@ -210,12 +212,16 @@ c
 c           row elimination with column indexing
 c
             do 30 j = kp1, n
-               t = a(l,j)
+c              2019-07-02_NJM:
+c              t = a(l,j)
+               tempn = INT(a(l,j))
                if (l .eq. k) go to 20
                   a(l,j) = a(k,j)
                   a(k,j) = t
    20          continue
-               call zswapy(n-k,t,a(k+1,k),1,a(k+1,j),1)
+c              2019-07-02_NJM:
+c              call zswapy(n-k,t,a(k+1,k),1,a(k+1,j),1)
+               call zswapy(n-k,tempn,a(k+1,k),1,a(k+1,j),1)
    30       continue
          go to 50
    40    continue
@@ -300,7 +306,9 @@ c
 c     internal variables
 c
       complex(kind=8) zdotc,t
-      integer k,kb,l,nm1
+c     2019-07-02_NJM:
+c      integer k,kb,l,nm1
+      integer k,kb,l,nm1,tempt
 c      double precision dreal,dimag
 c      complex(kind=8) zdumr,zdumi
 c      dreal(zdumr) = zdumr
@@ -320,7 +328,9 @@ c
                b(l) = b(k)
                b(k) = t
    10       continue
-            call zswapy(n-k,t,a(k+1,k),1,b(k+1),1)
+c           2019-07-02_NJM:
+c           call zswapy(n-k,t,a(k+1,k),1,b(k+1),1)
+            call zswapy(n-k,tempt,a(k+1,k),1,b(k+1),1)
    20    continue
    30    continue
 c
@@ -419,9 +429,15 @@ c     fortran dabs,dmax1,dcmplx,conjg,dsqrt
 c
 c     internal variables
 c
+
+c     2019-07-02_NJM:
+c     complex(kind=8) ak,akm1,bk,bkm1,denom,mulk,mulkm1,t
+c     double precision absakk,alpha,colmax,rowmax
+c     integer imax,imaxp1,j,jj,jmax,k,km1,km2,kstep,izamax
+
       complex(kind=8) ak,akm1,bk,bkm1,denom,mulk,mulkm1,t
       double precision absakk,alpha,colmax,rowmax
-      integer imax,imaxp1,j,jj,jmax,k,km1,km2,kstep,izamax
+      integer imax,imaxp1,j,jj,jmax,k,km1,km2,kstep,izamax,tempt
       logical swap
 c
 c     complex(kind=8) zdum
@@ -580,8 +596,10 @@ c
             do 130 jj = 1, km1
                j = k - jj
                mulk = -a(j,k)/a(k,k)
-               t = conjg(mulk)
-               call zswapy(j,t,a(1,k),1,a(1,j),1)
+c              2019-07-02_NJM:
+c              t = conjg(mulk)
+               tempt = INT(conjg(mulk))
+               call zswapy(j,tempt,a(1,k),1,a(1,j),1)
                a(j,j) = dcmplx(REAL(a(j,j)),0.0d0)
                a(j,k) = mulk
   130       continue
@@ -650,7 +668,9 @@ c
 
 *----------------------------------------------------------------------|
       subroutine zhisl(a,lda,n,kpvt,b)
-      integer lda,n,kpvt(1)
+c      2019-07-02_NJM:
+c      integer lda,n,kpvt(1)
+      integer lda,n,kpvt(1),t
       complex(kind=8) a(lda,1),b(1)
 c
 c     zhisl solves the complex(kind=8) hermitian system
@@ -726,7 +746,10 @@ c
 c
 c              apply the transformation.
 c
-               call zswapy(k-1,b(k),a(1,k),1,b(1),1)
+c              2019-07-02_NJM:
+c              call zswapy(k-1,b(k),a(1,k),1,b(1),1)
+               t = INT(b(k))
+               call zswapy(k-1,t,a(1,k),1,b(1),1)
    30       continue
 c
 c           apply d inverse.
@@ -878,9 +901,13 @@ c     fortran dabs,dmax1,dsqrt
 c
 c     internal variables
 c
-      complex(kind=8) ak,akm1,bk,bkm1,denom,mulk,mulkm1,t
+c     2019-07-02_NJM:
+c      complex(kind=8) ak,akm1,bk,bkm1,denom,mulk,mulkm1,t
+c      double precision absakk,alpha,colmax,rowmax
+c      integer imax,imaxp1,j,jj,jmax,k,km1,km2,kstep,izamax
+      complex(kind=8) ak,akm1,bk,bkm1,denom,mulk,mulkm1
       double precision absakk,alpha,colmax,rowmax
-      integer imax,imaxp1,j,jj,jmax,k,km1,km2,kstep,izamax
+      integer imax,imaxp1,j,jj,jmax,k,km1,km2,kstep,izamax,t
       logical swap
 c
 c      complex(kind=8) zdum
@@ -1021,7 +1048,9 @@ c
                call zswapx(imax,a(1,imax),1,a(1,k),1)
                do 110 jj = imax, k
                   j = k + imax - jj
-                  t = a(j,k)
+c                  2019-07-02_NJM:
+c                  t = a(j,k)
+                  t = INT(a(j,k))
                   a(j,k) = a(imax,j)
                   a(imax,j) = t
   110          continue
@@ -1032,7 +1061,7 @@ c
             do 130 jj = 1, km1
                j = k - jj
                mulk = -a(j,k)/a(k,k)
-               t = mulk
+               t = INT(mulk)
                call zswapy(j,t,a(1,k),1,a(1,j),1)
                a(j,k) = mulk
   130       continue
@@ -1053,11 +1082,15 @@ c
                call zswapx(imax,a(1,imax),1,a(1,k-1),1)
                do 150 jj = imax, km1
                   j = km1 + imax - jj
-                  t = a(j,k-1)
+c                  2019-07-02_NJM:
+c                  t = a(j,k-1)
+                  t = INT(a(j,k-1))
                   a(j,k-1) = a(imax,j)
                   a(imax,j) = t
   150          continue
-               t = a(k-1,k)
+c                  2019-07-02_NJM:
+c                  t = a(k-1,k)
+               t = INT(a(k-1,k))
                a(k-1,k) = a(imax,k)
                a(imax,k) = t
   160       continue
@@ -1075,9 +1108,13 @@ c
                   bkm1 = a(j,k-1)/a(k-1,k)
                   mulk = (akm1*bk - bkm1)/denom
                   mulkm1 = (ak*bkm1 - bk)/denom
-                  t = mulk
+c                 2019-07-02_NJM:
+c                 t = mulk
+                  t = INT(mulk)
                   call zswapy(j,t,a(1,k),1,a(1,j),1)
-                  t = mulkm1
+c                 2019-07-02_NJM:
+c                 t = mulkm1
+                  t = INT(mulkm1)
                   call zswapy(j,t,a(1,k-1),1,a(1,j),1)
                   a(j,k) = mulk
                   a(j,k-1) = mulkm1
@@ -1100,7 +1137,9 @@ c
 
 *----------------------------------------------------------------------|
       subroutine zsisl(a,lda,n,kpvt,b)
-      integer lda,n,kpvt(1)
+c     2019-07-02_NJM:
+c     integer lda,n,kpvt(1)
+      integer lda,n,kpvt(1),tempx
       complex(kind=8) a(lda,1),b(1)
 c
 c     zsisl solves the complex(kind=8) symmetric system
@@ -1176,7 +1215,10 @@ c
 c
 c              apply the transformation.
 c
-               call zswapy(k-1,b(k),a(1,k),1,b(1),1)
+c              2019-07-02_NJM:
+               tempx = INT(b(k))
+c              call zswapy(k-1,b(k),a(1,k),1,b(1),1)
+               call zswapy(k-1,tempx,a(1,k),1,b(1),1)
    30       continue
 c
 c           apply d inverse.
