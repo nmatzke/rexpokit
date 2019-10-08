@@ -1,3 +1,25 @@
+CHANGES in rexpokit VERSION 0.26.6.5
+
+NEW FEATURES
+    
+    o None
+
+BUG FIXES
+
+    o None
+    
+OTHER CHANGES
+    
+    o Fixed type mismatch errors noted by Brian Ripley. These concerned 
+      e.g. ZSWAPX taking scalar "u" in one usage, and "wsp(ip)" (an 
+      array with a single entry) in another usage. This apparently now 
+      creates warnings of e.g. "Warning: Rank mismatch between actual 
+      argument at (1) and actual argument at (2) (scalar and rank-1)" 
+      in gfortran in GCC10.0 (still in beta). Easy fix with e.g. 
+      wspip = REAL(wsp(ip)).
+
+
+
 CHANGES in rexpokit VERSION 0.26.6.4
 
 NEW FEATURES

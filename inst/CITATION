@@ -1,5 +1,5 @@
 bibentry("Manual",
-  title = "rexpokit v0.26.6.4: R wrappers for EXPOKIT; other matrix functions",
+  title = "rexpokit v0.26.6.5: R wrappers for EXPOKIT; other matrix functions",
   author = personList(
     person("Nicholas J.", family="Matzke", 
       email="nickmatzke.ncse@gmail.com", 

@@ -457,7 +457,10 @@ c     But, satifies need to use 402
          endif
       enddo
       p1 = DASUMX( n, w,1 )
-      if ( j.gt.0 ) call DSCALX( n, 1.0d0/p1, w,1 )
+
+c 2019-10-08
+c      if ( j.gt.0 ) call DSCALX( n, 1.0d0/p1, w,1 )
+      if ( j.gt.0 ) call DSCALX( n, 1.0d0/p1, w(:),1 )
       roundoff = DABS( 1.0d0-p1 ) / DBLE( n )
 *
 *---  suggested value for the next stepsize ...
@@ -667,6 +670,7 @@ c     But, satifies need to use 402
       call DAXPX( mm, -1.0d0,wsp(ip),1, wsp(iq),1 )
       call DGESV( m,m, wsp(iq),m, ipiv, wsp(ip),m, iflag )
 *      if ( iflag.ne.0 ) stop 'Problem in DGESV (within DGPADM)'
+      
       call DSCALX( mm, 2.0d0, wsp(ip), 1 )
       do j = 1,m
          wsp(ip+(j-1)*(m+1)) = wsp(ip+(j-1)*(m+1)) + 1.0d0
@@ -1095,7 +1099,7 @@ c     integer ndeg, i, j, k, ip, ih, iy, iz, tempn
       integer ndeg, i, j, k, ip, ih, iy, iz, tempn
       parameter ( ndeg=7, ZERO=(0.0d0,0.0d0) )
       double precision alpha0
-      complex(kind=8) alpha(ndeg), theta(ndeg), tmpc
+      complex(kind=8) alpha(ndeg), theta(ndeg), tmpc, wspee, wspff
 
       intrinsic ABS,DBLE,MIN
       
@@ -1151,10 +1155,24 @@ c        2019-07-01_NJM: putting 1st ZSWAP on 1 row
 c         2019-07-02_NJM:
 c         call ZSWAPX(m-i+1,wsp(ih+(i-1)*m+i-1),m,wsp(ih+(i-1)*m+i),m)
           tempn = m-i+1
+c /usr/local/gcc10/bin/gfortran -fno-optimize-sibling-calls
+c -fpic  -g -O2 -mtune=native -Wall -fallow-argument-mismatch
+c -c my_expokit.f -o my_expokit.o
+c my_expokit.f:1157:26:
+c 1156 |           call ZSWAPX(tempn,wspc,m,wspd,m)
+c      |                            2
+c 1157 |           call ZSWAPX( 1, wsp(iy+i-1),1, wsp(iy+i),1 )
+c      |                          1
+c Warning: Type mismatch between actual argument at (1) and 
+c actual argument at (2) (REAL(8)/COMPLEX(8)).
           wspc = complex(wsp(ih+(i-1)*m+i-1),0)
           wspd = complex(wsp(ih+(i-1)*m+i),0)
           call ZSWAPX(tempn,wspc,m,wspd,m)
-          call ZSWAPX( 1, wsp(iy+i-1),1, wsp(iy+i),1 )
+c         call ZSWAPX( 1, wsp(iy+i-1),1, wsp(iy+i),1 )
+          wspee = complex(wsp(iy+i-1),0)
+          wspff = complex(wsp(iy+i),0) 
+          call ZSWAPX( 1, wspee,1, wspff,1 )
+          
          endif
 *---     Forward eliminiation ... 
 c        2019-07-02_NJM:
@@ -2155,7 +2173,9 @@ c     But, satifies need to use 402
 
       nmult =  nmult + 1
       call matvec( w, wsp(iv) )
-      call DAXPX( n, 1.0d0, u,1, wsp(iv),1 )
+c     2019-10-08
+c     call DAXPX( n, 1.0d0, u,1, wsp(iv),1 )
+      call DAXPX( n, 1.0d0, u(:),1, wsp(iv),1 )
       beta = DNRM2X( n, wsp(iv),1 )
       if ( beta.eq.0.0d0 ) goto 500
       call DSCALX( n, 1.0d0/beta, wsp(iv),1 )
