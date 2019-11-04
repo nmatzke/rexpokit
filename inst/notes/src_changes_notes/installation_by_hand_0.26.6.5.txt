@@ -18,7 +18,8 @@ maxent(3.5, 1:6)
 remove.packages("rexpokit")
 
 
-
+# DON'T USE, MAKES HIDDEN FILES
+cd /GitHub
 rm rexpokit/src/*.o; rm rexpokit/src/*.so; rm rexpokit/src/lapack/*.o
 R CMD check rexpokit
 
@@ -31,11 +32,11 @@ rm rexpokit/src/*.o; rm rexpokit/src/*.so; rm rexpokit/src/lapack/*.o
 R CMD build rexpokit
 R CMD check --as-cran rexpokit
 
-
+# BEST!!
 rm rexpokit/src/*.o; rm rexpokit/src/*.so; rm rexpokit/src/lapack/*.o
 R CMD build rexpokit
-R CMD check rexpokit_0.26.6.5.tar.gz
-R CMD check --as-cran rexpokit_0.26.6.5.tar.gz
+R CMD check rexpokit_0.26.6.6.tar.gz
+R CMD check --as-cran rexpokit_0.26.6.6.tar.gz
 
 
 

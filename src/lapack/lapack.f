@@ -220,8 +220,8 @@ c              t = a(l,j)
                   a(k,j) = t
    20          continue
 c              2019-07-02_NJM:
-c              call zswapy(n-k,t,a(k+1,k),1,a(k+1,j),1)
-               call zswapy(n-k,tempn,a(k+1,k),1,a(k+1,j),1)
+              call zswapy(n-k,t,a(k+1,k),1,a(k+1,j),1)
+c               call zswapy(n-k,tempn,a(k+1,k),1,a(k+1,j),1)
    30       continue
          go to 50
    40    continue
@@ -308,7 +308,7 @@ c
       complex(kind=8) zdotc,t
 c     2019-07-02_NJM:
 c      integer k,kb,l,nm1
-      integer k,kb,l,nm1,tempt
+      integer k,kb,l,nm1
 c      double precision dreal,dimag
 c      complex(kind=8) zdumr,zdumi
 c      dreal(zdumr) = zdumr
@@ -329,8 +329,8 @@ c
                b(k) = t
    10       continue
 c           2019-07-02_NJM:
-c           call zswapy(n-k,t,a(k+1,k),1,b(k+1),1)
-            call zswapy(n-k,tempt,a(k+1,k),1,b(k+1),1)
+           call zswapy(n-k,t,a(k+1,k),1,b(k+1),1)
+c            call zswapy(n-k,tempt,a(k+1,k),1,b(k+1),1)
    20    continue
    30    continue
 c
@@ -437,7 +437,7 @@ c     integer imax,imaxp1,j,jj,jmax,k,km1,km2,kstep,izamax
 
       complex(kind=8) ak,akm1,bk,bkm1,denom,mulk,mulkm1,t
       double precision absakk,alpha,colmax,rowmax
-      integer imax,imaxp1,j,jj,jmax,k,km1,km2,kstep,izamax,tempt
+      integer imax,imaxp1,j,jj,jmax,k,km1,km2,kstep,izamax
       logical swap
 c
 c     complex(kind=8) zdum
@@ -597,9 +597,10 @@ c
                j = k - jj
                mulk = -a(j,k)/a(k,k)
 c              2019-07-02_NJM:
-c              t = conjg(mulk)
-               tempt = INT(conjg(mulk))
-               call zswapy(j,tempt,a(1,k),1,a(1,j),1)
+              t = conjg(mulk)
+c               tempt = INT(conjg(mulk))
+c               call zswapy(j,tempt,a(1,k),1,a(1,j),1)
+               call zswapy(j,t,a(1,k),1,a(1,j),1)
                a(j,j) = dcmplx(REAL(a(j,j)),0.0d0)
                a(j,k) = mulk
   130       continue
@@ -670,7 +671,7 @@ c
       subroutine zhisl(a,lda,n,kpvt,b)
 c      2019-07-02_NJM:
 c      integer lda,n,kpvt(1)
-      integer lda,n,kpvt(1),t
+      integer lda,n,kpvt(1)
       complex(kind=8) a(lda,1),b(1)
 c
 c     zhisl solves the complex(kind=8) hermitian system
@@ -748,8 +749,9 @@ c              apply the transformation.
 c
 c              2019-07-02_NJM:
 c              call zswapy(k-1,b(k),a(1,k),1,b(1),1)
-               t = INT(b(k))
-               call zswapy(k-1,t,a(1,k),1,b(1),1)
+c               t = INT(b(k))
+c               call zswapy(k-1,t,a(1,k),1,b(1),1)
+               call zswapy(k-1,b(k),a(1,k),1,b(1),1)
    30       continue
 c
 c           apply d inverse.
@@ -1061,8 +1063,9 @@ c
             do 130 jj = 1, km1
                j = k - jj
                mulk = -a(j,k)/a(k,k)
-               t = INT(mulk)
-               call zswapy(j,t,a(1,k),1,a(1,j),1)
+c               t = INT(mulk)
+c               call zswapy(j,t,a(1,k),1,a(1,j),1)
+               call zswapy(j,mulk,a(1,k),1,a(1,j),1)
                a(j,k) = mulk
   130       continue
 c
@@ -1110,12 +1113,14 @@ c
                   mulkm1 = (ak*bkm1 - bk)/denom
 c                 2019-07-02_NJM:
 c                 t = mulk
-                  t = INT(mulk)
-                  call zswapy(j,t,a(1,k),1,a(1,j),1)
+c                  t = INT(mulk)
+c                  call zswapy(j,t,a(1,k),1,a(1,j),1)
+                  call zswapy(j,mulk,a(1,k),1,a(1,j),1)
 c                 2019-07-02_NJM:
 c                 t = mulkm1
-                  t = INT(mulkm1)
-                  call zswapy(j,t,a(1,k-1),1,a(1,j),1)
+c                  t = INT(mulkm1)
+c                  call zswapy(j,t,a(1,k-1),1,a(1,j),1)
+                  call zswapy(j,mulkm1,a(1,k-1),1,a(1,j),1)
                   a(j,k) = mulk
                   a(j,k-1) = mulkm1
   170          continue
@@ -1139,7 +1144,7 @@ c
       subroutine zsisl(a,lda,n,kpvt,b)
 c     2019-07-02_NJM:
 c     integer lda,n,kpvt(1)
-      integer lda,n,kpvt(1),tempx
+      integer lda,n,kpvt(1)
       complex(kind=8) a(lda,1),b(1)
 c
 c     zsisl solves the complex(kind=8) symmetric system
@@ -1216,9 +1221,9 @@ c
 c              apply the transformation.
 c
 c              2019-07-02_NJM:
-               tempx = INT(b(k))
-c              call zswapy(k-1,b(k),a(1,k),1,b(1),1)
-               call zswapy(k-1,tempx,a(1,k),1,b(1),1)
+c               tempx = INT(b(k))
+              call zswapy(k-1,b(k),a(1,k),1,b(1),1)
+c               call zswapy(k-1,tempx,a(1,k),1,b(1),1)
    30       continue
 c
 c           apply d inverse.

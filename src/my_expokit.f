@@ -201,7 +201,9 @@
      .                 roundoff, s_round, x_round
 
       intrinsic AINT,ABS,DBLE,LOG10,MAX,MIN,NINT,SIGN,SQRT
-      double precision DDOTX, DNRM2X, DASUMX
+c     2019-11-04_NJM
+      double precision DDOTX, DNRM2X, DASUMX, w1
+c      double precision DDOTX, DNRM2X, DASUMX
 
 *---  check restrictions on input parameters ...
       iflag = 0
@@ -460,7 +462,11 @@ c     But, satifies need to use 402
 
 c 2019-10-08
 c      if ( j.gt.0 ) call DSCALX( n, 1.0d0/p1, w,1 )
-      if ( j.gt.0 ) call DSCALX( n, 1.0d0/p1, w(:),1 )
+
+c 2019-11-04_NJM
+      w1 = w(1)
+      if ( j.gt.0 ) call DSCALX( n, 1.0d0/p1, w1,1 )
+c      if ( j.gt.0 ) call DSCALX( n, 1.0d0/p1, w,1 )
       roundoff = DABS( 1.0d0-p1 ) / DBLE( n )
 *
 *---  suggested value for the next stepsize ...
@@ -1994,7 +2000,9 @@ c     But, satifies need to use 402
 
       implicit none
       integer n, m, lwsp, liwsp, itrace, iflag, iwsp(liwsp)
-      double precision t, tol, anorm, u(n), v(n), w(n), wsp(lwsp)
+c     2019-11-04_NJM
+      double precision t, tol, anorm, u(n), v(n), w(n), wsp(lwsp), u1
+c      double precision t, tol, anorm, u(n), v(n), w(n), wsp(lwsp)
       external matvec
 
 *-----Purpose----------------------------------------------------------|
@@ -2175,7 +2183,10 @@ c     But, satifies need to use 402
       call matvec( w, wsp(iv) )
 c     2019-10-08
 c     call DAXPX( n, 1.0d0, u,1, wsp(iv),1 )
-      call DAXPX( n, 1.0d0, u(:),1, wsp(iv),1 )
+c     2019-11-04_NJM
+c      call DAXPX( n, 1.0d0, u(:),1, wsp(iv),1 )
+      u1 = u(1)
+      call DAXPX( n, 1.0d0, u1,1, wsp(iv),1 )
       beta = DNRM2X( n, wsp(iv),1 )
       if ( beta.eq.0.0d0 ) goto 500
       call DSCALX( n, 1.0d0/beta, wsp(iv),1 )
@@ -2355,7 +2366,10 @@ c     But, satifies need to use 402 (which uses 401)
 
       implicit none
       integer n, m, lwsp, liwsp, itrace, iflag, iwsp(liwsp)
+c     2019-11-04_NJM
+c      double precision t, tol, anorm, u(n), v(n), w(n), wsp(lwsp)
       double precision t, tol, anorm, u(n), v(n), w(n), wsp(lwsp)
+      double precision u1
       external matvec
 
 *-----Purpose----------------------------------------------------------|
@@ -2534,7 +2548,11 @@ c     But, satifies need to use 402 (which uses 401)
 
       nmult =  nmult + 1
       call matvec( w, wsp(iv) )
-      call DAXPX( n, 1.0d0, u,1, wsp(iv),1 )
+
+c     2019-11-04_NJM
+c      call DAXPX( n, 1.0d0, u,1, wsp(iv),1 )
+      u1 = u(1)
+      call DAXPX( n, 1.0d0, u1,1, wsp(iv),1 )
       beta = DNRM2X( n, wsp(iv),1 )
       if ( beta.eq.0.0d0 ) goto 500
       call DSCALX( n, 1.0d0/beta, wsp(iv),1 )
