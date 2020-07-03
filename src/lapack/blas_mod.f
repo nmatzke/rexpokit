@@ -964,7 +964,7 @@ c     2019-07-01: NJM added m, I guess an integer like n
 c     interchanges two vectors.
 c     jack dongarra, 3/11/78.
 c
-      complex(kind=8) zx(1),zy(1),ztemp
+      complex(kind=8) m,zx(1),zy(1),ztemp
 c
       if(n.le.0)return
       if(incx.eq.1.and.incy.eq.1)go to 20

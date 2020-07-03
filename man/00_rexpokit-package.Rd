@@ -8,8 +8,8 @@
 }
 \details{
   \tabular{ll}{ Package: \tab rexpokit\cr Type: \tab
-  Package\cr Version: \tab 0.26.6.5\cr Date: \tab
-  2019-10-08
+  Package\cr Version: \tab 0.26.6.7\cr Date: \tab
+  2020-07-03
   }
 
   This package wraps some of the matrix exponentiation
@@ -146,13 +146,13 @@
   Doug Nychka, Marcello Chiodi, Meabh McCurdy.  Also,
   thanks to these incredibly helpful websites: 
   "On-Line Fortran F77 - F90 Converter" 
-  (\url{https://www.fortran.uk/plusfortonline.php}), 
+  (www.fortran.uk/plusfortonline.php), 
   "Building and checking R source packages for Windows" 
   (\url{https://win-builder.r-project.org/}), 
   "Modernizing Old Fortran" 
-  (\url{http://fortranwiki.org/fortran/show/Modernizing+Old+Fortran}), 
+  (fortranwiki.org/fortran/show/Modernizing+Old+Fortran), 
   "Registering the C++ and FORTRAN calls" 
-  (\url{https://stat.ethz.ch/pipermail/r-devel/2017-February/073755.html})
+  (stat.ethz.ch/pipermail/r-devel/2017-February/073755.html)
   \cr \cr
   
   \bold{4.} A small

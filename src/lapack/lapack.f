@@ -222,6 +222,10 @@ c              t = a(l,j)
 c              2019-07-02_NJM:
               call zswapy(n-k,t,a(k+1,k),1,a(k+1,j),1)
 c               call zswapy(n-k,tempn,a(k+1,k),1,a(k+1,j),1)
+c               2020-07-03_
+c              call zswapy(n-k,t,a(k+1,k),1,a(k+1,j),1)
+c               call zswapy(n-k,tempn,a(k+1,k),1,a(k+1,j),1)
+
    30       continue
          go to 50
    40    continue
@@ -1194,8 +1198,9 @@ c     blas zswapx,zdotu
 c     fortran iabs
 c
 c     internal variables.
-c
-      complex(kind=8) ak,akm1,bk,bkm1,zdotu,denom,temp
+c      2020-07-03
+c      complex(kind=8) ak,akm1,bk,bkm1,zdotu,denom,temp
+      complex(kind=8) ak,akm1,bk,bkm1,zdotu,denom,temp,tempx
       integer k,kp
 c
 c     loop backward applying the transformations and
@@ -1220,10 +1225,10 @@ c
 c
 c              apply the transformation.
 c
-c              2019-07-02_NJM:
-c               tempx = INT(b(k))
-              call zswapy(k-1,b(k),a(1,k),1,b(1),1)
-c               call zswapy(k-1,tempx,a(1,k),1,b(1),1)
+c              2020-07-03_NJM:
+              tempx = b(k)
+c              call zswapy(k-1,b(k),a(1,k),1,b(1),1)
+              call zswapy(k-1,tempx,a(1,k),1,b(1),1)
    30       continue
 c
 c           apply d inverse.

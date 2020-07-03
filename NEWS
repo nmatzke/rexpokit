@@ -1,3 +1,23 @@
+
+CHANGES in rexpokit VERSION 0.26.6.7
+
+
+NEW FEATURES
+    
+    o None
+
+BUG FIXES
+
+    o None
+    
+OTHER CHANGES
+    
+    o Fixed type mismatch errors noted by Brian Ripley with gfortran/gcc10 beta. 
+      These concerned e.g. 
+
+
+
+
 CHANGES in rexpokit VERSION 0.26.6.6
 
 
