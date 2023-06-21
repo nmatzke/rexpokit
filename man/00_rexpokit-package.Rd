@@ -285,7 +285,7 @@ for (i in 1:length(list_of_P_matrices_dmexpv))
   Historical Biogeography Reveals that Founder-event 
   Speciation is a Crucial Process in Island Clades." 
   \emph{Systematic Biology}, 63(6), 951-970. 
-  \url{http://dx.doi.org/10.1093/sysbio/syu056}
+  \doi{10.1093/sysbio/syu056}
 
   Matzke, Nicholas J. (2013). "Probabilistic historical 
   biogeography: new models for founder-event speciation, 
