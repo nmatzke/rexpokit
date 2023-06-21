@@ -1758,7 +1758,13 @@ c       code for both increments equal to 1
 *     .. External Subroutines ..
       EXTERNAL           XERBLA
 *     .. Intrinsic Functions ..
-      INTRINSIC          DCONJG, MAX
+*     2023-06-21_NJM update to fix:
+*     Error: The intrinsic 'dconjg' declared INTRINSIC at (1)
+*     is not available in the current standard settings but a 
+*     GNU Fortran extension. Use an appropriate '-std=*' 
+*     option or enable '-fall-intrinsics' in order to use it.
+*      INTRINSIC          DCONJG, MAX
+      INTRINSIC          CONJG, MAX
 *     ..
 *     .. Executable Statements ..
 *
@@ -2377,6 +2383,12 @@ c
 *     .. External Subroutines ..
       EXTERNAL           XERBLA
 *     .. Intrinsic Functions ..
+*     2023-06-21_NJM update to fix:
+*     Error: The intrinsic 'dconjg' declared INTRINSIC at (1)
+*     is not available in the current standard settings but a 
+*     GNU Fortran extension. Use an appropriate '-std=*' 
+*     option or enable '-fall-intrinsics' in order to use it.
+*      INTRINSIC          DCONJG, MAX
       INTRINSIC          DCONJG, MAX
 *     .. Local Scalars ..
       LOGICAL            CONJA, CONJB, NOTA, NOTB

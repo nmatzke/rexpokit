@@ -8,8 +8,8 @@
 }
 \details{
   \tabular{ll}{ Package: \tab rexpokit\cr Type: \tab
-  Package\cr Version: \tab 0.26.6.7\cr Date: \tab
-  2020-07-03
+  Package\cr Version: \tab 0.26.6.8\cr Date: \tab
+  2023-06-21
   }
 
   This package wraps some of the matrix exponentiation

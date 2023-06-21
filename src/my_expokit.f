@@ -1171,12 +1171,28 @@ c 1157 |           call ZSWAPX( 1, wsp(iy+i-1),1, wsp(iy+i),1 )
 c      |                          1
 c Warning: Type mismatch between actual argument at (1) and 
 c actual argument at (2) (REAL(8)/COMPLEX(8)).
-          wspc = complex(wsp(ih+(i-1)*m+i-1),0)
-          wspd = complex(wsp(ih+(i-1)*m+i),0)
+
+* 2023-06-21 error:
+* wspc = complex(wsp(ih+(i-1)*m+i-1),0)
+* where complex is a GNU extension not supported by the flang compiler:
+* the F77 standard function is CMPLX.
+* error: Semantic errors in my_expokit.f
+* ./my_expokit.f:1174:18: error: No explicit type declared for 'complex'
+*             wspc = complex(wsp(ih+(i-1)*m+i-1),0)
+
+*          wspc = complex(wsp(ih+(i-1)*m+i-1),0)
+*          wspd = complex(wsp(ih+(i-1)*m+i),0)
+
+          wspc = CMPLX(wsp(ih+(i-1)*m+i-1),0,KIND=8)
+          wspd = CMPLX(wsp(ih+(i-1)*m+i),0,KIND=8)
           call ZSWAPX(tempn,wspc,m,wspd,m)
 c         call ZSWAPX( 1, wsp(iy+i-1),1, wsp(iy+i),1 )
-          wspee = complex(wsp(iy+i-1),0)
-          wspff = complex(wsp(iy+i),0) 
+
+* 2023-06-21
+*          wspee = complex(wsp(iy+i-1),0)
+*          wspff = complex(wsp(iy+i),0) 
+          wspee = CMPLX(wsp(iy+i-1),0,KIND=8)
+          wspff = CMPLX(wsp(iy+i),0,KIND=8) 
           call ZSWAPX( 1, wspee,1, wspff,1 )
           
          endif
@@ -1186,8 +1202,12 @@ c        tmpc = wsp(ih+(i-1)*m+i) / wsp(ih+(i-1)*m+i-1)
          tmpc = -1*(wsp(ih+(i-1)*m+i) / wsp(ih+(i-1)*m+i-1))
 c        call ZAXPX(m-i,-tmpc,wsp(ih+i*m+i-1),m,wsp(ih+i*m+i),m )
 c        2019-07-02_NJM:
-         wspe = complex(wsp(ih+i*m+i-1),0)
-         wspf = complex(wsp(ih+i*m+i),0)
+
+* 2023-06-21:
+*         wspe = complex(wsp(ih+i*m+i-1),0)
+*         wspf = complex(wsp(ih+i*m+i),0)
+         wspe = CMPLX(wsp(ih+i*m+i-1),0,KIND=8)
+         wspf = CMPLX(wsp(ih+i*m+i),0,KIND=8)
          call ZAXPX(m-i,tmpc,wspe,m,wspf,m )
 c         2018-09-30_NJM:
 c         wsp(iy+i) = wsp(iy+i) - tmpc*wsp(iy+i-1)
