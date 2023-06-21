@@ -103,7 +103,7 @@
   imperfect detection, and fossils allow improved 
   accuracy and model-testing." \emph{Frontiers of 
   Biogeography}, 5(4), 242-248. 
-  \url{http://escholarship.org/uc/item/44j7n141}
+  \url{https://escholarship.org/uc/item/44j7n141}
 
   Matzke, Nicholas J. (2012).
   "Founder-event speciation in BioGeoBEARS package
@@ -158,7 +158,7 @@
   \bold{4.} A small
   amount of C++ code wrapping EXPOKIT was modified from a
   file in LAGRANGE, C++ version by Stephen Smith:\cr
-  \url{http://code.google.com/p/lagrange/}\cr
+  \url{https://code.google.com/archive/p/lagrange/}\cr
   \url{https://github.com/blackrim/lagrange}\cr \cr
   Specifically:\cr \cr \code{ * RateMatrix.cpp}\cr \code{ *
   }\cr \code{ * Created on: Aug 14, 2009}\cr \code{ *
@@ -167,7 +167,7 @@
   
   \bold{5.} Also copied in part (to get the .h file) from:\cr \cr
   Python package "Pyprop":\cr
-  \url{http://code.google.com/p/pyprop/}\cr
+  \url{http://code.google.com/p/archive/pyprop/}\cr
   (old URL) pyprop.googlecode.com/svn/trunk/core/krylov/expokit/expokitpropagator.cpp\cr
   (old URL) www.koders.com/python/fidCA95B5A4B2FB77455A72B8A361CF684FFE48F4DC.aspx?s=fourier+transform\cr
   \cr Specifically:\cr
@@ -211,7 +211,7 @@ library(rexpokit)
 # This matrix is taken from Peter Foster's (2001) "The Idiot's Guide
 # to the Zen of Likelihood in a Nutshell in Seven Days for Dummies,
 # Unleashed" at:
-# \\url{http://www.bioinf.org/molsys/data/idiots.pdf}
+# \url{http://filogeografia.dna.ac/PDFs/phylo/Foster_01_EasyIntro_MLPhylo.pdf}
 #
 # The Q matrix includes the stationary base freqencies, which Pmat
 # converges to as t becomes large.
@@ -292,7 +292,7 @@ for (i in 1:length(list_of_P_matrices_dmexpv))
   imperfect detection, and fossils allow improved 
   accuracy and model-testing." \emph{Frontiers of 
   Biogeography}, 5(4), 242-248. 
-  \url{http://escholarship.org/uc/item/44j7n141}
+  \url{https://escholarship.org/uc/item/44j7n141}
 
   Matzke N (2012). "Founder-event speciation in BioGeoBEARS
   package dramatically improves likelihoods and alters
@@ -309,7 +309,7 @@ for (i in 1:length(list_of_P_matrices_dmexpv))
   Computing Matrix Exponentials." _ACM Trans. Math.
   Softw._, *24*(1), pp. 130-156. <URL:
   http://dx.doi.org/10.1145/285861.285868>, <URL:
-  \url{http://dl.acm.org/citation.cfm?id=285868}>.
+  \url{https://dl.acm.org/doi/10.1145/285861.285868}>.
 
   Eddelbuettel D and Francois R (2011). "Rcpp: Seamless R
   and C++ Integration." _Journal of Statistical Software_,
@@ -317,17 +317,17 @@ for (i in 1:length(list_of_P_matrices_dmexpv))
   http://cran.r-project.org/web/packages/Rcpp/vignettes/Rcpp-introduction.pdf>,
   <URL:
   http://cran.r-project.org/web/packages/Rcpp/index.html>.
-  , <URL: \url{http://www.jstatsoft.org/v40/i08}>.
+  , <URL: \url{https://www.jstatsoft.org/v40/i08}>.
 
   Moler C and Loan CV (2003). "Nineteen dubious ways to
   compute the exponential of a matrix, twenty-five years
   later." _SIAM review_, *45*(1), pp. 3-49. <URL:
-  \url{http://epubs.siam.org/doi/10.1137/S00361445024180}>.
+  \url{https://epubs.siam.org/doi/10.1137/S00361445024180}>.
 
   Foster PG (2001). "The Idiot's Guide to the Zen of
   Likelihood in a Nutshell in Seven Days for Dummies,
   Unleashed." Online PDF, widely copied, <URL:
-  \url{http://www.bioinf.org/molsys/data/idiots.pdf}>.
+  \url{http://filogeografia.dna.ac/PDFs/phylo/Foster_01_EasyIntro_MLPhylo.pdf}>.
 }
 \seealso{
   \code{expoRkit}

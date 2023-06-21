@@ -94,7 +94,7 @@
   dgexpv and unlike EXPOKIT's padm-related functions. COO
   format is described here:\cr
 
-  \url{http://en.wikipedia.org/wiki/Sparse_matrix#Coordinate_list_.28COO.29}\cr
+  \url{https://en.wikipedia.org/wiki/Sparse_matrix#Coordinate_list_.28COO.29}\cr
 
   If \code{Qmat} is NULL (default), a default matrix is
   input.\cr

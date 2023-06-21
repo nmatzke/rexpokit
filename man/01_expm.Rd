@@ -33,7 +33,7 @@
   Computing Matrix Exponentials." _ACM Trans. Math.
   Softw._, *24*(1), pp. 130-156. <URL:
   http://dx.doi.org/10.1145/285861.285868>, <URL:
-  \url{http://dl.acm.org/citation.cfm?id=285868}>.
+  \url{https://dl.acm.org/doi/10.1145/285861.285868}>.
 }
 \examples{
 # Example use:

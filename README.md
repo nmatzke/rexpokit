@@ -37,7 +37,10 @@ library(rexpokit)
 ?rexpokit
 ```
 
-**Build status** on Travis-CI: [![Build Status](https://travis-ci.org/nmatzke/rexpokit.svg?branch=master)](https://travis-ci.org/nmatzke/rexpokit)
+**Build status** on Travis-CI: (Deleted, as Travis-CI now requires subscription.)
+
+**NOTE:** As of 2023-06-21, a new version of ```rexpokit```, 0.26.6.8, has been submitted to CRAN. This version fixes some warnings caused by ```gfortan```/```gcc10```. Binaries should be available soon.  Old binaries have been archived at: [https://github.com/nmatzke/Matzke_R_binaries](https://github.com/nmatzke/Matzke_R_binaries)
+
 
 **NOTE:** As of 2019-11-04, a new version of ```rexpokit```, 0.26.6.6, has been accepted on CRAN. This version fixes some warnings caused by ```gfortan```/```gcc10```, currently in beta, but nonetheless checked by CRAN. Binaries should be available soon.  Old binaries have been archived at: [https://github.com/nmatzke/Matzke_R_binaries](https://github.com/nmatzke/Matzke_R_binaries)
 

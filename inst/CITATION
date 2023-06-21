@@ -1,6 +1,6 @@
 bibentry("Manual",
-  title = "rexpokit v0.26.6.6: R wrappers for EXPOKIT; other matrix functions",
-  author = personList(
+  title = "rexpokit v0.26.6.8: R wrappers for EXPOKIT; other matrix functions",
+  author = c(
     person("Nicholas J.", family="Matzke", 
       email="nickmatzke.ncse@gmail.com", 
       role=c("aut", "cre", "cph")),
@@ -13,7 +13,7 @@ bibentry("Manual",
   ),
   organization = "School of Biological Sciences, University of Auckland",
   address      = "New Zealand",
-  year         = 2019,
+  year         = 2023,
   note         = "\n\nNOTE 1: Additional URLs: https://zenodo.org/badge/latestdoi/17001945 , http://dx.doi.org/10.5281/zenodo.1442889 , https://cran.r-project.org/package=rexpokit , http://phylo.wikidot.com/rexpokit. \n\nNOTE 2: The EXPOKIT FORTRAN library was published in: Sidje, 
 R.B. (1998). A Software Package for Computing Matrix Exponentials. 
 ACM-Transactions on Mathematical Software, 24(1):130-156. 
