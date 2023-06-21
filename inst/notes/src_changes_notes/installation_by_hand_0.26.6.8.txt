@@ -28,7 +28,10 @@ Windows:
 https://win-builder.r-project.org/
 
 cd /GitHub
+
+# Remove compiled and hidden files
 rm rexpokit/src/*.o; rm rexpokit/src/*.so; rm rexpokit/src/lapack/*.o
+rm -rf * .*
 R CMD build rexpokit
 R CMD check --as-cran rexpokit
 

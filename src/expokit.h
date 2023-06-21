@@ -85,3 +85,4 @@ void itscale5_(double *SXT, int *ngroups, int *ntraits, double *const,
   double *prior, double *prob, double *entropy, int *niter, double *tol, double *denom);
 
 }
+

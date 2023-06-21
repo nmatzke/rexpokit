@@ -13,6 +13,9 @@ OTHER CHANGES
     
     o Fixed type mismatch errors noted by Brian Ripley for: 
       GNU extension not supported by the flang compiler
+    o Fixed some old/broken links.
+    o Changed personList() to c() in 00_rexpokit-package.Rd
+    o 
 
 
 
