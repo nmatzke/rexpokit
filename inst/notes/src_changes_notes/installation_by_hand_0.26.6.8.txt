@@ -27,16 +27,26 @@ R CMD check rexpokit
 Windows:
 https://win-builder.r-project.org/
 
-cd /GitHub
 
-# Remove compiled and hidden files
-rm rexpokit/src/*.o; rm rexpokit/src/*.so; rm rexpokit/src/lapack/*.o
-rm -rf * .*
-R CMD build rexpokit
-R CMD check --as-cran rexpokit
+################################
+################################
+################################
+################################
+################################
+################################
+################################
+################################
+# BEST!! as of 2023
+################################
+################################
+################################
+################################
+################################
+################################
+################################
+################################
 
-# BEST!!
-
+################################
 2023-06-21 REQUIRED SETUP:
 ################################
 # Create ~/.R
@@ -54,13 +64,26 @@ CXXFLAGS=-mtune=native -g -O2 -Wall -pedantic -Wconversion
 FLIBS=-L/usr/local/gfortran/lib
 ################################
 
-# Then:
+* Also: install updated HTML tidy, if on an older Mac
+
+# Then, copy to an Rcmd_check directory
 cd /GitHub
+cp -r rexpokit Rcmd_check
+
+# Remove compiled and hidden files
+cd /GitHub/Rcmd_check
 rm rexpokit/src/*.o; rm rexpokit/src/*.so; rm rexpokit/src/lapack/*.o
+
+# BE VERY CAREFUL HERE!!
+cd /GitHub/Rcmd_check
+find rexpokit -name ".*" -print
+find rexpokit -name ".*" -exec rm -rf {} \;
+find rexpokit -name ".*" -print
+rm rexpokit/.DS_Store
 R CMD build rexpokit
-R CMD check rexpokit_0.26.6.8.tar.gz
+R CMD check rexpokit_0.26.6.9.tar.gz
 more /Users/nmat471/HD/GitHub/rexpokit.Rcheck/00install.out
-R CMD check --as-cran rexpokit_0.26.6.8.tar.gz
+R CMD check --as-cran rexpokit_0.26.6.9.tar.gz
 
 
 
