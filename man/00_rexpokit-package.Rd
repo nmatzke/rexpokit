@@ -8,8 +8,8 @@
 }
 \details{
   \tabular{ll}{ Package: \tab rexpokit\cr Type: \tab
-  Package\cr Version: \tab 0.26.6.8\cr Date: \tab
-  2023-06-21
+  Package\cr Version: \tab 0.26.6.9\cr Date: \tab
+  2023-06-20
   }
 
   This package wraps some of the matrix exponentiation
@@ -96,7 +96,7 @@
   Historical Biogeography Reveals that Founder-event 
   Speciation is a Crucial Process in Island Clades." 
   \emph{Systematic Biology}, 63(6), 951-970. 
-  \url{http://dx.doi.org/10.1093/sysbio/syu056}
+  \doi{10.1093/sysbio/syu056}
 
   Matzke, Nicholas J. (2013). "Probabilistic historical 
   biogeography: new models for founder-event speciation, 
@@ -167,7 +167,7 @@
   
   \bold{5.} Also copied in part (to get the .h file) from:\cr \cr
   Python package "Pyprop":\cr
-  \url{http://code.google.com/p/archive/pyprop/}\cr
+  \url{https://code.google.com/archive/p/archive}\cr
   (old URL) pyprop.googlecode.com/svn/trunk/core/krylov/expokit/expokitpropagator.cpp\cr
   (old URL) www.koders.com/python/fidCA95B5A4B2FB77455A72B8A361CF684FFE48F4DC.aspx?s=fourier+transform\cr
   \cr Specifically:\cr
@@ -321,8 +321,7 @@ for (i in 1:length(list_of_P_matrices_dmexpv))
 
   Moler C and Loan CV (2003). "Nineteen dubious ways to
   compute the exponential of a matrix, twenty-five years
-  later." _SIAM review_, *45*(1), pp. 3-49. <URL:
-  \url{https://epubs.siam.org/doi/10.1137/S00361445024180}>.
+  later." _SIAM review_, *45*(1), pp. 3-49. doi: 10.1137/S00361445024180.
 
   Foster PG (2001). "The Idiot's Guide to the Zen of
   Likelihood in a Nutshell in Seven Days for Dummies,

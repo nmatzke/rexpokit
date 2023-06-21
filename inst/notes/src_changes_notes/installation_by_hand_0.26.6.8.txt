@@ -34,7 +34,7 @@ https://win-builder.r-project.org/
 ################################
 ################################
 ################################
-################################
+#################################
 ################################
 # BEST!! as of 2023
 ################################
@@ -68,6 +68,7 @@ FLIBS=-L/usr/local/gfortran/lib
 
 # Then, copy to an Rcmd_check directory
 cd /GitHub
+mkdir Rcmd_check
 cp -r rexpokit Rcmd_check/rexpokit
 
 # Remove compiled and hidden files
