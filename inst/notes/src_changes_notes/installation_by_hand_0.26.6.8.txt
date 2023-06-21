@@ -69,6 +69,8 @@ FLIBS=-L/usr/local/gfortran/lib
 # Then, copy to an Rcmd_check directory
 cd /GitHub
 mkdir Rcmd_check
+sudo rm -r Rcmd_check/rexpokit
+
 cp -r rexpokit Rcmd_check/rexpokit
 
 # Remove compiled and hidden files
