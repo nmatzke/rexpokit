@@ -18,6 +18,27 @@ C
 C https://CRAN.R-project.org/package=FD
 C 
 
+* 2023-10-28:
+* Fix: 
+* Version: 0.26.6.9
+* Check: usage of KIND in Fortran files
+* Result: WARN
+*     Found the following files with non-portable usage of KIND:
+*      itscale5.f
+*      mataid.f
+*      my_expokit.f
+* 
+* itscale5.f
+* c 2023-10-28 add Double precision(4) to eliminate kind=4      
+*       Double precision(4) diff
+* 
+* 
+* c				2023-10-28: Remove kind=4 references
+* c        diff=REAL( abs(prob2(i)-prob(i)), KIND=4 )
+* 				 diff=abs(prob2(i)-prob(i))
+* 
+
+
       subroutine itscale5(SXT,ngroups,ntraits,const,
      & prior,prob,entropy,niter,tol,denom) 
 C Implements the Improved Iterative Scaling algorithm of
@@ -41,6 +62,8 @@ C denom are final moments
       double precision Csums(ntraits),denom(ntraits),unstand(ngroups)
       double precision entropy
       integer niter
+c 2023-10-28 add Double precision(4) to eliminate kind=4      
+      Double precision(4) diff
       if(ngroups.eq.0)then
        call rexit('Error in itscale5: number of states = 0')
       endif 
@@ -90,7 +113,9 @@ C loop begins...
         prob2(i)=unstand(i)/total
 c        2018-09-30_NJM:
 c        diff=abs(prob2(i)-prob(i))
-        diff=REAL( abs(prob2(i)-prob(i)), KIND=4 )
+c				2023-10-28: Remove kind=4 references
+c        diff=REAL( abs(prob2(i)-prob(i)), KIND=4 )
+				 diff=abs(prob2(i)-prob(i))
 
 C test1 is used to determine convergence.  If the greatest
 C absolute difference between prob estimates in any state

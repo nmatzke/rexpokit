@@ -1,4 +1,23 @@
-CHANGES in rexpokit VERSION 0.26.6.8
+CHANGES in rexpokit VERSION 0.26.6.10
+
+
+NEW FEATURES
+    
+    o None
+
+BUG FIXES
+
+    o None
+    
+OTHER CHANGES
+    
+    o Fixed issues noted in CRAN on 2023-09-26
+    o Removed broken link to Foster 2001, Zen of likelihood unleashed, at
+      http://filogeografia.dna.ac/PDFs/phylo/Foster_01_EasyIntro_MLPhylo.pdf
+
+
+
+CHANGES in rexpokit VERSION 0.26.6.9
 
 
 NEW FEATURES
@@ -15,7 +34,6 @@ OTHER CHANGES
       GNU extension not supported by the flang compiler
     o Fixed some old/broken links.
     o Changed personList() to c() in 00_rexpokit-package.Rd
-    o 
 
 
 

@@ -12,6 +12,21 @@
 * R CMD check function.
 * 
 
+* 2023-10-28:
+* Fix: 
+* Version: 0.26.6.9
+* Check: usage of KIND in Fortran files
+* Result: WARN
+*     Found the following files with non-portable usage of KIND:
+*      itscale5.f
+*      mataid.f
+*      my_expokit.f
+* 
+* mataid.f
+* c      complex(kind=8)
+*       complex(8)
+
+
 
 *-------------------------------NOTE-----------------------------------*
 *     This is an accessory to Expokit and it is not intended to be     *
@@ -108,7 +123,7 @@
 *----------------------------------------------------------------------*
       subroutine zgcoov ( x, y )
       implicit none
-      complex(kind=8) x(*), y(*)
+      complex(8) x(*), y(*)
 *
 *---  Computes y = A*x. A is passed via a fortran `common statement'.
 *---  A is assumed here to be under the COOrdinates storage format.
@@ -116,11 +131,11 @@
       integer n, nz, nzmax
       parameter( nzmax = 50000 )
       integer ia(nzmax), ja(nzmax)
-      complex(kind=8) a(nzmax)
+      complex(8) a(nzmax)
       common /CMAT/ a, ia, ja, nz, n
 
       integer i, j
-      complex(kind=8) ZERO
+      complex(8) ZERO
       parameter( ZERO=(0.0d0,0.0d0) )
  
       do j = 1,n
@@ -134,7 +149,7 @@
 *----------------------------------------------------------------------|
       subroutine zgcrsv ( x, y )
       implicit none
-      complex(kind=8) x(*), y(*)
+      complex(8) x(*), y(*)
 *
 *---  Computes y = A*x. A is passed via a fortran `common statement'.
 *---  A is assumed to be under the Compress Row Storage (CRS) format.
@@ -142,11 +157,11 @@
       integer n, nz, nzmax
       parameter( nzmax = 50000 )
       integer ia(nzmax), ja(nzmax)
-      complex(kind=8) a(nzmax)
+      complex(8) a(nzmax)
       common /CMAT/ a, ia, ja, nz, n
 
       integer i, j
-      complex(kind=8) ZERO
+      complex(8) ZERO
       parameter( ZERO=(0.0d0,0.0d0) )
 
       do i = 1,n
@@ -160,7 +175,7 @@
 *----------------------------------------------------------------------|
       subroutine zgccsv( x, y )
       implicit none
-      complex(kind=8) x(*), y(*)
+      complex(8) x(*), y(*)
 *
 *---  Computes y = A*x. A is passed via a fortran `common statement'.
 *---  A is assumed to be under the Compress Column Storage (CCS) format.
@@ -168,11 +183,11 @@
       integer n, nz, nzmax
       parameter( nzmax = 50000 )
       integer ia(nzmax), ja(nzmax)
-      complex(kind=8) a(nzmax)
+      complex(8) a(nzmax)
       common /CMAT/ a, ia, ja, nz, n
 
       integer i, j
-      complex(kind=8) ZERO
+      complex(8) ZERO
       parameter( ZERO=(0.0d0,0.0d0) )
 
       do i = 1,n
@@ -523,7 +538,7 @@
 
       implicit none
       integer          n, nx, ix(nx), ixx(nx), iwsp(n)
-      complex(kind=8)       xx(nx)
+      complex(8)       xx(nx)
       integer          k
 *
 *---  sort ix and carry ixx and xx along ...
@@ -560,10 +575,10 @@
 
       implicit none
       integer          nx, ix(nx)
-      complex(kind=8)       xx(nx)
+      complex(8)       xx(nx)
 
       integer          M,I,J,K,IL(21),IU(21), IT,IIT,IJ,L
-      complex(kind=8)       TX, TTX
+      complex(8)       TX, TTX
       double precision R
 
       if ( nx.le.1 ) return
@@ -697,10 +712,10 @@
 
       implicit none
       integer          nx, ix(nx), ixx(nx)
-      complex(kind=8)       xx(nx)
+      complex(8)       xx(nx)
 
       integer          M,I,J,K,IL(21),IU(21), IT,IIT,IJ,JT,JJT,L
-      complex(kind=8)       TX, TTX
+      complex(8)       TX, TTX
       double precision R
 
       if ( nx.le.1 ) return

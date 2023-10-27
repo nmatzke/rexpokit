@@ -211,7 +211,7 @@ library(rexpokit)
 # This matrix is taken from Peter Foster's (2001) "The Idiot's Guide
 # to the Zen of Likelihood in a Nutshell in Seven Days for Dummies,
 # Unleashed" at:
-# \url{http://filogeografia.dna.ac/PDFs/phylo/Foster_01_EasyIntro_MLPhylo.pdf}
+# https://joelvelasco.net/teaching/129/foster01-idiotslikelihood.pdf
 #
 # The Q matrix includes the stationary base freqencies, which Pmat
 # converges to as t becomes large.
@@ -326,7 +326,7 @@ for (i in 1:length(list_of_P_matrices_dmexpv))
   Foster PG (2001). "The Idiot's Guide to the Zen of
   Likelihood in a Nutshell in Seven Days for Dummies,
   Unleashed." Online PDF, widely copied, <URL:
-  \url{http://filogeografia.dna.ac/PDFs/phylo/Foster_01_EasyIntro_MLPhylo.pdf}>.
+  https://joelvelasco.net/teaching/129/foster01-idiotslikelihood.pdf>.
 }
 \seealso{
   \code{expoRkit}
