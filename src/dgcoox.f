@@ -112,5 +112,11 @@ c
         iy = iy + incy
    10 continue
       return
-   END
-
+c
+c        code for both increments equal to 1
+c
+   20 do 30 i = 1,n
+        zy(i) = zx(i)
+   30 continue
+      return
+      end
