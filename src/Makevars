@@ -6,7 +6,7 @@ R_OBJS = \
     lapack/blas_mod.o \
     lapack/lapack.o \
     mataid.o \
-    dgcoov.o \
+    dgcoox.o \
     my_expokit.o \
     my_matexp.o \
     itscale5.o \

@@ -1,4 +1,4 @@
-      subroutine dgcoov ( x, y )
+      subroutine dgcoox ( x, y )
       implicit none
 
 c     2023-10-28:
