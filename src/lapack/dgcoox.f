@@ -126,3 +126,156 @@ c 300  CONTINUE
       RETURN
       END
 
+
+
+
+*----------------------------------------------------------------------|
+*----------------------------------------------------------------------|
+*
+      subroutine izsrt1( nx, ix, xx )
+
+*---  IZSRT1: indirect sort -- sort ix and carry xx along
+*---  adapted from a SLAP (Sparse Linear Algebra Package) code.
+*----------------------------------------------------------------------|
+
+c      implicit none
+      complex(kind=8) xx(1)
+      integer nx,ix
+c      integer, dimension(nx) :: ix
+
+      do 10 i = 1,nx
+        xx(ix) = xx(ix)
+        ix = ix + 1
+   10 continue
+
+      integer          M,I,J,K,IL(21),IU(21), IT,IIT,IJ,L
+      complex        TX, TTX
+      REAL R
+
+      if ( nx.le.1 ) return
+
+*---  And now...Just a little black magic...
+      M = 1
+      I = 1
+      J = NX
+      R = .375
+ 210  IF( R.LE.0.5898437 ) THEN
+         R = R + 3.90625E-2
+      ELSE
+         R = R-.21875
+      ENDIF
+ 225  K = I
+*
+*---  Select a central element of the array and save it in location 
+*---  IT, TX.
+*
+      IJ = I + IDINT( DBLE(J-I)*R )
+      IT = IX(IJ)
+      TX = XX(IJ)
+*
+*---  If first element of array is greater than IT, interchange with IT.
+*
+      IF( IX(I).GT.IT ) THEN
+         IX(IJ) = IX(I)
+         IX(I)  = IT
+         IT     = IX(IJ)
+         XX(IJ)  = XX(I)
+         XX(I)   = TX
+         TX     = XX(IJ)
+      ENDIF
+      L=J
+*                           
+*---  If last element of array is less than IT, swap with IT.
+*
+      IF( IX(J).LT.IT ) THEN
+         IX(IJ) = IX(J)
+         IX(J)  = IT
+         IT     = IX(IJ)
+         XX(IJ)  = XX(J)
+         XX(J)   = TX
+         TX     = XX(IJ)
+*
+*---  If first element of array is greater than IT, swap with IT.
+*
+         IF ( IX(I).GT.IT ) THEN
+            IX(IJ) = IX(I)
+            IX(I)  = IT
+            IT     = IX(IJ)
+            XX(IJ)  = XX(I)
+            XX(I)   = TX
+            TX     = XX(IJ)
+         ENDIF
+      ENDIF
+*
+*---  Find an element in the second half of the array which is 
+*---  smaller than IT.
+*
+ 240  L=L-1
+      IF( IX(L).GT.IT ) GO TO 240
+*
+*---  Find an element in the first half of the array which is 
+*---  greater than IT.
+*
+ 245  K=K+1
+      IF( IX(K).LT.IT ) GO TO 245
+*
+*---  Interchange these elements.
+*
+      IF( K.LE.L ) THEN
+         IIT   = IX(L)
+         IX(L) = IX(K)
+         IX(K) = IIT
+         TTX   = XX(L)
+         XX(L)  = XX(K)
+         XX(K)  = TTX
+         GOTO 240
+      ENDIF
+*
+*---  Save upper and lower subscripts of the array yet to be sorted.
+*
+      IF( L-I.GT.J-K ) THEN
+         IL(M) = I
+         IU(M) = L
+         I = K
+         M = M+1
+      ELSE
+         IL(M) = K
+         IU(M) = J
+         J = L
+         M = M+1
+      ENDIF
+      GO TO 260
+*
+*---  Begin again on another portion of the unsorted array.
+*
+ 255  M = M-1
+      IF( M.EQ.0 ) GO TO 300
+      I = IL(M)
+      J = IU(M)
+ 260  IF( J-I.GE.1 ) GO TO 225
+      IF( I.EQ.J ) GO TO 255
+      IF( I.EQ.1 ) GO TO 210
+      I = I-1
+ 265  I = I+1
+      IF( I.EQ.J ) GO TO 255
+      IT = IX(I+1)
+      TX =  XX(I+1)
+      IF( IX(I).LE.IT ) GO TO 265
+      K=I
+ 270  IX(K+1) = IX(K)
+      XX(K+1)  =  XX(K)
+      K = K-1
+      IF( IT.LT.IX(K) ) GO TO 270
+      IX(K+1) = IT
+      XX(K+1)  = TX
+      GO TO 265
+
+ 300  CONTINUE
+      RETURN
+      END
+*----------------------------------------------------------------------|
+*----------------------------------------------------------------------|
+
+
+
+
