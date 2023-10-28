@@ -56,9 +56,9 @@ c      subroutine ixsrt1( nx, ix, xx )
 *---  adapted from a SLAP (Sparse Linear Algebra Package) code.
 *----------------------------------------------------------------------|
 c      implicit none
-      integer          nx
+c      integer          nx
 
-      complex(kind=8) xx(nx)
+      complex(kind=8) xx(1)
 
 c      integer, dimension(nx) :: ix
 
