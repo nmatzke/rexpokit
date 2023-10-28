@@ -50,7 +50,7 @@
 *----------------------------------------------------------------------*
  
 c      subroutine ixsrt1( nx, ix, xx )
-      subroutine ixsrt1( xx )
+c      subroutine ixsrt1( xx )
 
 *---  IDSRT1: indirect sort -- sort ix and carry xx along
 *---  adapted from a SLAP (Sparse Linear Algebra Package) code.
@@ -58,7 +58,7 @@ c      subroutine ixsrt1( nx, ix, xx )
 c      implicit none
 c      integer          nx
 
-      complex(kind=8) xx(1)
+c      complex(kind=8) xx(1)
 
 c      integer, dimension(nx) :: ix
 
@@ -84,6 +84,33 @@ c      USE ISO_FORTRAN_ENV, xx => real64
 c      COMPLEX(KIND=8) xx(nx)
 			
 c 300  CONTINUE
-      RETURN
-      END
+c      RETURN
+c      END
+
+
+      subroutine  zcopy(n,zx,incx,zy,incy)
+c
+c     copies a vector, x, to a vector, y.
+c     jack dongarra, linpack, 4/11/78.
+c
+      complex(kind=8) zx(1),zy(1)
+      integer i,incx,incy,ix,iy,n
+c
+      if(n.le.0)return
+      if(incx.eq.1.and.incy.eq.1)go to 20
+c
+c        code for unequal increments or equal increments
+c          not equal to 1
+c
+      ix = 1
+      iy = 1
+      if(incx.lt.0)ix = (-n+1)*incx + 1
+      if(incy.lt.0)iy = (-n+1)*incy + 1
+      do 10 i = 1,n
+        zy(iy) = zx(ix)
+        ix = ix + incx
+        iy = iy + incy
+   10 continue
+      return
+
 
