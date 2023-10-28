@@ -1,3 +1,44 @@
+C
+C This code was copied from the R package "FD" in
+C order to avoid an unnecessary dependency
+C (and associated issues with compilation, 
+C  updates, etc.)
+C
+C See R function "maxent" for more details.
+C
+C Laliberte, E., and P. Legendre (2010) A distance-based 
+C framework for measuring functional diversity from 
+C multiple traits. Ecology 91:299-305.
+C
+C Laliberte, E., Legendre, P., and B. Shipley. (2014). 
+C FD: measuring functional diversity from multiple traits, 
+C and other tools for functional ecology. R package 
+C version 1.0-12.
+C 
+C https://CRAN.R-project.org/package=FD
+C 
+
+* 2023-10-28:
+* Fix: 
+* Version: 0.26.6.9
+* Check: usage of KIND in Fortran files
+* Result: WARN
+*     Found the following files with non-portable usage of KIND:
+*      itscale5.f
+*      mataid.f
+*      my_expokit.f
+* 
+* itscale5.f
+* c 2023-10-28 add Double precision(4) to eliminate kind=4      
+*       Double precision(4) diff
+* 
+* 
+* c				2023-10-28: Remove kind=4 references
+* c        diff=REAL( abs(prob2(i)-prob(i)), KIND=4 )
+* 				 diff=abs(prob2(i)-prob(i))
+* 
+
+
       subroutine itscale5(SXT,ngroups,ntraits,const,
      & prior,prob,entropy,niter,tol,denom) 
 C Implements the Improved Iterative Scaling algorithm of
@@ -21,6 +62,9 @@ C denom are final moments
       double precision Csums(ntraits),denom(ntraits),unstand(ngroups)
       double precision entropy
       integer niter
+c 2023-10-28 add Double precision(4) to eliminate kind=4      
+c      Double precision(4) diff
+      double precision diff
       if(ngroups.eq.0)then
        call rexit('Error in itscale5: number of states = 0')
       endif 
@@ -68,7 +112,12 @@ C loop begins...
        test1=0.
        do i=1,ngroups
         prob2(i)=unstand(i)/total
-        diff=abs(prob2(i)-prob(i))
+c        2018-09-30_NJM:
+c        diff=abs(prob2(i)-prob(i))
+c				2023-10-28: Remove kind=4 references
+c        diff=REAL( abs(prob2(i)-prob(i)), KIND=4 )
+				 diff=abs(prob2(i)-prob(i))
+
 C test1 is used to determine convergence.  If the greatest
 C absolute difference between prob estimates in any state
 C across iterations is less that the tolerance, then stop
