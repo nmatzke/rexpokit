@@ -30,12 +30,10 @@
 * double precision
 * replaced with:
 * REAL(kind=selected_real_kind(15)) ::
-* or
-* REAL, dimension(1) :: R
 *
 * complex
 * replaced with
-* complex, dimension(1) :: 
+* complex(kind=selected_real_kind(15)) :: 
 
 
 
@@ -145,11 +143,11 @@ c      double precision x(*), y(*)
       integer n, nz, nzmax
       parameter( nzmax = 50000 )
       integer ia(nzmax), ja(nzmax)
-      complex, dimension(nzmax) :: a
+      complex(kind=selected_real_kind(15)) :: a(nzmax)
       common /CMAT/ a, ia, ja, nz, n
 
       integer i, j
-      complex, dimension(1) :: ZERO
+      complex(kind=selected_real_kind(15)) :: ZERO
       parameter( ZERO=(0.0d0,0.0d0) )
  
       do j = 1,n
@@ -171,11 +169,11 @@ c      double precision x(*), y(*)
       integer n, nz, nzmax
       parameter( nzmax = 50000 )
       integer ia(nzmax), ja(nzmax)
-      complex, dimension(nzmax) :: a
+      complex(kind=selected_real_kind(15)) :: a(nzmax)
       common /CMAT/ a, ia, ja, nz, n
 
       integer i, j
-      complex, dimension(1) :: ZERO
+      complex(kind=selected_real_kind(15)) :: ZERO
       parameter( ZERO=(0.0d0,0.0d0) )
 
       do i = 1,n
@@ -197,11 +195,11 @@ c      double precision x(*), y(*)
       integer n, nz, nzmax
       parameter( nzmax = 50000 )
       integer ia(nzmax), ja(nzmax)
-      complex, dimension(nzmax) :: a
+      complex(kind=selected_real_kind(15)) :: a(nzmax)
       common /CMAT/ a, ia, ja, nz, n
 
       integer i, j
-      complex, dimension(1) :: ZERO
+      complex(kind=selected_real_kind(15)) :: ZERO
       parameter( ZERO=(0.0d0,0.0d0) )
 
       do i = 1,n
@@ -265,7 +263,7 @@ c      double precision x(*), y(*)
       REAL, dimension(nx) :: xx
 
       integer          M,I,J,K,IL(21),IU(21), IT,IIT,IJ,L
-      REAL, dimension(1) :: TX, TTX, R
+      REAL(kind=selected_real_kind(15)) :: TX, TTX, R
 
       if ( nx.le.1 ) return
 
@@ -401,7 +399,7 @@ c      double precision x(*), y(*)
       REAL, dimension(nx) :: xx
 
       integer          M,I,J,K,IL(21),IU(21), IT,IIT,IJ,JT,JJT,L
-      REAL, dimension(1) :: TX, TTX, R
+      REAL(kind=selected_real_kind(15)) :: TX, TTX, R
 
       if ( nx.le.1 ) return
 
@@ -552,7 +550,7 @@ c      double precision x(*), y(*)
 
       implicit none
       integer          n, nx, ix(nx), ixx(nx), iwsp(n)
-      complex, dimension(nx) :: xx
+      complex(kind=selected_real_kind(15)) ::       xx(nx)
       integer          k
 *
 *---  sort ix and carry ixx and xx along ...
@@ -589,11 +587,11 @@ c      double precision x(*), y(*)
 
       implicit none
       integer          nx, ix(nx)
-      complex, dimension(nx) :: xx
+      complex(kind=selected_real_kind(15)) ::       xx(nx)
 
       integer          M,I,J,K,IL(21),IU(21), IT,IIT,IJ,L
-      complex, dimension(1) ::       TX, TTX
-      REAL, dimension(1) :: R
+      complex(kind=selected_real_kind(15)) ::       TX, TTX
+      REAL(kind=selected_real_kind(15)) :: R
 
       if ( nx.le.1 ) return
 
@@ -726,11 +724,11 @@ c      double precision x(*), y(*)
 
       implicit none
       integer          nx, ix(nx), ixx(nx)
-      complex, dimension(nx) :: xx
+      complex(kind=selected_real_kind(15)) ::       xx(nx)
 
       integer          M,I,J,K,IL(21),IU(21), IT,IIT,IJ,JT,JJT,L
-      complex, dimension(1) ::       TX, TTX
-      REAL, dimension(1) :: R
+      complex(kind=selected_real_kind(15)) ::       TX, TTX
+      REAL(kind=selected_real_kind(15)) :: R
 
       if ( nx.le.1 ) return
 
