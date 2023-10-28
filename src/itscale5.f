@@ -63,7 +63,8 @@ C denom are final moments
       double precision entropy
       integer niter
 c 2023-10-28 add Double precision(4) to eliminate kind=4      
-      Double precision(4) diff
+c      Double precision(4) diff
+      double precision diff
       if(ngroups.eq.0)then
        call rexit('Error in itscale5: number of states = 0')
       endif 
