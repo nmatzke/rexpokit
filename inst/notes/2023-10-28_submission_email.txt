@@ -33,7 +33,8 @@ rm *.o
 
 cd /GitHub/
 R CMD build rexpokit
-R CMD check rexpokit
+cd /GitHub/
+_R_CHECK_FORTRAN_KIND_DETAILS_=1 R CMD check rexpokit
 
 cd /GitHub/rexpokit/src
 rm *.o
