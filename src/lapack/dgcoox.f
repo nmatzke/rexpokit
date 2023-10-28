@@ -134,18 +134,29 @@ c 300  CONTINUE
 *
       subroutine iysrt1( nx, ix, xx )
 
-*---  IZSRT1: indirect sort -- sort ix and carry xx along
+*---  IDSRT1: indirect sort -- sort ix and carry xx along
 *---  adapted from a SLAP (Sparse Linear Algebra Package) code.
 *----------------------------------------------------------------------|
 
       implicit none
-      complex(kind=8) xx(1)
-      integer nx,ix
+      integer nx,ix(nx)
+      complex(kind=8) xx(nx)
+c      integer          nx, ix(nx)
+c      REAL, dimension(nx) :: xx
+
+      integer          M,I,J,K,IL(21),IU(21), IT,IIT,IJ,L
+      REAL TX, TTX, R
+
+      if ( nx.le.1 ) return
+
+c      implicit none
+c      complex(kind=8) xx(1)
+c      integer nx,ix
 c      integer, dimension(nx) :: ix
 
-      integer        M,I,J,K,IL(21),IU(21),IT,IIT,IJ,L
-      complex        TX, TTX
-      REAL R
+c      integer        M,I,J,K,IL(21),IU(21),IT,IIT,IJ,L
+c      complex        TX, TTX
+c      REAL R
 
       do 10 i = 1,nx
         xx(ix) = xx(ix)
@@ -154,7 +165,7 @@ c      integer, dimension(nx) :: ix
 
 
 
-      if ( nx.le.1 ) return
+c      if ( nx.le.1 ) return
 
 *---  And now...Just a little black magic...
       M = 1
