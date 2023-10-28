@@ -14,7 +14,7 @@
 
 * 2023-10-28:
 * Fix: 
-* Version: 0.26.6.9
+* Version: 0.26.6.10
 * Check: usage of KIND in Fortran files
 * Result: WARN
 *     Found the following files with non-portable usage of KIND:
@@ -34,58 +34,6 @@
 * complex
 * replaced with
 * complex(kind=selected_real_kind(15)) :: 
-
-
-
-*-------------------------------NOTE-----------------------------------*
-*     This is an accessory to Expokit and it is not intended to be     *
-*     complete. It is supplied primarily to ensure an unconstrained    *
-*     distribution and portability of the package. The matrix-vector   *
-*     multiplication routines supplied here fit the non symmetric      *
-*     storage and for a symmetric matrix, the entire (not half) matrix *
-*     is required.  If the sparsity pattern is known a priori, it is   *
-*     recommended to use the most advantageous format and to devise    *
-*     the most advantageous matrix-vector multiplication routine.      *
-*----------------------------------------------------------------------*
-*----------------------------------------------------------------------*
- 
-c      subroutine ixsrt1( nx, ix, xx )
-c      subroutine ixsrt1( xx )
-
-*---  IDSRT1: indirect sort -- sort ix and carry xx along
-*---  adapted from a SLAP (Sparse Linear Algebra Package) code.
-*----------------------------------------------------------------------|
-c      implicit none
-c      integer          nx
-
-c      complex(kind=8) xx(1)
-
-c      integer, dimension(nx) :: ix
-
-c ERROR:
-c     REAL(kind=selected_real_kind(15)), dimension(nx) :: xx
-c			complex xx
-c			complex, dimension(nx) :: xx
-c			double complex :: xx(nx)
-c			REAL(KIND=selected_real_kind(p=15)), dimension(nx) :: xx
-
-c Compile failure:
-c			use iso_fortran_env, only: xx(nx) => real64
-c			REAL xx(nx)
-c			complex, parameter :: xx(nx) = selected_real_kind(33, 4931)
-c			REAL xx(nx)
-
-c			COMPLEX(KIND=selected_complex_kind(15,15)) :: xx(nx)
-
-c     SAME ERROR
-c			COMPLEX*16 :: xx(nx)
-      
-c      USE ISO_FORTRAN_ENV, xx => real64
-c      COMPLEX(KIND=8) xx(nx)
-			
-c 300  CONTINUE
-c      RETURN
-c      END
 
 
       subroutine  zzcopy(n,zx,incx,zy,incy)
@@ -120,3 +68,61 @@ c
    30 continue
       return
       end
+
+
+*-------------------------------NOTE-----------------------------------*
+*     This is an accessory to Expokit and it is not intended to be     *
+*     complete. It is supplied primarily to ensure an unconstrained    *
+*     distribution and portability of the package. The matrix-vector   *
+*     multiplication routines supplied here fit the non symmetric      *
+*     storage and for a symmetric matrix, the entire (not half) matrix *
+*     is required.  If the sparsity pattern is known a priori, it is   *
+*     recommended to use the most advantageous format and to devise    *
+*     the most advantageous matrix-vector multiplication routine.      *
+*----------------------------------------------------------------------*
+*----------------------------------------------------------------------*
+ 
+      subroutine ixsrt1( nx, ix, xx )
+c      subroutine ixsrt1( xx )
+
+*---  IDSRT1: indirect sort -- sort ix and carry xx along
+*---  adapted from a SLAP (Sparse Linear Algebra Package) code.
+*----------------------------------------------------------------------|
+c      implicit none
+c      integer          nx
+
+      complex(kind=8) xx(1)
+      integer nx,ix
+c      integer, dimension(nx) :: ix
+
+      do 10 i = 1,nx
+        xx(ix) = xx(ix)
+        ix = ix + 1
+   10 continue
+
+
+c ERROR:
+c     REAL(kind=selected_real_kind(15)), dimension(nx) :: xx
+c			complex xx
+c			complex, dimension(nx) :: xx
+c			double complex :: xx(nx)
+c			REAL(KIND=selected_real_kind(p=15)), dimension(nx) :: xx
+
+c Compile failure:
+c			use iso_fortran_env, only: xx(nx) => real64
+c			REAL xx(nx)
+c			complex, parameter :: xx(nx) = selected_real_kind(33, 4931)
+c			REAL xx(nx)
+
+c			COMPLEX(KIND=selected_complex_kind(15,15)) :: xx(nx)
+
+c     SAME ERROR
+c			COMPLEX*16 :: xx(nx)
+      
+c      USE ISO_FORTRAN_ENV, xx => real64
+c      COMPLEX(KIND=8) xx(nx)
+			
+c 300  CONTINUE
+      RETURN
+      END
+
