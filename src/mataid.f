@@ -137,7 +137,7 @@ c      double precision x(*), y(*)
 *----------------------------------------------------------------------*
 *----------------------------------------------------------------------*
       subroutine zgcoov ( x, y )
-      implicit none
+c      implicit none
       complex, dimension(:), allocatable :: x, y
 *
 *---  Computes y = A*x. A is passed via a fortran `common statement'.
@@ -191,7 +191,7 @@ c      double precision x(*), y(*)
 *----------------------------------------------------------------------|
 *----------------------------------------------------------------------|
       subroutine zgccsv( x, y )
-      implicit none
+c      implicit none
       complex, dimension(:), allocatable :: x, y
 *
 *---  Computes y = A*x. A is passed via a fortran `common statement'.
@@ -554,7 +554,7 @@ c      double precision x(*), y(*)
 *--   (This is a gateway routine for ZGCNVR) ...
 *----------------------------------------------------------------------|
 
-      implicit none
+c      implicit none
       integer          n, nx, ix(nx), ixx(nx), iwsp(n)
       complex, dimension(nx) :: xx
       integer          k
@@ -591,7 +591,7 @@ c      double precision x(*), y(*)
 *---  adapted from a SLAP (Sparse Linear Algebra Package) code.
 *----------------------------------------------------------------------|
 
-      implicit none
+c      implicit none
       integer          nx, ix(nx)
       complex, dimension(nx) :: xx
 
@@ -728,7 +728,7 @@ c      double precision x(*), y(*)
 *---  adapted from a SLAP (Sparse Linear Algebra Package) code.
 *----------------------------------------------------------------------|
 
-      implicit none
+c      implicit none
       integer          nx, ix(nx), ixx(nx)
       complex, dimension(nx) :: xx
 

@@ -49,18 +49,41 @@
 *----------------------------------------------------------------------*
 *----------------------------------------------------------------------*
  
-      subroutine ixsrt1( nx, ix, xx )
+c      subroutine ixsrt1( nx, ix, xx )
+      subroutine ixsrt1( xx )
 
 *---  IDSRT1: indirect sort -- sort ix and carry xx along
 *---  adapted from a SLAP (Sparse Linear Algebra Package) code.
 *----------------------------------------------------------------------|
-
-      implicit none
+c      implicit none
       integer          nx
-      integer, dimension(nx) :: ix
-c      REAL(kind=selected_real_kind(15)), dimension(nx) :: xx
 
- 
- 300  CONTINUE
+      complex(kind=8) xx(nx)
+
+c      integer, dimension(nx) :: ix
+
+c ERROR:
+c     REAL(kind=selected_real_kind(15)), dimension(nx) :: xx
+c			complex xx
+c			complex, dimension(nx) :: xx
+c			double complex :: xx(nx)
+c			REAL(KIND=selected_real_kind(p=15)), dimension(nx) :: xx
+
+c Compile failure:
+c			use iso_fortran_env, only: xx(nx) => real64
+c			REAL xx(nx)
+c			complex, parameter :: xx(nx) = selected_real_kind(33, 4931)
+c			REAL xx(nx)
+
+c			COMPLEX(KIND=selected_complex_kind(15,15)) :: xx(nx)
+
+c     SAME ERROR
+c			COMPLEX*16 :: xx(nx)
+      
+c      USE ISO_FORTRAN_ENV, xx => real64
+c      COMPLEX(KIND=8) xx(nx)
+			
+c 300  CONTINUE
       RETURN
       END
+
