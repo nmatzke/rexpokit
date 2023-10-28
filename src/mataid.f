@@ -143,7 +143,7 @@ c      double precision x(*), y(*)
       integer n, nz, nzmax
       parameter( nzmax = 50000 )
       integer ia(nzmax), ja(nzmax)
-      complex(kind=selected_real_kind(15)) :: a(nzmax)
+      complex, dimension(nzmax) :: a
       common /CMAT/ a, ia, ja, nz, n
 
       integer i, j
@@ -169,7 +169,7 @@ c      double precision x(*), y(*)
       integer n, nz, nzmax
       parameter( nzmax = 50000 )
       integer ia(nzmax), ja(nzmax)
-      complex(kind=selected_real_kind(15)) :: a(nzmax)
+      complex, dimension(nzmax) :: a
       common /CMAT/ a, ia, ja, nz, n
 
       integer i, j
@@ -195,7 +195,7 @@ c      double precision x(*), y(*)
       integer n, nz, nzmax
       parameter( nzmax = 50000 )
       integer ia(nzmax), ja(nzmax)
-      complex(kind=selected_real_kind(15)) :: a(nzmax)
+      complex, dimension(nzmax) :: a
       common /CMAT/ a, ia, ja, nz, n
 
       integer i, j
@@ -550,7 +550,7 @@ c      double precision x(*), y(*)
 
       implicit none
       integer          n, nx, ix(nx), ixx(nx), iwsp(n)
-      complex(kind=selected_real_kind(15)) ::       xx(nx)
+      complex, dimension(nx) :: xx
       integer          k
 *
 *---  sort ix and carry ixx and xx along ...
@@ -587,7 +587,7 @@ c      double precision x(*), y(*)
 
       implicit none
       integer          nx, ix(nx)
-      complex(kind=selected_real_kind(15)) ::       xx(nx)
+      complex, dimension(nx) :: xx
 
       integer          M,I,J,K,IL(21),IU(21), IT,IIT,IJ,L
       complex(kind=selected_real_kind(15)) ::       TX, TTX
@@ -724,7 +724,7 @@ c      double precision x(*), y(*)
 
       implicit none
       integer          nx, ix(nx), ixx(nx)
-      complex(kind=selected_real_kind(15)) ::       xx(nx)
+      complex, dimension(nx) :: xx
 
       integer          M,I,J,K,IL(21),IU(21), IT,IIT,IJ,JT,JJT,L
       complex(kind=selected_real_kind(15)) ::       TX, TTX

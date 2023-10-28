@@ -36,3 +36,5 @@ Packaged: 2023-06-21; iao
 NeedsCompilation: yes
 Repository: CRAN
 SysData: _R_CHECK_FORTRAN_KIND_DETAILS_: 1
+SysData: R_CHECK_FORTRAN_KIND_DETAILS: 1
+
