@@ -121,7 +121,7 @@ c			COMPLEX*16 :: xx(nx)
       
 c      USE ISO_FORTRAN_ENV, xx => real64
 c      COMPLEX(KIND=8) xx(nx)
-	
+
 c 300  CONTINUE
       RETURN
       END
