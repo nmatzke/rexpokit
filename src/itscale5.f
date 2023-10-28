@@ -20,6 +20,15 @@ C denom are final moments
       double precision gamma1(ntraits),total,test1,tol
       double precision Csums(ntraits),denom(ntraits),unstand(ngroups)
       double precision entropy
+* 2023-10-28_fix this: 
+* itscale5.f:71:13:
+* 
+*    71 |         diff=abs(prob2(i)-prob(i))
+*       |             1
+* Warning: Possible change of value in conversion from 
+* REAL(8) to REAL(4) at (1) [-Wconversion]
+      double precision diff
+* END FIX
       integer niter
       if(ngroups.eq.0)then
        call rexit('Error in itscale5: number of states = 0')

@@ -964,7 +964,10 @@ c     2019-07-01: NJM added m, I guess an integer like n
 c     interchanges two vectors.
 c     jack dongarra, 3/11/78.
 c
+c     2023-10-28:
       complex(kind=8) m,zx(1),zy(1),ztemp
+      INTEGER            incx, incy, ix, iy
+
 c
       if(n.le.0)return
       if(incx.eq.1.and.incy.eq.1)go to 20
@@ -972,6 +975,7 @@ c
 c       code for unequal increments or equal increments not equal
 c         to 1
 c
+      
       ix = 1
       iy = 1
       if(incx.lt.0)ix = (-n+1)*incx + 1

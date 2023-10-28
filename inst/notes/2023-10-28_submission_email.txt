@@ -1,6 +1,6 @@
 Dear hardworking CRAN maintainers,
 
-I am submitting an update to "rexpokit", rexpokit 0.26.6.10. This is a slight revision of 0.26.6.9 to eliminate fortran compiler issues noted at https://cran-archive.r-project.org/web/checks/2023/2023-10-10_check_results_rexpokit.html
+I am submitting an update to "rexpokit", rexpokit 0.26.6.11. This is a slight revision of 0.26.6.9 to eliminate fortran compiler issues noted at https://cran-archive.r-project.org/web/checks/2023/2023-10-10_check_results_rexpokit.html
 
 This compiles without errors/warnings/significant notes on newest R and on r-devel, r-release, and r-old on WinBuilder.
 
@@ -8,4 +8,46 @@ Thanks very much for your time,
 
 Sincerely,
 Nick Matzke
+
+
+# Check:
+# Found the following files with non-portable usage of KIND:
+  itscale5.f
+  mataid.f
+  my_expokit.f
+
+cd /GitHub/
+rm rexpokit_0.26.6.11.tar.gz  
+cd /GitHub/rexpokit
+find . -type f -name ".*" -print
+find . -type f -name ".*" -delete
+
+cd /GitHub/rexpokit/src
+rm *.o
+rm *.so
+
+cd /GitHub/rexpokit/src/lapack
+rm *.o
+rm *.so
+
+
+cd /GitHub/
+R CMD build rexpokit
+R CMD check rexpokit
+cd /GitHub/rexpokit/src
+
+rm *.o
+rm *.so
+cd /GitHub/
+cd /GitHub/rexpokit/src/lapack
+rm *.o
+rm *.so
+
+open /Users/nmat471/HD/GitHub/rexpokit.Rcheck/00check.log
+open /Users/nmat471/HD/GitHub/rexpokit.Rcheck/00install.out
+
+
+
+# Submit to:
+https://mac.r-project.org/macbuilder/submit.html
 
