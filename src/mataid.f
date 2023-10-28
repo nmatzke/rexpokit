@@ -60,7 +60,8 @@ c      double precision x(*), y(*)
 *
       integer n, nz, nzmax
       parameter( nzmax = 600000 )
-      integer ia(nzmax), ja(nzmax)
+      integer, dimension(nzmax) :: ia
+      integer, dimension(nzmax) :: ja
       REAL, dimension(nzmax) :: a
       common /RMAT/ a, ia, ja, nz, n
       integer i, j
@@ -83,7 +84,8 @@ c      double precision x(*), y(*)
 *
       integer n, nz, nzmax
       parameter( nzmax = 600000 )
-      integer ia(nzmax), ja(nzmax)
+      integer, dimension(nzmax) :: ia
+      integer, dimension(nzmax) :: ja
       REAL, dimension(nzmax) :: a
       common /RMAT/ a, ia, ja, nz, n
       integer i, j
@@ -106,7 +108,8 @@ c      double precision x(*), y(*)
 *
       integer n, nz, nzmax
       parameter( nzmax = 600000 )
-      integer ia(nzmax), ja(nzmax)
+      integer, dimension(nzmax) :: ia
+      integer, dimension(nzmax) :: ja
       REAL, dimension(nzmax) :: a
       common /RMAT/ a, ia, ja, nz, n
       integer i, j
@@ -142,7 +145,8 @@ c      double precision x(*), y(*)
 *
       integer n, nz, nzmax
       parameter( nzmax = 50000 )
-      integer ia(nzmax), ja(nzmax)
+      integer, dimension(nzmax) :: ia
+      integer, dimension(nzmax) :: ja
       complex, dimension(nzmax) :: a
       common /CMAT/ a, ia, ja, nz, n
 
@@ -168,7 +172,8 @@ c      double precision x(*), y(*)
 *
       integer n, nz, nzmax
       parameter( nzmax = 50000 )
-      integer ia(nzmax), ja(nzmax)
+      integer, dimension(nzmax) :: ia
+      integer, dimension(nzmax) :: ja
       complex, dimension(nzmax) :: a
       common /CMAT/ a, ia, ja, nz, n
 
@@ -194,7 +199,8 @@ c      double precision x(*), y(*)
 *
       integer n, nz, nzmax
       parameter( nzmax = 50000 )
-      integer ia(nzmax), ja(nzmax)
+      integer, dimension(nzmax) :: ia
+      integer, dimension(nzmax) :: ja
       complex, dimension(nzmax) :: a
       common /CMAT/ a, ia, ja, nz, n
 
