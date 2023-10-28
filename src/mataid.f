@@ -41,7 +41,10 @@
 *----------------------------------------------------------------------*
       subroutine dgcoov ( x, y )
       implicit none
-      double precision x(*), y(*)
+
+c     2023-10-28:
+c      double precision x(*), y(*)
+      REAL(kind=8) x(*), y(*)
 *
 *---  Computes y = A*x. A is passed via a fortran `common statement'.
 *---  A is assumed here to be under the COOrdinates storage format.
@@ -49,7 +52,7 @@
       integer n, nz, nzmax
       parameter( nzmax = 600000 )
       integer ia(nzmax), ja(nzmax)
-      double precision a(nzmax)
+      REAL(kind=8) a(nzmax)
       common /RMAT/ a, ia, ja, nz, n
       integer i, j
  
@@ -64,7 +67,7 @@
 *----------------------------------------------------------------------|
       subroutine dgcrsv ( x, y )
       implicit none
-      double precision x(*), y(*)
+      REAL(kind=8) x(*), y(*)
 *
 *---  Computes y = A*x. A is passed via a fortran `common statement'.
 *---  A is assumed to be under the Compress Row Storage (CRS) format.
@@ -72,7 +75,7 @@
       integer n, nz, nzmax
       parameter( nzmax = 600000 )
       integer ia(nzmax), ja(nzmax)
-      double precision a(nzmax)
+      REAL(kind=8) a(nzmax)
       common /RMAT/ a, ia, ja, nz, n
       integer i, j
 
@@ -87,7 +90,7 @@
 *----------------------------------------------------------------------|
       subroutine dgccsv( x, y )
       implicit none
-      double precision x(*), y(*)
+      REAL(kind=8) x(*), y(*)
 *
 *---  Computes y = A*x. A is passed via a fortran `common statement'.
 *---  A is assumed to be under the Compress Column Storage (CCS) format.
@@ -95,7 +98,7 @@
       integer n, nz, nzmax
       parameter( nzmax = 600000 )
       integer ia(nzmax), ja(nzmax)
-      double precision a(nzmax)
+      REAL(kind=8) a(nzmax)
       common /RMAT/ a, ia, ja, nz, n
       integer i, j
 
@@ -211,7 +214,7 @@
 
       implicit none
       integer          n, nx, ix(nx), ixx(nx), iwsp(n)
-      double precision xx(nx)
+      REAL(kind=8) xx(nx)
       integer          k
 *
 *---  sort ix and carry ixx and xx along ...
@@ -248,10 +251,10 @@
 
       implicit none
       integer          nx, ix(nx)
-      double precision xx(nx)
+      REAL(kind=8) xx(nx)
 
       integer          M,I,J,K,IL(21),IU(21), IT,IIT,IJ,L
-      double precision TX, TTX, R
+      REAL(kind=8) TX, TTX, R
 
       if ( nx.le.1 ) return
 
@@ -384,10 +387,10 @@
 
       implicit none
       integer          nx, ix(nx), ixx(nx)
-      double precision xx(nx)
+      REAL(kind=8) xx(nx)
 
       integer          M,I,J,K,IL(21),IU(21), IT,IIT,IJ,JT,JJT,L
-      double precision TX, TTX, R
+      REAL(kind=8) TX, TTX, R
 
       if ( nx.le.1 ) return
 
@@ -579,7 +582,7 @@
 
       integer          M,I,J,K,IL(21),IU(21), IT,IIT,IJ,L
       complex       TX, TTX
-      double precision R
+      REAL(kind=8) R
 
       if ( nx.le.1 ) return
 
@@ -716,7 +719,7 @@
 
       integer          M,I,J,K,IL(21),IU(21), IT,IIT,IJ,JT,JJT,L
       complex       TX, TTX
-      double precision R
+      REAL(kind=8) R
 
       if ( nx.le.1 ) return
 
