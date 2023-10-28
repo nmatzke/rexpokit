@@ -265,8 +265,10 @@ c      implicit none
 *----------------------------------------------------------------------|
 
       implicit none
-      integer          nx, ix(nx)
-      REAL, dimension(nx) :: xx
+c      integer          nx, ix(nx)
+c      REAL, dimension(nx) :: xx
+      integer nx,ix(nx)
+      complex(kind=8) xx(nx)
 
       integer          M,I,J,K,IL(21),IU(21), IT,IIT,IJ,L
       REAL TX, TTX, R
@@ -401,8 +403,9 @@ c      implicit none
 *----------------------------------------------------------------------|
 
       implicit none
-      integer          nx, ix(nx), ixx(nx)
-      REAL, dimension(nx) :: xx
+      integer          nx,ix(nx),ixx(nx)
+      complex(kind=8) xx(nx)
+c      REAL, dimension(nx) :: xx
 
       integer          M,I,J,K,IL(21),IU(21), IT,IIT,IJ,JT,JJT,L
       REAL TX, TTX, R
@@ -556,7 +559,8 @@ c      implicit none
 
 c      implicit none
       integer          n, nx, ix(nx), ixx(nx), iwsp(n)
-      complex, dimension(nx) :: xx
+      complex(kind=8) xx(nx)
+c      complex, dimension(nx) :: xx
       integer          k
 *
 *---  sort ix and carry ixx and xx along ...
@@ -593,7 +597,8 @@ c      implicit none
 
 c      implicit none
       integer          nx, ix(nx)
-      complex, dimension(nx) :: xx
+c      complex, dimension(nx) :: xx
+      complex(kind=8) xx(nx)
 
       integer          M,I,J,K,IL(21),IU(21), IT,IIT,IJ,L
       complex        TX, TTX
@@ -730,7 +735,8 @@ c      implicit none
 
 c      implicit none
       integer          nx, ix(nx), ixx(nx)
-      complex, dimension(nx) :: xx
+c      complex, dimension(nx) :: xx
+      complex(kind=8) xx(nx)
 
       integer          M,I,J,K,IL(21),IU(21), IT,IIT,IJ,JT,JJT,L
       complex      TX, TTX
