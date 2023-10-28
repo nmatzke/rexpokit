@@ -132,7 +132,7 @@ c 300  CONTINUE
 *----------------------------------------------------------------------|
 *----------------------------------------------------------------------|
 *
-      subroutine izsrt1( nx, ix, xx )
+      subroutine iysrt1( nx, ix, xx )
 
 *---  IZSRT1: indirect sort -- sort ix and carry xx along
 *---  adapted from a SLAP (Sparse Linear Algebra Package) code.
