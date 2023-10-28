@@ -88,7 +88,7 @@ c      RETURN
 c      END
 
 
-      subroutine  zcopy(n,zx,incx,zy,incy)
+      subroutine  zzcopy(n,zx,incx,zy,incy)
 c
 c     copies a vector, x, to a vector, y.
 c     jack dongarra, linpack, 4/11/78.
