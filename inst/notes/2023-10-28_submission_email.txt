@@ -34,10 +34,11 @@ rm *.so
 cd /GitHub/
 R CMD build rexpokit
 R CMD check rexpokit
-cd /GitHub/rexpokit/src
 
+cd /GitHub/rexpokit/src
 rm *.o
 rm *.so
+
 cd /GitHub/
 cd /GitHub/rexpokit/src/lapack
 rm *.o

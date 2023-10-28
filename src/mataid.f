@@ -24,7 +24,7 @@
 * 
 * mataid.f
 * c      complex(kind=8)
-*       complex(8)
+*       complex
 
 
 
@@ -123,7 +123,7 @@
 *----------------------------------------------------------------------*
       subroutine zgcoov ( x, y )
       implicit none
-      complex(8) x(*), y(*)
+      complex x(*), y(*)
 *
 *---  Computes y = A*x. A is passed via a fortran `common statement'.
 *---  A is assumed here to be under the COOrdinates storage format.
@@ -131,11 +131,11 @@
       integer n, nz, nzmax
       parameter( nzmax = 50000 )
       integer ia(nzmax), ja(nzmax)
-      complex(8) a(nzmax)
+      complex a(nzmax)
       common /CMAT/ a, ia, ja, nz, n
 
       integer i, j
-      complex(8) ZERO
+      complex ZERO
       parameter( ZERO=(0.0d0,0.0d0) )
  
       do j = 1,n
@@ -149,7 +149,7 @@
 *----------------------------------------------------------------------|
       subroutine zgcrsv ( x, y )
       implicit none
-      complex(8) x(*), y(*)
+      complex x(*), y(*)
 *
 *---  Computes y = A*x. A is passed via a fortran `common statement'.
 *---  A is assumed to be under the Compress Row Storage (CRS) format.
@@ -157,11 +157,11 @@
       integer n, nz, nzmax
       parameter( nzmax = 50000 )
       integer ia(nzmax), ja(nzmax)
-      complex(8) a(nzmax)
+      complex a(nzmax)
       common /CMAT/ a, ia, ja, nz, n
 
       integer i, j
-      complex(8) ZERO
+      complex ZERO
       parameter( ZERO=(0.0d0,0.0d0) )
 
       do i = 1,n
@@ -175,7 +175,7 @@
 *----------------------------------------------------------------------|
       subroutine zgccsv( x, y )
       implicit none
-      complex(8) x(*), y(*)
+      complex x(*), y(*)
 *
 *---  Computes y = A*x. A is passed via a fortran `common statement'.
 *---  A is assumed to be under the Compress Column Storage (CCS) format.
@@ -183,11 +183,11 @@
       integer n, nz, nzmax
       parameter( nzmax = 50000 )
       integer ia(nzmax), ja(nzmax)
-      complex(8) a(nzmax)
+      complex a(nzmax)
       common /CMAT/ a, ia, ja, nz, n
 
       integer i, j
-      complex(8) ZERO
+      complex ZERO
       parameter( ZERO=(0.0d0,0.0d0) )
 
       do i = 1,n
@@ -538,7 +538,7 @@
 
       implicit none
       integer          n, nx, ix(nx), ixx(nx), iwsp(n)
-      complex(8)       xx(nx)
+      complex       xx(nx)
       integer          k
 *
 *---  sort ix and carry ixx and xx along ...
@@ -575,10 +575,10 @@
 
       implicit none
       integer          nx, ix(nx)
-      complex(8)       xx(nx)
+      complex       xx(nx)
 
       integer          M,I,J,K,IL(21),IU(21), IT,IIT,IJ,L
-      complex(8)       TX, TTX
+      complex       TX, TTX
       double precision R
 
       if ( nx.le.1 ) return
@@ -712,10 +712,10 @@
 
       implicit none
       integer          nx, ix(nx), ixx(nx)
-      complex(8)       xx(nx)
+      complex       xx(nx)
 
       integer          M,I,J,K,IL(21),IU(21), IT,IIT,IJ,JT,JJT,L
-      complex(8)       TX, TTX
+      complex       TX, TTX
       double precision R
 
       if ( nx.le.1 ) return
