@@ -138,19 +138,21 @@ c 300  CONTINUE
 *---  adapted from a SLAP (Sparse Linear Algebra Package) code.
 *----------------------------------------------------------------------|
 
-c      implicit none
+      implicit none
       complex(kind=8) xx(1)
       integer nx,ix
 c      integer, dimension(nx) :: ix
 
-c      do 10 i = 1,nx
-c        xx(ix) = xx(ix)
-c        ix = ix + 1
-c   10 continue
-
-      integer          M,I,J,K,IL(21),IU(21), IT,IIT,IJ,L
+      integer        M,I,J,K,IL(21),IU(21),IT,IIT,IJ,L
       complex        TX, TTX
       REAL R
+
+      do 10 i = 1,nx
+        xx(ix) = xx(ix)
+        ix = ix + 1
+   10 continue
+
+
 
       if ( nx.le.1 ) return
 
