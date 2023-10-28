@@ -25,10 +25,10 @@ find . -type f -name ".*" -delete
 cd /GitHub/rexpokit/src
 rm *.o
 rm *.so
+rm *.rds
 
 cd /GitHub/rexpokit/src/lapack
 rm *.o
-rm *.so
 
 
 cd /GitHub/
@@ -38,11 +38,11 @@ R CMD check rexpokit
 cd /GitHub/rexpokit/src
 rm *.o
 rm *.so
+rm *.rds
 
 cd /GitHub/
 cd /GitHub/rexpokit/src/lapack
 rm *.o
-rm *.so
 
 open /Users/nmat471/HD/GitHub/rexpokit.Rcheck/00check.log
 open /Users/nmat471/HD/GitHub/rexpokit.Rcheck/00install.out

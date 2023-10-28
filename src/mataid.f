@@ -30,10 +30,12 @@
 * double precision
 * replaced with:
 * REAL(kind=selected_real_kind(15)) ::
+* or
+* REAL, dimension(1) :: R
 *
 * complex
 * replaced with
-* complex(kind=selected_real_kind(15)) :: 
+* complex, dimension(1) :: 
 
 
 
@@ -53,7 +55,7 @@
 
 c     2023-10-28:
 c      double precision x(*), y(*)
-      REAL(kind=selected_real_kind(15)) :: x(*), y(*)
+      REAL, dimension(:), allocatable :: x, y
 *
 *---  Computes y = A*x. A is passed via a fortran `common statement'.
 *---  A is assumed here to be under the COOrdinates storage format.
@@ -61,7 +63,7 @@ c      double precision x(*), y(*)
       integer n, nz, nzmax
       parameter( nzmax = 600000 )
       integer ia(nzmax), ja(nzmax)
-      REAL(kind=selected_real_kind(15)) :: a(nzmax)
+      REAL, dimension(nzmax) :: a
       common /RMAT/ a, ia, ja, nz, n
       integer i, j
  
@@ -76,7 +78,7 @@ c      double precision x(*), y(*)
 *----------------------------------------------------------------------|
       subroutine dgcrsv ( x, y )
       implicit none
-      REAL(kind=selected_real_kind(15)) :: x(*), y(*)
+      REAL, dimension(:), allocatable :: x, y
 *
 *---  Computes y = A*x. A is passed via a fortran `common statement'.
 *---  A is assumed to be under the Compress Row Storage (CRS) format.
@@ -84,7 +86,7 @@ c      double precision x(*), y(*)
       integer n, nz, nzmax
       parameter( nzmax = 600000 )
       integer ia(nzmax), ja(nzmax)
-      REAL(kind=selected_real_kind(15)) :: a(nzmax)
+      REAL, dimension(nzmax) :: a
       common /RMAT/ a, ia, ja, nz, n
       integer i, j
 
@@ -99,7 +101,7 @@ c      double precision x(*), y(*)
 *----------------------------------------------------------------------|
       subroutine dgccsv( x, y )
       implicit none
-      REAL(kind=selected_real_kind(15)) :: x(*), y(*)
+      REAL, dimension(:), allocatable :: x, y
 *
 *---  Computes y = A*x. A is passed via a fortran `common statement'.
 *---  A is assumed to be under the Compress Column Storage (CCS) format.
@@ -107,7 +109,7 @@ c      double precision x(*), y(*)
       integer n, nz, nzmax
       parameter( nzmax = 600000 )
       integer ia(nzmax), ja(nzmax)
-      REAL(kind=selected_real_kind(15)) :: a(nzmax)
+      REAL, dimension(nzmax) :: a
       common /RMAT/ a, ia, ja, nz, n
       integer i, j
 
@@ -135,7 +137,7 @@ c      double precision x(*), y(*)
 *----------------------------------------------------------------------*
       subroutine zgcoov ( x, y )
       implicit none
-      complex(kind=selected_real_kind(15)) :: x(*), y(*)
+      complex, dimension(:), allocatable :: x, y
 *
 *---  Computes y = A*x. A is passed via a fortran `common statement'.
 *---  A is assumed here to be under the COOrdinates storage format.
@@ -143,11 +145,11 @@ c      double precision x(*), y(*)
       integer n, nz, nzmax
       parameter( nzmax = 50000 )
       integer ia(nzmax), ja(nzmax)
-      complex(kind=selected_real_kind(15)) :: a(nzmax)
+      complex, dimension(nzmax) :: a
       common /CMAT/ a, ia, ja, nz, n
 
       integer i, j
-      complex(kind=selected_real_kind(15)) :: ZERO
+      complex, dimension(1) :: ZERO
       parameter( ZERO=(0.0d0,0.0d0) )
  
       do j = 1,n
@@ -161,7 +163,7 @@ c      double precision x(*), y(*)
 *----------------------------------------------------------------------|
       subroutine zgcrsv ( x, y )
       implicit none
-      complex(kind=selected_real_kind(15)) :: x(*), y(*)
+      complex, dimension(:), allocatable :: x, y
 *
 *---  Computes y = A*x. A is passed via a fortran `common statement'.
 *---  A is assumed to be under the Compress Row Storage (CRS) format.
@@ -169,11 +171,11 @@ c      double precision x(*), y(*)
       integer n, nz, nzmax
       parameter( nzmax = 50000 )
       integer ia(nzmax), ja(nzmax)
-      complex(kind=selected_real_kind(15)) :: a(nzmax)
+      complex, dimension(nzmax) :: a
       common /CMAT/ a, ia, ja, nz, n
 
       integer i, j
-      complex(kind=selected_real_kind(15)) :: ZERO
+      complex, dimension(1) :: ZERO
       parameter( ZERO=(0.0d0,0.0d0) )
 
       do i = 1,n
@@ -187,7 +189,7 @@ c      double precision x(*), y(*)
 *----------------------------------------------------------------------|
       subroutine zgccsv( x, y )
       implicit none
-      complex(kind=selected_real_kind(15)) :: x(*), y(*)
+      complex, dimension(:), allocatable :: x, y
 *
 *---  Computes y = A*x. A is passed via a fortran `common statement'.
 *---  A is assumed to be under the Compress Column Storage (CCS) format.
@@ -195,11 +197,11 @@ c      double precision x(*), y(*)
       integer n, nz, nzmax
       parameter( nzmax = 50000 )
       integer ia(nzmax), ja(nzmax)
-      complex(kind=selected_real_kind(15)) :: a(nzmax)
+      complex, dimension(nzmax) :: a
       common /CMAT/ a, ia, ja, nz, n
 
       integer i, j
-      complex(kind=selected_real_kind(15)) :: ZERO
+      complex, dimension(1) :: ZERO
       parameter( ZERO=(0.0d0,0.0d0) )
 
       do i = 1,n
@@ -223,7 +225,7 @@ c      double precision x(*), y(*)
 
       implicit none
       integer          n, nx, ix(nx), ixx(nx), iwsp(n)
-      REAL(kind=selected_real_kind(15)) :: xx(nx)
+      REAL, dimension(nx) :: xx
       integer          k
 *
 *---  sort ix and carry ixx and xx along ...
@@ -260,10 +262,10 @@ c      double precision x(*), y(*)
 
       implicit none
       integer          nx, ix(nx)
-      REAL(kind=selected_real_kind(15)) :: xx(nx)
+      REAL, dimension(nx) :: xx
 
       integer          M,I,J,K,IL(21),IU(21), IT,IIT,IJ,L
-      REAL(kind=selected_real_kind(15)) :: TX, TTX, R
+      REAL, dimension(1) :: TX, TTX, R
 
       if ( nx.le.1 ) return
 
@@ -396,10 +398,10 @@ c      double precision x(*), y(*)
 
       implicit none
       integer          nx, ix(nx), ixx(nx)
-      REAL(kind=selected_real_kind(15)) :: xx(nx)
+      REAL, dimension(nx) :: xx
 
       integer          M,I,J,K,IL(21),IU(21), IT,IIT,IJ,JT,JJT,L
-      REAL(kind=selected_real_kind(15)) :: TX, TTX, R
+      REAL, dimension(1) :: TX, TTX, R
 
       if ( nx.le.1 ) return
 
@@ -550,7 +552,7 @@ c      double precision x(*), y(*)
 
       implicit none
       integer          n, nx, ix(nx), ixx(nx), iwsp(n)
-      complex(kind=selected_real_kind(15)) ::       xx(nx)
+      complex, dimension(nx) :: xx
       integer          k
 *
 *---  sort ix and carry ixx and xx along ...
@@ -587,11 +589,11 @@ c      double precision x(*), y(*)
 
       implicit none
       integer          nx, ix(nx)
-      complex(kind=selected_real_kind(15)) ::       xx(nx)
+      complex, dimension(nx) :: xx
 
       integer          M,I,J,K,IL(21),IU(21), IT,IIT,IJ,L
-      complex(kind=selected_real_kind(15)) ::       TX, TTX
-      REAL(kind=selected_real_kind(15)) :: R
+      complex, dimension(1) ::       TX, TTX
+      REAL, dimension(1) :: R
 
       if ( nx.le.1 ) return
 
@@ -724,11 +726,11 @@ c      double precision x(*), y(*)
 
       implicit none
       integer          nx, ix(nx), ixx(nx)
-      complex(kind=selected_real_kind(15)) ::       xx(nx)
+      complex, dimension(nx) :: xx
 
       integer          M,I,J,K,IL(21),IU(21), IT,IIT,IJ,JT,JJT,L
-      complex(kind=selected_real_kind(15)) ::       TX, TTX
-      REAL(kind=selected_real_kind(15)) :: R
+      complex, dimension(1) ::       TX, TTX
+      REAL, dimension(1) :: R
 
       if ( nx.le.1 ) return
 
