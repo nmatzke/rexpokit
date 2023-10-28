@@ -1,3 +1,21 @@
+CHANGES in rexpokit VERSION 0.26.6.11
+
+
+NEW FEATURES
+    
+    o None
+
+BUG FIXES
+
+    o None
+    
+OTHER CHANGES
+    
+    o Changing some examples to dontrun 
+
+
+
+
 CHANGES in rexpokit VERSION 0.26.6.10
 
 
@@ -11,7 +29,7 @@ BUG FIXES
     
 OTHER CHANGES
     
-    o Fixed issues noted in CRAN on 2023-09-26
+    o Fixed issues noted in CRAN on 2023-09-26 relating to non-portable use of KIND
     o Removed broken link to Foster 2001, Zen of likelihood unleashed, at
       http://filogeografia.dna.ac/PDFs/phylo/Foster_01_EasyIntro_MLPhylo.pdf
 
