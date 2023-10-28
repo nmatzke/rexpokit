@@ -158,10 +158,11 @@ c      integer        M,I,J,K,IL(21),IU(21),IT,IIT,IJ,L
 c      complex        TX, TTX
 c      REAL R
 
-      do 10 i = 1,nx
-        xx(ix) = xx(ix)
-        ix = ix + 1
-   10 continue
+*     DOES THIS HELP??
+c      do 10 i = 1,nx
+c        xx(ix) = xx(ix)
+c        ix = ix + 1
+c   10 continue
 
 
 
