@@ -44,6 +44,20 @@
 *
 
 
+* 2023-10-28:
+* Fix: 
+* Version: 0.26.6.9
+* Check: usage of KIND in Fortran files
+* Result: WARN
+*     Found the following files with non-portable usage of KIND:
+*      itscale5.f
+*      mataid.f
+*      my_expokit.f
+* 
+* my_expokit.f
+
+
+
 
 *----------------------------------------------------------------------|
 * myDMEXPV:
@@ -877,7 +891,8 @@ c      if ( j.gt.0 ) call DSCALX( n, 1.0d0/p1, w,1 )
       implicit none
       integer          m, ldh, iflag, iwsp(m)
       double precision t, H(ldh,m), y(m)
-      complex(kind=8)       wsp(m*(m+2))
+*      complex(kind=8)       wsp(m*(m+2))
+      complex(8)       wsp(m*(m+2))
 
 *-----Purpose----------------------------------------------------------|
 *
@@ -913,7 +928,8 @@ c      if ( j.gt.0 ) call DSCALX( n, 1.0d0/p1, w,1 )
       integer ndeg, i, j, ip, ih, iy, iz
       parameter ( ndeg=7 )
       double precision alpha0
-      complex(kind=8) alpha(ndeg), theta(ndeg)
+*     complex(kind=8) alpha(ndeg), theta(ndeg)
+      complex(8) alpha(ndeg), theta(ndeg)
 
       intrinsic DBLE
       
@@ -972,7 +988,8 @@ c      if ( j.gt.0 ) call DSCALX( n, 1.0d0/p1, w,1 )
       implicit none
       integer          m, ldh, iflag, iwsp(m)
       double precision t, H(ldh,m), y(m)
-      complex(kind=8)       wsp(m*(m+2))
+*      complex(kind=8)       wsp(m*(m+2))
+      complex(8)       wsp(m*(m+2))
 
 *-----Purpose----------------------------------------------------------|
 *
@@ -1008,7 +1025,8 @@ c      if ( j.gt.0 ) call DSCALX( n, 1.0d0/p1, w,1 )
       integer ndeg, i, j, ip, ih, iy, iz
       parameter ( ndeg=7 )
       double precision alpha0
-      complex(kind=8) alpha(ndeg), theta(ndeg), w
+*      complex(kind=8) alpha(ndeg), theta(ndeg), w
+      complex(8) alpha(ndeg), theta(ndeg), w
 
       intrinsic ABS,CMPLX,DBLE,MIN
       
@@ -1069,7 +1087,9 @@ c      if ( j.gt.0 ) call DSCALX( n, 1.0d0/p1, w,1 )
 c     2019-07-02_NJM:
 c     double precision t, H(ldh,m), y(m), wsp(m*(m+2))
       double precision t, H(ldh,m), y(m), wsp(m*(m+2))
-      complex(kind=8) wspc,wspd,wspe,wspf
+*      complex(kind=8) wspc,wspd,wspe,wspf
+      complex(8) wspc,wspd,wspe,wspf
+
 *-----Purpose----------------------------------------------------------|
 *
 *---  DNCHBV computes y = exp(t*H)*y using the partial fraction
@@ -1099,13 +1119,15 @@ c     double precision t, H(ldh,m), y(m), wsp(m*(m+2))
 *     ACM - Transactions On Mathematical Software, 24(1):130-156, 1998
 *----------------------------------------------------------------------|
 *
-      complex(kind=8) ZERO
+*      complex(kind=8) ZERO
+      complex(8) ZERO
 c     2019-07-02_NJM:
 c     integer ndeg, i, j, k, ip, ih, iy, iz, tempn
       integer ndeg, i, j, k, ip, ih, iy, iz, tempn
       parameter ( ndeg=7, ZERO=(0.0d0,0.0d0) )
       double precision alpha0
-      complex(kind=8) alpha(ndeg), theta(ndeg), tmpc, wspee, wspff
+*      complex(kind=8) alpha(ndeg), theta(ndeg), tmpc, wspee, wspff
+      complex(8) alpha(ndeg), theta(ndeg), tmpc, wspee, wspff
 
       intrinsic ABS,DBLE,MIN
       
