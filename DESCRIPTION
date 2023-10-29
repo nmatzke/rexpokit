@@ -1,7 +1,7 @@
 Package: rexpokit
 Type: Package
 Title: R Wrappers for EXPOKIT; Other Matrix Functions
-Version: 0.26.6.11
+Version: 0.26.6.12
 Date: 2023-10-30
 Authors@R: c(person("Nicholas J.", "Matzke", email="nickmatzke.ncse@gmail.com", role=
         c("aut", "cre", "cph")), person("Roger B.", "Sidje", email =
@@ -35,6 +35,3 @@ ByteCompile: yes
 Packaged: 2023-06-21; iao
 NeedsCompilation: yes
 Repository: CRAN
-SysData: _R_CHECK_FORTRAN_KIND_DETAILS_: 1
-SysData: R_CHECK_FORTRAN_KIND_DETAILS: 1
-

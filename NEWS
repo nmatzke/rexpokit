@@ -1,3 +1,21 @@
+CHANGES in rexpokit VERSION 0.26.6.12
+
+
+NEW FEATURES
+    
+    o None
+
+BUG FIXES
+
+    o None
+    
+OTHER CHANGES
+    
+    o Updated dates and version number across all files
+    o Removed mistaken "SysData" field from the DESCRIPTION file
+
+
+
 CHANGES in rexpokit VERSION 0.26.6.11
 
 
