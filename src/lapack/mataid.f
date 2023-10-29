@@ -12,30 +12,6 @@
 * R CMD check function.
 * 
 
-* 2023-10-28:
-* Fix: 
-* Version: 0.26.6.9
-* Check: usage of KIND in Fortran files
-* Result: WARN
-*     Found the following files with non-portable usage of KIND:
-*      itscale5.f
-*      mataid.f
-*      my_expokit.f
-* 
-* mataid.f
-* c      complex(kind=8)
-*       complex
-*
-*
-* double precision
-* replaced with:
-* REAL(kind=selected_real_kind(15)) ::
-*
-* complex
-* replaced with
-* complex(kind=selected_real_kind(15)) :: 
-
-
 
 *-------------------------------NOTE-----------------------------------*
 *     This is an accessory to Expokit and it is not intended to be     *
@@ -50,19 +26,15 @@
 *----------------------------------------------------------------------*
       subroutine dgcoov ( x, y )
       implicit none
-
-c     2023-10-28:
-c      double precision x(*), y(*)
-      REAL, dimension(:), allocatable :: x, y
+      REAL x(1), y(1)
 *
 *---  Computes y = A*x. A is passed via a fortran `common statement'.
 *---  A is assumed here to be under the COOrdinates storage format.
 *
       integer n, nz, nzmax
       parameter( nzmax = 600000 )
-      integer, dimension(nzmax) :: ia
-      integer, dimension(nzmax) :: ja
-      REAL, dimension(nzmax) :: a
+      integer ia(nzmax), ja(nzmax)
+      REAL a(nzmax)
       common /RMAT/ a, ia, ja, nz, n
       integer i, j
  
@@ -77,16 +49,15 @@ c      double precision x(*), y(*)
 *----------------------------------------------------------------------|
       subroutine dgcrsv ( x, y )
       implicit none
-      REAL, dimension(:), allocatable :: x, y
+      REAL x(1), y(1)
 *
 *---  Computes y = A*x. A is passed via a fortran `common statement'.
 *---  A is assumed to be under the Compress Row Storage (CRS) format.
 *
       integer n, nz, nzmax
       parameter( nzmax = 600000 )
-      integer, dimension(nzmax) :: ia
-      integer, dimension(nzmax) :: ja
-      REAL, dimension(nzmax) :: a
+      integer ia(nzmax), ja(nzmax)
+      REAL a(nzmax)
       common /RMAT/ a, ia, ja, nz, n
       integer i, j
 
@@ -101,16 +72,15 @@ c      double precision x(*), y(*)
 *----------------------------------------------------------------------|
       subroutine dgccsv( x, y )
       implicit none
-      REAL, dimension(:), allocatable :: x, y
+      REAL x(1), y(1)
 *
 *---  Computes y = A*x. A is passed via a fortran `common statement'.
 *---  A is assumed to be under the Compress Column Storage (CCS) format.
 *
       integer n, nz, nzmax
       parameter( nzmax = 600000 )
-      integer, dimension(nzmax) :: ia
-      integer, dimension(nzmax) :: ja
-      REAL, dimension(nzmax) :: a
+      integer ia(nzmax), ja(nzmax)
+      REAL a(nzmax)
       common /RMAT/ a, ia, ja, nz, n
       integer i, j
 
@@ -137,21 +107,20 @@ c      double precision x(*), y(*)
 *----------------------------------------------------------------------*
 *----------------------------------------------------------------------*
       subroutine zgcoov ( x, y )
-c      implicit none
-      complex, dimension(:), allocatable :: x, y
+      implicit none
+      complex(kind=8) x(1), y(1)
 *
 *---  Computes y = A*x. A is passed via a fortran `common statement'.
 *---  A is assumed here to be under the COOrdinates storage format.
 *
       integer n, nz, nzmax
       parameter( nzmax = 50000 )
-      integer, dimension(nzmax) :: ia
-      integer, dimension(nzmax) :: ja
-      complex, dimension(nzmax) :: a
+      integer ia(nzmax), ja(nzmax)
+      complex(kind=8) a(nzmax)
       common /CMAT/ a, ia, ja, nz, n
 
       integer i, j
-      complex ZERO
+      complex(kind=8) ZERO
       parameter( ZERO=(0.0d0,0.0d0) )
  
       do j = 1,n
@@ -165,20 +134,19 @@ c      implicit none
 *----------------------------------------------------------------------|
       subroutine zgcrsv ( x, y )
       implicit none
-      complex, dimension(:), allocatable :: x, y
+      complex(kind=8) x(1), y(1)
 *
 *---  Computes y = A*x. A is passed via a fortran `common statement'.
 *---  A is assumed to be under the Compress Row Storage (CRS) format.
 *
       integer n, nz, nzmax
       parameter( nzmax = 50000 )
-      integer, dimension(nzmax) :: ia
-      integer, dimension(nzmax) :: ja
-      complex, dimension(nzmax) :: a
+      integer ia(nzmax), ja(nzmax)
+      complex(kind=8) a(nzmax)
       common /CMAT/ a, ia, ja, nz, n
 
       integer i, j
-      complex ZERO
+      complex(kind=8) ZERO
       parameter( ZERO=(0.0d0,0.0d0) )
 
       do i = 1,n
@@ -191,21 +159,20 @@ c      implicit none
 *----------------------------------------------------------------------|
 *----------------------------------------------------------------------|
       subroutine zgccsv( x, y )
-c      implicit none
-      complex, dimension(:), allocatable :: x, y
+      implicit none
+      complex(kind=8) x(1), y(1)
 *
 *---  Computes y = A*x. A is passed via a fortran `common statement'.
 *---  A is assumed to be under the Compress Column Storage (CCS) format.
 *
       integer n, nz, nzmax
       parameter( nzmax = 50000 )
-      integer, dimension(nzmax) :: ia
-      integer, dimension(nzmax) :: ja
-      complex, dimension(nzmax) :: a
+      integer ia(nzmax), ja(nzmax)
+      complex(kind=8) a(nzmax)
       common /CMAT/ a, ia, ja, nz, n
 
       integer i, j
-      complex ZERO
+      complex(kind=8) ZERO
       parameter( ZERO=(0.0d0,0.0d0) )
 
       do i = 1,n
@@ -229,7 +196,7 @@ c      implicit none
 
       implicit none
       integer          n, nx, ix(nx), ixx(nx), iwsp(n)
-      REAL, dimension(nx) :: xx
+      REAL xx(nx)
       integer          k
 *
 *---  sort ix and carry ixx and xx along ...
@@ -265,10 +232,8 @@ c      implicit none
 *----------------------------------------------------------------------|
 
       implicit none
-c      integer          nx, ix(nx)
-c      REAL, dimension(nx) :: xx
-      integer nx,ix(nx)
-      complex(kind=8) xx(nx)
+      integer          nx, ix(nx)
+      REAL xx(nx)
 
       integer          M,I,J,K,IL(21),IU(21), IT,IIT,IJ,L
       REAL TX, TTX, R
@@ -403,9 +368,8 @@ c      REAL, dimension(nx) :: xx
 *----------------------------------------------------------------------|
 
       implicit none
-      integer          nx,ix(nx),ixx(nx)
-      complex(kind=8) xx(nx)
-c      REAL, dimension(nx) :: xx
+      integer          nx, ix(nx), ixx(nx)
+      REAL xx(nx)
 
       integer          M,I,J,K,IL(21),IU(21), IT,IIT,IJ,JT,JJT,L
       REAL TX, TTX, R
@@ -557,10 +521,9 @@ c      REAL, dimension(nx) :: xx
 *--   (This is a gateway routine for ZGCNVR) ...
 *----------------------------------------------------------------------|
 
-c      implicit none
+      implicit none
       integer          n, nx, ix(nx), ixx(nx), iwsp(n)
-      complex(kind=8) xx(nx)
-c      complex, dimension(nx) :: xx
+      complex(kind=8)       xx(nx)
       integer          k
 *
 *---  sort ix and carry ixx and xx along ...
@@ -595,13 +558,12 @@ c      complex, dimension(nx) :: xx
 *---  adapted from a SLAP (Sparse Linear Algebra Package) code.
 *----------------------------------------------------------------------|
 
-c      implicit none
+      implicit none
       integer          nx, ix(nx)
-c      complex, dimension(nx) :: xx
-      complex(kind=8) xx(nx)
+      complex(kind=8)       xx(nx)
 
       integer          M,I,J,K,IL(21),IU(21), IT,IIT,IJ,L
-      complex        TX, TTX
+      complex(kind=8)       TX, TTX
       REAL R
 
       if ( nx.le.1 ) return
@@ -733,13 +695,12 @@ c      complex, dimension(nx) :: xx
 *---  adapted from a SLAP (Sparse Linear Algebra Package) code.
 *----------------------------------------------------------------------|
 
-c      implicit none
+      implicit none
       integer          nx, ix(nx), ixx(nx)
-c      complex, dimension(nx) :: xx
-      complex(kind=8) xx(nx)
+      complex(kind=8)       xx(nx)
 
       integer          M,I,J,K,IL(21),IU(21), IT,IIT,IJ,JT,JJT,L
-      complex      TX, TTX
+      complex(kind=8)       TX, TTX
       REAL R
 
       if ( nx.le.1 ) return
