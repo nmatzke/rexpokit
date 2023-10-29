@@ -43,6 +43,20 @@
 * rexpokit.out:(.text+0x0): multiple definition of `idamax_'
 *
 
+* 2023-10-30:
+* In Makevars:
+*  moved mataid.o and my_expokit.o into /lapack/
+* ...which seems to avoid this error:
+*
+* #> * checking usage of KIND in Fortran files ... WARNING
+* #> Found the following file with non-portable usage of KIND:
+* #> my_expokit.f
+* #> For details set environment variable _R_CHECK_FORTRAN_KIND_DETAILS_ to
+* #> a true value.
+*
+* #
+* Temporary example:
+*   lapack/dgcoox.o \
 
 
 *----------------------------------------------------------------------|
