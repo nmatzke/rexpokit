@@ -13,6 +13,21 @@
 * 
 
 
+* 2023-10-30:
+* In Makevars:
+*  moved mataid.o and my_expokit.o into /lapack/
+* ...which seems to avoid this error:
+* #> * checking usage of KIND in Fortran files ... WARNING
+* #> Found the following file with non-portable usage of KIND:
+* #> my_expokit.f
+* #> For details set environment variable _R_CHECK_FORTRAN_KIND_DETAILS_ to
+* #> a true value.
+* #
+* Temporary example:
+*   lapack/dgcoox.o \
+
+
+
 *-------------------------------NOTE-----------------------------------*
 *     This is an accessory to Expokit and it is not intended to be     *
 *     complete. It is supplied primarily to ensure an unconstrained    *
@@ -26,7 +41,7 @@
 *----------------------------------------------------------------------*
       subroutine dgcoov ( x, y )
       implicit none
-      REAL x(1), y(1)
+      double precision x(*), y(*)
 *
 *---  Computes y = A*x. A is passed via a fortran `common statement'.
 *---  A is assumed here to be under the COOrdinates storage format.
@@ -34,7 +49,7 @@
       integer n, nz, nzmax
       parameter( nzmax = 600000 )
       integer ia(nzmax), ja(nzmax)
-      REAL a(nzmax)
+      double precision a(nzmax)
       common /RMAT/ a, ia, ja, nz, n
       integer i, j
  
@@ -49,7 +64,7 @@
 *----------------------------------------------------------------------|
       subroutine dgcrsv ( x, y )
       implicit none
-      REAL x(1), y(1)
+      double precision x(*), y(*)
 *
 *---  Computes y = A*x. A is passed via a fortran `common statement'.
 *---  A is assumed to be under the Compress Row Storage (CRS) format.
@@ -57,7 +72,7 @@
       integer n, nz, nzmax
       parameter( nzmax = 600000 )
       integer ia(nzmax), ja(nzmax)
-      REAL a(nzmax)
+      double precision a(nzmax)
       common /RMAT/ a, ia, ja, nz, n
       integer i, j
 
@@ -72,7 +87,7 @@
 *----------------------------------------------------------------------|
       subroutine dgccsv( x, y )
       implicit none
-      REAL x(1), y(1)
+      double precision x(*), y(*)
 *
 *---  Computes y = A*x. A is passed via a fortran `common statement'.
 *---  A is assumed to be under the Compress Column Storage (CCS) format.
@@ -80,7 +95,7 @@
       integer n, nz, nzmax
       parameter( nzmax = 600000 )
       integer ia(nzmax), ja(nzmax)
-      REAL a(nzmax)
+      double precision a(nzmax)
       common /RMAT/ a, ia, ja, nz, n
       integer i, j
 
@@ -108,7 +123,7 @@
 *----------------------------------------------------------------------*
       subroutine zgcoov ( x, y )
       implicit none
-      complex(kind=8) x(1), y(1)
+      complex(kind=8) x(*), y(*)
 *
 *---  Computes y = A*x. A is passed via a fortran `common statement'.
 *---  A is assumed here to be under the COOrdinates storage format.
@@ -134,7 +149,7 @@
 *----------------------------------------------------------------------|
       subroutine zgcrsv ( x, y )
       implicit none
-      complex(kind=8) x(1), y(1)
+      complex(kind=8) x(*), y(*)
 *
 *---  Computes y = A*x. A is passed via a fortran `common statement'.
 *---  A is assumed to be under the Compress Row Storage (CRS) format.
@@ -160,7 +175,7 @@
 *----------------------------------------------------------------------|
       subroutine zgccsv( x, y )
       implicit none
-      complex(kind=8) x(1), y(1)
+      complex(kind=8) x(*), y(*)
 *
 *---  Computes y = A*x. A is passed via a fortran `common statement'.
 *---  A is assumed to be under the Compress Column Storage (CCS) format.
@@ -196,7 +211,7 @@
 
       implicit none
       integer          n, nx, ix(nx), ixx(nx), iwsp(n)
-      REAL xx(nx)
+      double precision xx(nx)
       integer          k
 *
 *---  sort ix and carry ixx and xx along ...
@@ -233,10 +248,10 @@
 
       implicit none
       integer          nx, ix(nx)
-      REAL xx(nx)
+      double precision xx(nx)
 
       integer          M,I,J,K,IL(21),IU(21), IT,IIT,IJ,L
-      REAL TX, TTX, R
+      double precision TX, TTX, R
 
       if ( nx.le.1 ) return
 
@@ -369,10 +384,10 @@
 
       implicit none
       integer          nx, ix(nx), ixx(nx)
-      REAL xx(nx)
+      double precision xx(nx)
 
       integer          M,I,J,K,IL(21),IU(21), IT,IIT,IJ,JT,JJT,L
-      REAL TX, TTX, R
+      double precision TX, TTX, R
 
       if ( nx.le.1 ) return
 
@@ -564,7 +579,7 @@
 
       integer          M,I,J,K,IL(21),IU(21), IT,IIT,IJ,L
       complex(kind=8)       TX, TTX
-      REAL R
+      double precision R
 
       if ( nx.le.1 ) return
 
@@ -701,7 +716,7 @@
 
       integer          M,I,J,K,IL(21),IU(21), IT,IIT,IJ,JT,JJT,L
       complex(kind=8)       TX, TTX
-      REAL R
+      double precision R
 
       if ( nx.le.1 ) return
 
