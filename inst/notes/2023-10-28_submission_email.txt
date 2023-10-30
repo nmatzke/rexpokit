@@ -16,7 +16,7 @@ Nick Matzke
 # Code to build and check:
 
 cd /GitHub/
-rm rexpokit_0.26.6.11.tar.gz  
+rm rexpokit_0.26.6.12.tar.gz  
 cd /GitHub/rexpokit
 find . -type f -name ".*" -print
 find . -type f -name ".*" -delete
