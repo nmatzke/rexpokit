@@ -1202,6 +1202,19 @@ c      2020-07-03
 c      complex(kind=8) ak,akm1,bk,bkm1,zdotu,denom,temp
       complex(kind=8) ak,akm1,bk,bkm1,zdotu,denom,temp,tempx
       integer k,kp
+
+c 2023-10-31: fixing...
+c lapack/lapack.f:1231:72: warning: type of 'zswapy' 
+c does not match original declaration [-Wlto-type-mismatch]
+c  1231 |               call zswapy(k-1,tempx,a(1,k),1,b(1),1)
+c       |                                                                        ^
+c lapack/blas_mod.f:961:24: note: 'zswapy' was previously declared here
+c   961 |       subroutine  zswapy (n,m,zx,incx,zy,incy)
+c 
+      integer tempkm1
+      integer tempx
+      complex(kind=8) tempzx
+      complex(kind=8) tempzy
 c
 c     loop backward applying the transformations and
 c     d inverse to b.
@@ -1228,7 +1241,25 @@ c
 c              2020-07-03_NJM:
               tempx = b(k)
 c              call zswapy(k-1,b(k),a(1,k),1,b(1),1)
-              call zswapy(k-1,tempx,a(1,k),1,b(1),1)
+
+c 2023-10-31: fixing...
+c lapack/lapack.f:1231:72: warning: type of 'zswapy' 
+c does not match original declaration [-Wlto-type-mismatch]
+c  1231 |               call zswapy(k-1,tempx,a(1,k),1,b(1),1)
+c       |                                                                        ^
+c lapack/blas_mod.f:961:24: note: 'zswapy' was previously declared here
+c   961 |       subroutine  zswapy (n,m,zx,incx,zy,incy)
+c 
+c              call zswapy(k-1,tempx,a(1,k),1,b(1),1)
+c Define the inputs to:
+c       subroutine  zswapy (n,m,zx,incx,zy,incy)
+c     2023-10-28:
+c      complex(kind=8) zx(1),zy(1),ztemp
+c      INTEGER            n,m,incx, incy, ix, iy
+              tempkm1 = INT(k-1)
+              tempzx = a(1,k)
+              tempzy = b(1)
+              call zswapy(tempkm1,tempx,tempzx,1,b(1),1)
    30       continue
 c
 c           apply d inverse.
