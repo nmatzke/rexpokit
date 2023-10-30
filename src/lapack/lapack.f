@@ -1212,7 +1212,6 @@ c lapack/blas_mod.f:961:24: note: 'zswapy' was previously declared here
 c   961 |       subroutine  zswapy (n,m,zx,incx,zy,incy)
 c 
       integer tempkm1
-      integer tempx
       complex(kind=8) tempzx
       complex(kind=8) tempzy
 c
