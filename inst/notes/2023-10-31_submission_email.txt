@@ -16,7 +16,7 @@ Nick Matzke
 # Code to build and check:
 
 cd /GitHub/
-rm rexpokit_0.26.6.12.tar.gz  
+rm rexpokit_0.26.6.13.tar.gz  
 cd /GitHub/rexpokit
 find . -type f -name ".*" -print
 find . -type f -name ".*" -delete
@@ -44,8 +44,8 @@ cd /GitHub/
 cd /GitHub/rexpokit/src/lapack
 rm *.o
 
-open /Users/nmat471/HD/GitHub/rexpokit.Rcheck/00check.log
-open /Users/nmat471/HD/GitHub/rexpokit.Rcheck/00install.out
+open /GitHub/rexpokit.Rcheck/00check.log
+open /GitHub/rexpokit.Rcheck/00install.out
 
 
 

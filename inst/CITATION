@@ -1,5 +1,5 @@
 bibentry("Manual",
-  title = "rexpokit v0.26.6.12: R wrappers for EXPOKIT; other matrix functions",
+  title = "rexpokit v0.26.6.13: R wrappers for EXPOKIT; other matrix functions",
   author = c(
     person("Nicholas J.", family="Matzke", 
       email="nickmatzke.ncse@gmail.com", 
