@@ -1,5 +1,20 @@
 Dear hardworking CRAN maintainers,
 
+I am submitting an minor update to "rexpokit", rexpokit 0.26.6.13. This is a slight revision of 0.26.6.2 to fix an LTO-related warning noted in that version.
+
+This compiles without errors/warnings/significant notes e.g. https://builder.r-hub.io/advanced (r-devel-linux-x86_64-debian-clang, r-devel-linux-x86_64-debian-gcc, r-devel-linux-x86_64-fedora-clang, r-devel-linux-x86_64-fedora-gcc, r-devel-windows-x86_64), and on r-devel, r-release, and r-old on WinBuilder, and R CMD CHECK --as-cran on Mac OSX.
+
+Thanks very much for your time,
+
+Sincerely,
+Nick Matzke
+
+
+
+
+
+Dear hardworking CRAN maintainers,
+
 I am submitting an minor update to "rexpokit", rexpokit 0.26.6.11. This is a slight revision of 0.26.6.9 to eliminate fortran compiler issues noted at https://cran-archive.r-project.org/web/checks/2023/2023-10-10_check_results_rexpokit.html
 
 This compiles without errors/warnings/significant notes on all the platforms that initially noted the error at: https://builder.r-hub.io/advanced (r-devel-linux-x86_64-debian-clang, r-devel-linux-x86_64-debian-gcc, r-devel-linux-x86_64-fedora-clang, r-devel-linux-x86_64-fedora-gcc, r-devel-windows-x86_64), and on r-devel, r-release, and r-old on WinBuilder, and R CMD CHECK --as-cran on Mac OSX.
