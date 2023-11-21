@@ -965,8 +965,9 @@ c     interchanges two vectors.
 c     jack dongarra, 3/11/78.
 c
 c     2023-10-28:
-      complex(kind=8) zx(1),zy(1),ztemp
-      INTEGER            n,m,incx, incy, ix, iy
+      complex(kind=8) zx(1),zy(1),ztemp,m
+      INTEGER            n,incx, incy, ix, iy
+      integer tempm
 
 c
       if(n.le.0)return
@@ -980,7 +981,11 @@ c
       iy = 1
       if(incx.lt.0)ix = (-n+1)*incx + 1
 c      if(incy.lt.0)iy = (-n+1)*incy + 1
-      if(incy.lt.0)iy = (-m+1)*incy + 1
+     
+c 2023-11-22:
+c     if(incy.lt.0)iy = (-m+1)*incy + 1
+      tempm = INT(m)
+      if(incy.lt.0)iy = (-tempm+1)*incy + 1
       do 10 i = 1,n
         ztemp = zx(ix)
         zx(ix) = zy(iy)

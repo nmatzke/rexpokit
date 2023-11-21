@@ -1,8 +1,8 @@
 Package: rexpokit
 Type: Package
 Title: R Wrappers for EXPOKIT; Other Matrix Functions
-Version: 0.26.6.13
-Date: 2023-10-31
+Version: 0.26.6.14
+Date: 2023-11-22
 Authors@R: c(person("Nicholas J.", "Matzke", email="nickmatzke.ncse@gmail.com", role=
         c("aut", "cre", "cph")), person("Roger B.", "Sidje", email =
         "roger.b.sidje@ua.edu", role = c("aut", "cph")),
@@ -27,11 +27,14 @@ Description: Wraps some of the matrix exponentiation
         have a large number of states (as we do when we are inferring 
         the history of transitions between the possible geographic 
         ranges of a species), but is probably useful in other ways as 
-        well.
+        well. NOTE: In case FORTRAN checks temporarily get rexpokit 
+        archived on CRAN, see archived binaries at GitHub in: 
+        nmatzke/Matzke_R_binaries (binaries install without compilation 
+        of source code).
 URL: http://phylo.wikidot.com/rexpokit
 License: GPL (>= 2)
 LazyLoad: yes
 ByteCompile: yes
-Packaged:2023-10-31; iao
+Packaged:2023-11-22; iao
 NeedsCompilation: yes
 Repository: CRAN

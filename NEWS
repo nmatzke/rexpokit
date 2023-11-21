@@ -1,3 +1,33 @@
+CHANGES in rexpokit VERSION 0.26.6.14
+
+
+NEW FEATURES
+    
+    o None
+
+BUG FIXES
+
+    o None
+    
+OTHER CHANGES
+    
+    o Fixed zswapy error: input "m" is complex, explicitly converted to 
+      integer tempm, tempm=INT(m) to avoid possible change of type. This
+      fixes this LTO warning:
+      
+lapack/lapack.f:1261:72: warning: type of ‘zswapy’ does not match original declaration [-Wlto-type-mismatch]
+ 1261 |               call zswapy(tempkm1,tempx,tempzx,1,b(1),1)
+      |                                                                        ^
+lapack/blas_mod.f:961:24: note: ‘zswapy’ was previously declared here
+  961 |       subroutine  zswapy (n,m,zx,incx,zy,incy)
+
+      ...which I replicated on Mac OS X MOnterry 12.5 with a fresh install of gcc 13.2 
+         following these directions: https://gcc.gnu.org/wiki/InstallingGCC
+
+      
+
+
+
 CHANGES in rexpokit VERSION 0.26.6.13
 
 
