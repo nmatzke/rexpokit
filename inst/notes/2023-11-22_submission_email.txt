@@ -1,6 +1,8 @@
-Dear hardworking CRAN maintainers,
+Dear CRAN maintainers,
 
-I am submitting an minor update to "rexpokit", rexpokit 0.26.6.14. This is a slight revision of 0.26.6.2 to fix an LTO-related warning noted in that version.
+I am submitting an minor update to "rexpokit", rexpokit 0.26.6.14. This is a slight revision of 0.26.6.13 to fix one LTO-related warning noted in that version.
+
+I replicated the LTO warning locally, with a new gcc/gfortran install, and fixed it. (Due to a type mismatch in a function input.)
 
 This compiles without errors/warnings/significant notes e.g. https://builder.r-hub.io/advanced (r-devel-linux-x86_64-debian-clang, r-devel-linux-x86_64-debian-gcc, r-devel-linux-x86_64-fedora-clang, r-devel-linux-x86_64-fedora-gcc, r-devel-windows-x86_64), and on r-devel, r-release, and r-old on WinBuilder, and R CMD CHECK --as-cran on Mac OSX.
 
@@ -12,17 +14,6 @@ Nick Matzke
 
 
 
-
-Dear hardworking CRAN maintainers,
-
-I am submitting an minor update to "rexpokit", rexpokit 0.26.6.14. This is a slight revision of 0.26.6.13 to eliminate an LTO warning noted at https://www.stats.ox.ac.uk/pub/bdr/LTO/rexpokit.out
-
-This compiles without errors/warnings/significant notes on all the platforms that initially noted the error at: https://builder.r-hub.io/advanced (r-devel-linux-x86_64-debian-clang, r-devel-linux-x86_64-debian-gcc, r-devel-linux-x86_64-fedora-clang, r-devel-linux-x86_64-fedora-gcc, r-devel-windows-x86_64), and on r-devel, r-release, and r-old on WinBuilder, and R CMD CHECK --as-cran on Mac OSX.
-
-Thanks very much for your time,
-
-Sincerely,
-Nick Matzke
 
 
 
@@ -48,7 +39,7 @@ rm *.o
 cd /GitHub/
 R CMD build rexpokit
 cd /GitHub/
-_R_CHECK_FORTRAN_KIND_DETAILS_=1 R CMD check rexpokit
+_R_CHECK_FORTRAN_KIND_DETAILS_=1 R CMD check rexpokit --as-cran
 
 cd /GitHub/rexpokit/src
 rm *.o
