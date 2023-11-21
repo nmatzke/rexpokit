@@ -2,7 +2,7 @@ Dear CRAN maintainers,
 
 I am submitting an minor update to "rexpokit", rexpokit 0.26.6.14. This is a slight revision of 0.26.6.13 to fix one LTO-related warning noted in that version.
 
-I replicated the LTO warning locally, with a new gcc/gfortran install, and fixed it. (Due to a type mismatch in a function input.)
+I replicated the LTO warning locally, with a new gcc/gfortran install, and fixed it. (It was due to a type mismatch in a function input.)
 
 This compiles without errors/warnings/significant notes e.g. https://builder.r-hub.io/advanced (r-devel-linux-x86_64-debian-clang, r-devel-linux-x86_64-debian-gcc, r-devel-linux-x86_64-fedora-clang, r-devel-linux-x86_64-fedora-gcc, r-devel-windows-x86_64), and on r-devel, r-release, and r-old on WinBuilder, and R CMD CHECK --as-cran on Mac OSX.
 
