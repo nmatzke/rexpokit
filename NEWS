@@ -11,7 +11,10 @@ BUG FIXES
     
 OTHER CHANGES
     
-    o Fixed zswapy error: input "m" is complex, explicitly converted to 
+    o Fixed LTO warning noted here:
+      www.stats.ox.ac.uk/pub/bdr/LTO/rexpokit.out
+      It was an issue with zswapy:
+      input "m" is complex, explicitly converted to 
       integer tempm, tempm=INT(m) to avoid possible change of type. This
       fixes this LTO warning: lapack.f:1261:72: warning: 
       type of 'zswapy' does not match original declaration -Wlto-type-mismatch
