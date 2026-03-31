@@ -3,8 +3,8 @@
 #' \tabular{ll}{
 #' Package: \tab rexpokit\cr
 #' Type: \tab Package\cr
-#' Version: \tab 0.26.6.14\cr
-#' Date: \tab 2023-11-22\cr
+#' Version: \tab 0.26.6.15\cr
+#' Date: \tab 2026-04-01\cr
 #' License: \tab GPL (>= 2)\cr
 #' LazyLoad: \tab yes\cr
 #' }

@@ -1,3 +1,25 @@
+CHANGES in rexpokit VERSION 0.26.6.15
+
+
+NEW FEATURES
+    
+    o None
+
+BUG FIXES
+
+    o None
+    
+OTHER CHANGES
+    
+    o Fixed this CRAN note: 
+    Check: for unstated dependencies in ‘demo’
+      Result: NOTE 
+        '::' or ':::' import not declared from: ‘Matrix’
+        'library' or 'require' call not declared from: ‘Matrix’
+    
+    
+
+
 CHANGES in rexpokit VERSION 0.26.6.14
 
 
