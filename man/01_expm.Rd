@@ -1,8 +1,8 @@
-\name{expm}
-\alias{expm}
+\name{rexpokit_expm}
+\alias{rexpokit_expm}
 \title{Simple Interface}
 \usage{
-  expm(x, t=1)
+  rexpokit_expm(x, t=1)
 }
 \arguments{
   \item{x}{A square matrix.}
@@ -24,7 +24,7 @@
   
   where the powers on the matrix correspond to matrix-matrix multiplications.
   
-  \code{expm()} directly computes the matrix exponential of a dense 
+  \code{rexpokit_expm()} directly computes the matrix exponential of a dense 
   matrix. The implementation uses an order 6 Pade' approximation with a 
   scaling-and-squaring technique.
 }
@@ -39,7 +39,7 @@
 # Example use:
 x <- matrix(1:25, nrow=5)/100
 
-expm(x)
+rexpokit_expm(x)
 }
 \author{
   Drew Schmidt \email{schmidt@math.utk.edu}

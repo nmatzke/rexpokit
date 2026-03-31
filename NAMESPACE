@@ -9,6 +9,7 @@ useDynLib(rexpokit,
 #useDynLib(rexpokit, .registration = TRUE, .fixes = "C_")
 
 import(Rcpp)
+importFrom("Matrix", "expm")
 importFrom("stats", "runif")
 importFrom("stats", "coef", "lm") # for maxent
 #importFrom("SparseM", "as.matrix.coo") # for as.matrix.coo
@@ -17,6 +18,6 @@ export(
   expokit_dgpadm_Qmat, expokit_dmexpv_Qmat, expokit_dgexpv_Qmat,
   expokit_wrapalldmexpv_tvals, expokit_wrapalldgexpv_tvals,
   SparseM_coo_to_REXPOKIT_coo, mat2coo, coo2mat, mat2coo_forloop,
-  expm, maxent
+  rexpokit_expm, maxent
 )
 

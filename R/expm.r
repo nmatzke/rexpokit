@@ -1,4 +1,4 @@
-expm <- function(x, t=1)
+rexpokit_expm <- function(x, t=1)
 {
   if (nrow(x) != ncol(x))
     stop("Matrix exponentiation is only defined for square matrices.")
