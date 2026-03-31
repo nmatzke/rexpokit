@@ -12,7 +12,7 @@ Author: Nicholas J. Matzke [aut, cre, cph],
   Drew Schmidt [aut]
 Maintainer: Nicholas J. Matzke <nickmatzke.ncse@gmail.com>
 Depends: R (>= 3.0.2)
-Imports: stats, Rcpp (>= 0.11.0)
+Imports: stats, Matrix, Rcpp (>= 0.11.0)
 LinkingTo: Rcpp (>= 0.11.0)
 Copyright: See /inst/LAPACK_LICENSE.txt for code in /src.
 Description: Wraps some of the matrix exponentiation 
