@@ -309,7 +309,7 @@ for (i in 1:length(list_of_P_matrices_dmexpv))
   Computing Matrix Exponentials." _ACM Trans. Math.
   Softw._, *24*(1), pp. 130-156. <URL:
   http://dx.doi.org/10.1145/285861.285868>, <URL:
-  \url{https://dl.acm.org/doi/10.1145/285861.285868}>.
+  \url{http://dx.doi.org/10.1145/285861.285868}>.
 
   Eddelbuettel D and Francois R (2011). "Rcpp: Seamless R
   and C++ Integration." _Journal of Statistical Software_,
