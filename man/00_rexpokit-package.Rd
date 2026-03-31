@@ -136,8 +136,7 @@
   EXPOKIT was published by Sidje in: Sidje RB (1998).
   "Expokit. A Software Package for Computing Matrix
   Exponentials." \emph{ACM-Transactions on Mathematical
-  Software}, 24(1):130-156.
-  \url{http://tinyurl.com/bwa87rq}\cr \cr 
+  Software}, 24(1):130-156. doi: 10.1145/285861.285868\cr \cr 
   
   \bold{3.} Revisions
   for version 0.26, which fixed many issues with 
@@ -307,9 +306,7 @@ for (i in 1:length(list_of_P_matrices_dmexpv))
 
   Sidje RB (1998). "Expokit. A Software Package for
   Computing Matrix Exponentials." _ACM Trans. Math.
-  Softw._, *24*(1), pp. 130-156. <URL:
-  http://dx.doi.org/10.1145/285861.285868>, <URL:
-  \url{http://dx.doi.org/10.1145/285861.285868}>.
+  Softw._, *24*(1), pp. 130-156. doi: 10.1145/285861.285868.
 
   Eddelbuettel D and Francois R (2011). "Rcpp: Seamless R
   and C++ Integration." _Journal of Statistical Software_,
