@@ -1,0 +1,6 @@
+Dear hardworking CRAN maintainers,
+
+rexpokit_0.26.6.15.tar.gz is a minor update of rexpokit_0.26.6.14.tar.gz to fix a Note about a dependency in the demo/ folder. It has passed R CMD check --as-cran and checks on winbuilder with no errors, warnings, or significant notes.
+
+Thanks very much,
+Nick Matzke
